@@ -286,6 +286,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
       <div class="feat-title" id="ft-title2">Cuidarse para poder cuidar</div>
       <div class="feat-sub" id="ft-sub2">Tu bienestar no es un lujo →</div>
     </div>
+    <div class="feat" style="background:linear-gradient(135deg,#2a3a4a,#3a6a8a)" onclick="openItem('biblio')">
+      <div class="feat-tag" id="ft-form-tag">📚 Complemento de formación</div>
+      <div class="feat-icon">📚</div>
+      <div class="feat-title" id="ft-form-title">Bases científicas y bibliografía</div>
+      <div class="feat-sub" id="ft-form-sub">Las referencias que sustentan el programa →</div>
+    </div>
     <div class="sh" style="margin-top:8px"><div class="sh-title" id="sec-title-programa">Programa CuidarConSentido</div></div>
     <div class="mgrid">
       <div class="mc" onclick="openItem('mod1')"><div class="mc-num" id="mn1">Módulo 1</div><div class="mc-icon">🧠</div><div class="mc-title" id="mt1">Estimulación cognitiva</div><div class="mc-bar"><div class="mc-fill"></div></div></div>
@@ -578,6 +584,10 @@ var EXPERT_CONTENT = {
   "mod5_p_fr":"<h3>1. Cette semaine : un appel d'orientation</h3>\n<ul>\n<li>France Alzheimer : 0 811 112 112</li>\n<li>MAIA/CLIC : trouvez le vôtre sur monparcourshandicap.gouv.fr</li>\n</ul>\n<h3>2. Demandez l'APA cette semaine si ce n'est pas fait</h3>\n<p>Conseil Départemental. Le processus prend des mois — commencez maintenant.</p>\n<h3>3. Préparez la prochaine consultation médicale</h3>\n<ul>\n<li>3 changements observés · Votre état d'aidant · Demandez une orientation mémoire</li>\n</ul>\n<h3>4. Enregistrez le Mandat de Protection Future</h3>\n<p>Pendant que la personne peut encore consentir. Notaire ou formulaire administratif.</p>",
   "mod5_p_en":"<h3>1. This week: one orientation call</h3>\n<ul>\n<li><strong>UK:</strong> Alzheimer's Society 0333 150 3456</li>\n<li><strong>Spain:</strong> Alzheimer España 900 210 212</li>\n<li><strong>France:</strong> France Alzheimer 0 811 112 112</li>\n</ul>\n<h3>2. Apply for Carer's Allowance this week if eligible</h3>\n<p>gov.uk/carers-allowance — if you provide 35+ hours of care per week.</p>\n<h3>3. Prepare the next medical appointment</h3>\n<ul>\n<li>3 concrete changes observed · Your state as a carer · Request Memory Clinic referral</li>\n</ul>\n<h3>4. Register Lasting Power of Attorney now</h3>\n<p>While the person can still consent. gov.uk/power-of-attorney — don't wait.</p>\n<h3>5. Your traffic light right now</h3>\n<ul>\n<li>🟢 Green: home help or day centre</li>\n<li>🟡 Amber: day centre urgent + support group</li>\n<li>🔴 Red: talk to your GP TODAY. A care home is not abandonment.</li>\n</ul>"
 };
+EXPERT_CONTENT["biblio"] = "<p style='color:var(--text3);font-size:13px;margin-bottom:10px'>Bases científicas que sustentan cuidaAPP y el programa MAR. Cada obra incluye una nota de para qué te sirve.</p><h3>Atención Centrada en la Persona</h3><ul><li><strong>Kitwood, T. (1997).</strong> Dementia reconsidered: The person comes first. Open University Press. <em>— La persona va primero, no la enfermedad: el origen del cuidado centrado en la persona.</em></li></ul><h3>Reserva cognitiva</h3><ul><li><strong>Stern, Y. (2012).</strong> Cognitive reserve in ageing and Alzheimer's disease. Lancet Neurology, 11(11), 1006–1012. <em>— Por qué estimular la mente protege: el cerebro acumula una reserva que amortigua el deterioro.</em></li></ul><h3>Persona y entorno</h3><ul><li><strong>Lawton, M. P., & Nahemow, L. (1973).</strong> Ecology and the aging process. APA. <em>— El entorno puede ayudar o perjudicar: importa el ajuste entre la persona y su ambiente.</em></li><li><strong>Baltes, P. B., & Baltes, M. M. (1990).</strong> Successful aging. Cambridge University Press. <em>— Envejecer bien es posible adaptando recursos y estrategias.</em></li></ul><h3>Atención gerontológica (España)</h3><ul><li><strong>Martínez-Rodríguez, T. (2019).</strong> La atención gerontológica centrada en la persona. Fundación Pilares. <em>— Guía práctica para aplicar la ACP en residencias.</em></li><li><strong>Díaz-Veiga, P., Sancho, M., & Rodríguez, P. (2020).</strong> Revista Española de Geriatría y Gerontología, 55(2), 98–106. <em>— Una institucionalización rígida acelera la pérdida de autonomía.</em></li><li><strong>Rojo-Pérez, F., Fernández-Mayoralas, G., & Rodríguez-Rodríguez, V. (2022).</strong> Social Indicators Research, 162(3), 1105–1127. <em>— La salud cognitiva depende del entorno y de los apoyos sociales.</em></li></ul><h3>Entorno residencial y dependencia</h3><ul><li><strong>Calkins, M. P. (2018).</strong> Supportive and therapeutic environments for people living with dementia. Johns Hopkins University Press. <em>— Cómo diseñar entornos que cuidan.</em></li><li><strong>Kontos, P. C., Miller, K. L., & Mitchell, G. J. (2010).</strong> Gerontologist, 50(3), 352–362. <em>— La estandarización excesiva descuida el juicio del cuidador.</em></li></ul><h3>Solidaridades y contexto intergeneracional</h3><ul><li><strong>Mvé Ondo, B. (2014).</strong> Vieillissement et solidarités familiales en Afrique subsaharienne. Cahiers de l'IFORD. <em>— El papel de la familia y la comunidad en el cuidado.</em></li><li><strong>Mba, C. J. (2010).</strong> International Journal of Sociology and Anthropology, 2(1), 1–7. <em>— El envejecimiento también crece en África subsahariana.</em></li><li><strong>Iniesta-Martínez, M. (2018).</strong> Familias, parentesco y dinámicas intergeneracionales en el África subsahariana. UB. <em>— Las crisis socioeconómicas debilitan las redes familiares.</em></li></ul><h3>Organismos internacionales</h3><ul><li><strong>Organización Mundial de la Salud (2022).</strong> Década del Envejecimiento Saludable 2021–2030. <em>— Marco global para envejecer con salud y dignidad.</em></li><li><strong>United Nations (2023).</strong> World Population Prospects 2022. <em>— Datos sobre la transición demográfica mundial.</em></li></ul><p style='font-size:11px;color:var(--text3);margin-top:10px'>Dirección científica: Pr. Mayi Marc Bruno · Hafashimana Jean Marie Vianney · Université de Yaoundé I.</p>";
+EXPERT_CONTENT["biblio_fr"] = "<p style='color:var(--text3);font-size:13px;margin-bottom:10px'>Bases scientifiques qui fondent cuidaAPP et le programme MAR. Chaque ouvrage inclut une note sur son utilité.</p><h3>Soins Centrés sur la Personne</h3><ul><li><strong>Kitwood, T. (1997).</strong> Dementia reconsidered: The person comes first. Open University Press. <em>— La personne d'abord, pas la maladie : l'origine des soins centrés sur la personne.</em></li></ul><h3>Réserve cognitive</h3><ul><li><strong>Stern, Y. (2012).</strong> Cognitive reserve in ageing and Alzheimer's disease. Lancet Neurology, 11(11), 1006–1012. <em>— Pourquoi stimuler l'esprit protège : le cerveau accumule une réserve qui amortit le déclin.</em></li></ul><h3>Personne et environnement</h3><ul><li><strong>Lawton, M. P., & Nahemow, L. (1973).</strong> Ecology and the aging process. APA. <em>— L'environnement peut aider ou nuire : l'ajustement personne-milieu compte.</em></li><li><strong>Baltes, P. B., & Baltes, M. M. (1990).</strong> Successful aging. Cambridge University Press. <em>— Bien vieillir est possible en adaptant ses ressources.</em></li></ul><h3>Gérontologie (Espagne)</h3><ul><li><strong>Martínez-Rodríguez, T. (2019).</strong> La atención gerontológica centrada en la persona. Fundación Pilares. <em>— Guide pratique des SCP en établissement.</em></li><li><strong>Díaz-Veiga, P., Sancho, M., & Rodríguez, P. (2020).</strong> Revista Española de Geriatría y Gerontología, 55(2), 98–106. <em>— Une institutionnalisation rigide accélère la perte d'autonomie.</em></li><li><strong>Rojo-Pérez, F., et al. (2022).</strong> Social Indicators Research, 162(3), 1105–1127. <em>— La santé cognitive dépend de l'environnement et des soutiens sociaux.</em></li></ul><h3>Environnement résidentiel et dépendance</h3><ul><li><strong>Calkins, M. P. (2018).</strong> Supportive and therapeutic environments for people living with dementia. Johns Hopkins University Press. <em>— Concevoir des environnements qui prennent soin.</em></li><li><strong>Kontos, P. C., Miller, K. L., & Mitchell, G. J. (2010).</strong> Gerontologist, 50(3), 352–362. <em>— La standardisation excessive néglige le jugement de l'aidant.</em></li></ul><h3>Solidarités et contexte intergénérationnel</h3><ul><li><strong>Mvé Ondo, B. (2014).</strong> Vieillissement et solidarités familiales en Afrique subsaharienne. Cahiers de l'IFORD. <em>— Le rôle de la famille et de la communauté.</em></li><li><strong>Mba, C. J. (2010).</strong> International Journal of Sociology and Anthropology, 2(1), 1–7. <em>— Le vieillissement croît aussi en Afrique subsaharienne.</em></li><li><strong>Iniesta-Martínez, M. (2018).</strong> Familias, parentesco y dinámicas intergeneracionales en el África subsahariana. UB. <em>— Les crises socio-économiques fragilisent les réseaux familiaux.</em></li></ul><h3>Organismes internationaux</h3><ul><li><strong>Organisation mondiale de la Santé (2022).</strong> Décennie du vieillissement en bonne santé 2021–2030. <em>— Cadre mondial pour vieillir en santé et dignité.</em></li><li><strong>United Nations (2023).</strong> World Population Prospects 2022. <em>— Données sur la transition démographique mondiale.</em></li></ul><p style='font-size:11px;color:var(--text3);margin-top:10px'>Direction scientifique : Pr. Mayi Marc Bruno · Hafashimana Jean Marie Vianney · Université de Yaoundé I.</p>";
+EXPERT_CONTENT["biblio_ca"] = "<p style='color:var(--text3);font-size:13px;margin-bottom:10px'>Bases científiques que sustenten cuidaAPP i el programa MAR. Cada obra inclou una nota del que t'aporta.</p><h3>Atenció Centrada en la Persona</h3><ul><li><strong>Kitwood, T. (1997).</strong> Dementia reconsidered: The person comes first. Open University Press. <em>— La persona primer, no la malaltia: l'origen de l'atenció centrada en la persona.</em></li></ul><h3>Reserva cognitiva</h3><ul><li><strong>Stern, Y. (2012).</strong> Cognitive reserve in ageing and Alzheimer's disease. Lancet Neurology, 11(11), 1006–1012. <em>— Per què estimular la ment protegeix: el cervell acumula una reserva que amorteix el deteriorament.</em></li></ul><h3>Persona i entorn</h3><ul><li><strong>Lawton, M. P., & Nahemow, L. (1973).</strong> Ecology and the aging process. APA. <em>— L'entorn pot ajudar o perjudicar: importa l'ajust persona-ambient.</em></li><li><strong>Baltes, P. B., & Baltes, M. M. (1990).</strong> Successful aging. Cambridge University Press. <em>— Envellir bé és possible adaptant els recursos.</em></li></ul><h3>Gerontologia (Espanya)</h3><ul><li><strong>Martínez-Rodríguez, T. (2019).</strong> La atención gerontológica centrada en la persona. Fundación Pilares. <em>— Guia pràctica de l'ACP en residències.</em></li><li><strong>Díaz-Veiga, P., Sancho, M., & Rodríguez, P. (2020).</strong> Revista Española de Geriatría y Gerontología, 55(2), 98–106. <em>— Una institucionalització rígida accelera la pèrdua d'autonomia.</em></li><li><strong>Rojo-Pérez, F., et al. (2022).</strong> Social Indicators Research, 162(3), 1105–1127. <em>— La salut cognitiva depèn de l'entorn i dels suports socials.</em></li></ul><h3>Entorn residencial i dependència</h3><ul><li><strong>Calkins, M. P. (2018).</strong> Supportive and therapeutic environments for people living with dementia. Johns Hopkins University Press. <em>— Com dissenyar entorns que cuiden.</em></li><li><strong>Kontos, P. C., Miller, K. L., & Mitchell, G. J. (2010).</strong> Gerontologist, 50(3), 352–362. <em>— L'estandardització excessiva descuida el criteri del cuidador.</em></li></ul><h3>Solidaritats i context intergeneracional</h3><ul><li><strong>Mvé Ondo, B. (2014).</strong> Vieillissement et solidarités familiales en Afrique subsaharienne. Cahiers de l'IFORD. <em>— El paper de la família i la comunitat.</em></li><li><strong>Mba, C. J. (2010).</strong> International Journal of Sociology and Anthropology, 2(1), 1–7. <em>— L'envelliment també creix a l'Àfrica subsahariana.</em></li><li><strong>Iniesta-Martínez, M. (2018).</strong> Familias, parentesco y dinámicas intergeneracionales en el África subsahariana. UB. <em>— Les crisis socioeconòmiques debiliten les xarxes familiars.</em></li></ul><h3>Organismes internacionals</h3><ul><li><strong>Organització Mundial de la Salut (2022).</strong> Dècada de l'Envelliment Saludable 2021–2030. <em>— Marc global per envellir amb salut i dignitat.</em></li><li><strong>United Nations (2023).</strong> World Population Prospects 2022. <em>— Dades sobre la transició demogràfica mundial.</em></li></ul><p style='font-size:11px;color:var(--text3);margin-top:10px'>Direcció científica: Pr. Mayi Marc Bruno · Hafashimana Jean Marie Vianney · Université de Yaoundé I.</p>";
+EXPERT_CONTENT["biblio_en"] = "<p style='color:var(--text3);font-size:13px;margin-bottom:10px'>The scientific foundations behind cuidaAPP and the MAR programme. Each work includes a note on how it helps you.</p><h3>Person-Centred Care</h3><ul><li><strong>Kitwood, T. (1997).</strong> Dementia reconsidered: The person comes first. Open University Press. <em>— The person comes first, not the illness: the origin of person-centred care.</em></li></ul><h3>Cognitive reserve</h3><ul><li><strong>Stern, Y. (2012).</strong> Cognitive reserve in ageing and Alzheimer's disease. Lancet Neurology, 11(11), 1006–1012. <em>— Why stimulating the mind protects: the brain builds a reserve that buffers decline.</em></li></ul><h3>Person and environment</h3><ul><li><strong>Lawton, M. P., & Nahemow, L. (1973).</strong> Ecology and the aging process. APA. <em>— The environment can help or harm: person-environment fit matters.</em></li><li><strong>Baltes, P. B., & Baltes, M. M. (1990).</strong> Successful aging. Cambridge University Press. <em>— Ageing well is possible by adapting resources and strategies.</em></li></ul><h3>Gerontological care (Spain)</h3><ul><li><strong>Martínez-Rodríguez, T. (2019).</strong> La atención gerontológica centrada en la persona. Fundación Pilares. <em>— Practical guide to person-centred care in care homes.</em></li><li><strong>Díaz-Veiga, P., Sancho, M., & Rodríguez, P. (2020).</strong> Revista Española de Geriatría y Gerontología, 55(2), 98–106. <em>— Rigid institutionalisation accelerates loss of autonomy.</em></li><li><strong>Rojo-Pérez, F., et al. (2022).</strong> Social Indicators Research, 162(3), 1105–1127. <em>— Cognitive health depends on environment and social support.</em></li></ul><h3>Residential environment and dependency</h3><ul><li><strong>Calkins, M. P. (2018).</strong> Supportive and therapeutic environments for people living with dementia. Johns Hopkins University Press. <em>— How to design caring environments.</em></li><li><strong>Kontos, P. C., Miller, K. L., & Mitchell, G. J. (2010).</strong> Gerontologist, 50(3), 352–362. <em>— Over-standardisation neglects the caregiver's judgement.</em></li></ul><h3>Solidarity and intergenerational context</h3><ul><li><strong>Mvé Ondo, B. (2014).</strong> Vieillissement et solidarités familiales en Afrique subsaharienne. Cahiers de l'IFORD. <em>— The role of family and community in care.</em></li><li><strong>Mba, C. J. (2010).</strong> International Journal of Sociology and Anthropology, 2(1), 1–7. <em>— Ageing is also rising in sub-Saharan Africa.</em></li><li><strong>Iniesta-Martínez, M. (2018).</strong> Familias, parentesco y dinámicas intergeneracionales en el África subsahariana. UB. <em>— Socio-economic crises weaken family networks.</em></li></ul><h3>International bodies</h3><ul><li><strong>World Health Organization (2022).</strong> Decade of Healthy Ageing 2021–2030. <em>— Global framework for ageing with health and dignity.</em></li><li><strong>United Nations (2023).</strong> World Population Prospects 2022. <em>— Data on the global demographic transition.</em></li></ul><p style='font-size:11px;color:var(--text3);margin-top:10px'>Scientific direction: Pr. Mayi Marc Bruno · Hafashimana Jean Marie Vianney · Université de Yaoundé I.</p>";
 var QA_CONTENT = {
   "mod1": {
     "apply":"<h3>Cómo empezar hoy</h3><p>Una sola actividad — los refranes: sin materiales, 5 minutos, casi siempre genera una sonrisa.</p><ul><li>Di el inicio, espera 10 segundos · Celebra cada acierto · Si no recuerda: dilo tú sin señalar el olvido</li></ul>",
@@ -676,6 +686,7 @@ var TXT = {
     ps4n:"Formación equipos", ps4d:"Taller presencial u online · A consultar", ps4price:"A consultar",
     btnPay:"💳 Pagar con tarjeta", btnContact:"📧 Contactar antes", btnQuote:"📧 Solicitar presupuesto",
     contactTitle:"Contacto", afTag:"Acompañando a cuidadores de personas mayores",
+    formTag:"📚 Complemento de formación", formTitle:"Bases científicas y bibliografía", formSub:"Las referencias que sustentan el programa →",
     aiLang:"español"
   },
   fr: {
@@ -701,6 +712,7 @@ var TXT = {
     ps4n:"Formation équipes", ps4d:"Atelier présentiel ou en ligne · Sur devis", ps4price:"Sur devis",
     btnPay:"💳 Payer par carte", btnContact:"📧 Contacter avant", btnQuote:"📧 Demander un devis",
     contactTitle:"Contact", afTag:"Accompagner les aidants de personnes âgées",
+    formTag:"📚 Complément de formation", formTitle:"Bases scientifiques et bibliographie", formSub:"Les références qui fondent le programme →",
     aiLang:"français"
   },
   ca: {
@@ -726,6 +738,7 @@ var TXT = {
     ps4n:"Formació equips", ps4d:"Taller presencial o en línia · A consultar", ps4price:"A consultar",
     btnPay:"💳 Pagar amb targeta", btnContact:"📧 Contactar abans", btnQuote:"📧 Sol·licitar pressupost",
     contactTitle:"Contacte", afTag:"Acompanyant cuidadors de persones grans",
+    formTag:"📚 Complement de formació", formTitle:"Bases científiques i bibliografia", formSub:"Les referències que sustenten el programa →",
     aiLang:"català"
   },
   en: {
@@ -751,6 +764,7 @@ var TXT = {
     ps4n:"Team training", ps4d:"On-site or online workshop · On request", ps4price:"On request",
     btnPay:"💳 Pay by card", btnContact:"📧 Contact first", btnQuote:"📧 Request a quote",
     contactTitle:"Contact", afTag:"Supporting carers of elderly people",
+    formTag:"📚 Training resource", formTitle:"Scientific foundations & bibliography", formSub:"The references behind the programme →",
     aiLang:"English"
   }
 };
@@ -827,6 +841,9 @@ var DATA = {
     {id:"mod4",icon:"🛡️",bg:"linear-gradient(135deg,#5a3a6b,#9b6bb5)",catLabel:"Programa",title:"Módulo 4 — Cuidarse para poder cuidar",desc:"El bienestar del cuidador es la base de todo.",prompt:""},
     {id:"mod5",icon:"🗺️",bg:"linear-gradient(135deg,#2a3a4a,#3a6a8a)",catLabel:"Programa",title:"Módulo 5 — Orientarse y no perderse",desc:"Recursos reales por país, ayudas económicas y cómo hablar con el médico.",prompt:""}
   ],
+  formacion:[
+    {id:"biblio",icon:"📚",bg:"linear-gradient(135deg,#2a3a4a,#3a6a8a)",catLabel:"Complemento de formación",title:"Bases científicas y bibliografía",desc:"",objetivo:"",prompt:""}
+  ],
   consejosdia:[
     {id:"cd0",dia:1,csv_id:"CON-001",title:"Paciencia ante la repetición",desc:"Si hoy tu familiar te repite la misma pregunta por quinta vez, recuerda: para él es la primera. Responde con el mismo tono, siempre.",cat:"comunicacion",icon:"💡",bg:"linear-gradient(135deg,#1a3a2a,#2a6a4a)"},
     {id:"cd1",dia:2,csv_id:"CON-002",title:"Fomentar la autonomía",desc:"Es más rápido hacer las cosas por ellos, pero dejarles intentarlo primero es el mayor regalo que puedes hacerles.",cat:"cuidado",icon:"💡",bg:"linear-gradient(135deg,#1a3a2a,#2a6a4a)"},
@@ -889,11 +906,21 @@ function askChip(el){
   if(!q) return;
   var qi = document.getElementById("qi");
   if(qi) qi.value = q;
-  askCustom();
+  askCustom(true);
 }
 
-// ÚNICA función askCustom: 1) respuestas predefinidas gratis  2) IA vía proxy seguro
-function askCustom(){
+// Mensajes localizados del asistente
+function aiMsg(key){
+  var M = {
+    err:{es:"No se pudo conectar con el asistente. Comprueba que la función esté desplegada en Netlify.",fr:"Impossible de contacter l'assistant. Vérifiez que la fonction est déployée sur Netlify.",ca:"No s'ha pogut connectar amb l'assistent. Comprova que la funció estigui desplegada a Netlify.",en:"Could not reach the assistant. Check that the function is deployed on Netlify."},
+    retry:{es:"Inténtalo de nuevo.",fr:"Réessayez.",ca:"Torna-ho a provar.",en:"Please try again."}
+  };
+  return (M[key] && M[key][curLang]) || (M[key] && M[key].es) || "";
+}
+
+// askCustom: las preguntas ESCRITAS van siempre a la IA real (en el idioma elegido).
+// Las sugerencias (chips) dan respuesta instantánea solo si existe en ese idioma; si no, van a la IA.
+function askCustom(fromChip){
   var q = document.getElementById("qi").value.trim();
   if(!q || !curItem) return;
   document.getElementById("qi").value = "";
@@ -907,31 +934,30 @@ function askCustom(){
   var aiQ = document.getElementById("aiQ");
   if(!aiQ) return;
 
-  // 1) Respuesta predefinida (instantánea, sin coste)
-  var modId = curItem.id;
-  var qa = QA_CONTENT[modId+"_"+curLang] || QA_CONTENT[modId];
-  var ql = q.toLowerCase();
-  var answer = "";
-  if(qa){
-    var isApply = ql.indexOf("hoy")>=0||ql.indexOf("aplic")>=0||ql.indexOf("comment")>=0||ql.indexOf("how")>=0||ql.indexOf("appliquer")>=0||ql.indexOf("commencer")>=0||ql.indexOf("aplico")>=0;
-    var isResist = ql.indexOf("resist")>=0||ql.indexOf("rechaz")>=0||ql.indexOf("patient")>=0||ql.indexOf("résiste")>=0||ql.indexOf("what if")>=0;
-    var isExample = ql.indexOf("ejemplo")>=0||ql.indexOf("example")>=0||ql.indexOf("exemple")>=0||ql.indexOf("concreto")>=0||ql.indexOf("concret")>=0;
-    var isPro = ql.indexOf("profesional")>=0||ql.indexOf("professional")>=0||ql.indexOf("ayuda")>=0||ql.indexOf("aide")>=0||ql.indexOf("quand")>=0||ql.indexOf("cuando")>=0||ql.indexOf("cuándo")>=0||ql.indexOf("help")>=0||ql.indexOf("ajuda")>=0;
-    if(isApply) answer = qa.apply||"";
-    else if(isResist) answer = qa.resist||"";
-    else if(isExample) answer = qa.example||"";
-    else if(isPro) answer = qa.professional||"";
+  // 1) Solo para sugerencias: respuesta predefinida en el MISMO idioma (sin fallback a español)
+  if(fromChip){
+    var qa = QA_CONTENT[curItem.id+"_"+curLang];
+    if(qa){
+      var ql = q.toLowerCase();
+      var answer = "";
+      var isApply = ql.indexOf("hoy")>=0||ql.indexOf("aplic")>=0||ql.indexOf("appliquer")>=0||ql.indexOf("apply")>=0;
+      var isResist = ql.indexOf("resist")>=0||ql.indexOf("résist")>=0;
+      var isExample = ql.indexOf("ejemplo")>=0||ql.indexOf("example")>=0||ql.indexOf("exemple")>=0||ql.indexOf("exemple")>=0;
+      var isPro = ql.indexOf("ayuda")>=0||ql.indexOf("aide")>=0||ql.indexOf("ajuda")>=0||ql.indexOf("help")>=0;
+      if(isApply) answer = qa.apply||"";
+      else if(isResist) answer = qa.resist||"";
+      else if(isExample) answer = qa.example||"";
+      else if(isPro) answer = qa.professional||"";
+      if(answer){ aiQ.innerHTML = answer; return; }
+    }
   }
-  if(answer){ aiQ.innerHTML = answer; return; }
 
-  // 2) Sin respuesta predefinida -> IA real (controlando la cuota)
+  // 2) IA real (en el idioma elegido), controlando la cuota
   if(!AI_QUOTA.canAsk()){
     aiQ.innerHTML = showAIQuotaUI();
     return;
   }
-  AI_QUOTA.increment();
-  var rem = AI_QUOTA.getRemaining();
-  aiQ.innerHTML = "<span class='spin'></span> " + aiThinkingLabel() + (rem<=2 && rem>0 ? " <span style='font-size:11px;color:var(--text3)'>("+rem+")</span>" : "");
+  aiQ.innerHTML = "<span class='spin'></span> " + aiThinkingLabel();
 
   var contexto = curItem.title + (curItem.catLabel ? (" — "+curItem.catLabel) : "");
   var userPrompt = "Tema del programa: " + contexto + ".\nPregunta del cuidador: " + q;
@@ -951,10 +977,17 @@ function askCustom(){
       return;
     }
     var txt = d && d.text ? d.text : "";
-    aiQ.innerHTML = txt ? txt.replace(/```html?/gi,"").replace(/```/g,"") : "<p>Inténtalo de nuevo.</p>";
+    if(txt){
+      AI_QUOTA.increment(); // solo se descuenta cuota si la IA respondió de verdad
+      var rem = AI_QUOTA.getRemaining();
+      aiQ.innerHTML = txt.replace(/```html?/gi,"").replace(/```/g,"") +
+        (rem<=2 && rem>0 ? "<p style='font-size:11px;color:var(--text3);margin-top:8px'>("+rem+")</p>" : "");
+    } else {
+      aiQ.innerHTML = "<p>"+aiMsg('retry')+"</p>";
+    }
   })
   .catch(function(){
-    aiQ.innerHTML = qa ? (qa.apply || qa.resist || "<p>Sin respuesta disponible.</p>") : "<p>No se pudo conectar con el asistente. Revisa tu conexión.</p>";
+    aiQ.innerHTML = "<p style='color:var(--rose)'>"+aiMsg('err')+"</p>";
   });
 }
 
@@ -1057,6 +1090,7 @@ function applyTxt(){
   sid("nt0",tx.nt0); sid("nt1",tx.nt1); sid("nt2",tx.nt2); sid("nt3",tx.nt3);
   sid("ft-tag",tx.ftTag); sid("ft-title",tx.ftTitle); sid("ft-sub",tx.ftSub);
   sid("ft-tag2",tx.ftTag2); sid("ft-title2",tx.ftTitle2); sid("ft-sub2",tx.ftSub2);
+  sid("ft-form-tag",tx.formTag); sid("ft-form-title",tx.formTitle); sid("ft-form-sub",tx.formSub);
   var si = document.getElementById("searchInput"); if(si) si.placeholder = tx.search;
   sid("sec-title-consejos",tx.secConsejos); sid("sec-title-actividades",tx.secActiv);
   sid("sec-title-incidencias",tx.secIncid); sid("sec-title-programa",tx.secPrograma);
@@ -1175,7 +1209,7 @@ function getBadgeClass(i){
 function getBadgeText(i){ return i.color||i.status||""; }
 
 function findItem(id){
-  var allSecs=["consejos","actividades","incidencias","cuidador","modulos"];
+  var allSecs=["consejos","actividades","incidencias","cuidador","modulos","formacion"];
   for(var i=0;i<allSecs.length;i++){
     var sec=allSecs[i];
     var list=sec==="incidencias"?DATA.incidencias:(DATA[sec]||[]);
@@ -1201,6 +1235,10 @@ function renderAll(){
 }
 
 // INIT
+(function(){
+  var qi = document.getElementById("qi");
+  if(qi) qi.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); askCustom(); } });
+})();
 if(profile){
   applyProfile();
   document.getElementById("ob").style.display="none";
