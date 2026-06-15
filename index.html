@@ -862,6 +862,31 @@ var curSec = "consejos";
 var curCats = {consejos:"todos",actividades:"todos",incidencias:"todos"};
 var curItem = null;
 var loadedTabs = {};
+
+// ---- Capa de traducción de títulos y categorías de los ítems (ES es la base) ----
+var I18N = {
+  cat: {
+    fr: {"Comunicación":"Communication","Bienestar":"Bien-être","Lenguaje":"Langage","Música":"Musique","Memoria":"Mémoire","Movimiento":"Mouvement","Creatividad":"Créativité","Sensorial":"Sensoriel","Comprensión":"Compréhension","Emociones":"Émotions","Estrategias":"Stratégies","Recursos":"Ressources","Programa":"Programme","Complemento de formación":"Complément de formation"},
+    ca: {"Comunicación":"Comunicació","Bienestar":"Benestar","Lenguaje":"Llenguatge","Música":"Música","Memoria":"Memòria","Movimiento":"Moviment","Creatividad":"Creativitat","Sensorial":"Sensorial","Comprensión":"Comprensió","Emociones":"Emocions","Estrategias":"Estratègies","Recursos":"Recursos","Programa":"Programa","Complemento de formación":"Complement de formació"},
+    en: {"Comunicación":"Communication","Bienestar":"Wellbeing","Lenguaje":"Language","Música":"Music","Memoria":"Memory","Movimiento":"Movement","Creatividad":"Creativity","Sensorial":"Sensory","Comprensión":"Understanding","Emociones":"Emotions","Estrategias":"Strategies","Recursos":"Resources","Programa":"Programme","Complemento de formación":"Training resource"}
+  },
+  title: {
+    fr: {c0:"Valider avant de corriger",c1:"Les yeux avant la voix",c2:"Patience face à la répétition",c3:"Une idée à la fois",c4:"Le silence communique aussi",c5:"Laissez le temps de répondre",c6:"Quand il/elle dit non à tout",c7:"Votre calme est son calme",c8:"Prendre soin de soi n'est pas de l'égoïsme",c9:"Reconnaissez où vous en êtes aujourd'hui",a0:"Le proverbe populaire",a1:"La playlist personnelle",a2:"Chanter ensemble",a3:"Rythme corporel",a4:"Reconnaître des mélodies",a5:"L'album photos",a6:"Souvenirs de vie",a7:"Catégories verbales",a8:"Lecture à voix haute",a9:"La promenade quotidienne",a10:"Exercices sur chaise",a11:"Jardinage",a12:"Peinture libre",a13:"Cuisiner ensemble",a14:"Tâches ménagères",a15:"La boîte à textures",a16:"Lancer et recevoir",a17:"Les titres du jour",a18:"Collage thématique",a19:"Activités manuelles tactiles",a20:"Tai-chi adapté",a21:"Mouvement en musique",a22:"Écrire des souvenirs",a23:"Photographie simple",cu0:"Qu'est-ce que le déclin cognitif léger ?",cu1:"La différence entre DCL et démence",cu2:"Ce que vous faites compte",cu3:"Les 5 principes de la communication",cu4:"Quand la même question se répète",cu5:"En cas d'agitation ou de peur",cu6:"Niveau 1 — Fatigue normale",cu7:"Niveau 2 — Signaux d'alerte",cu8:"Niveau 3 — Burnout de l'aidant",cu9:"La culpabilité n'est pas la réalité",cu10:"Le deuil anticipé est réel",cu11:"Stratégie : la micro-pause",cu12:"Stratégie : protéger le sommeil",cu13:"Comment demander une aide concrète",cu14:"Ressources en Espagne",cu15:"Ressources en Catalogne",cu16:"Ressources en France",cu17:"Comment parler au médecin",cu18:"Signes que quelque chose doit changer",biblio:"Bases scientifiques et bibliographie"},
+    ca: {c0:"Valida abans de corregir",c1:"Ulls abans que veu",c2:"Paciència davant la repetició",c3:"Una idea cada cop",c4:"El silenci també comunica",c5:"Deixa temps per respondre",c6:"Quan diu que no a tot",c7:"La teva calma és la seva calma",c8:"Cuidar-te no és egoisme",c9:"Reconeix on ets avui",a0:"La dita popular",a1:"La llista personal",a2:"Cantar junts",a3:"Ritme corporal",a4:"Reconèixer melodies",a5:"L'àlbum de fotos",a6:"Records de vida",a7:"Categories verbals",a8:"Lectura en veu alta",a9:"El passeig diari",a10:"Exercicis de cadira",a11:"Jardineria",a12:"Pintura lliure",a13:"Cuinar junts",a14:"Tasques de la llar",a15:"La caixa de textures",a16:"Llançar i rebre",a17:"Titulars del dia",a18:"Collage temàtic",a19:"Manualitats tàctils",a20:"Tai-txi adaptat",a21:"Moviment amb música",a22:"Escriure records",a23:"Fotografia senzilla",cu0:"Què és el deteriorament cognitiu lleu?",cu1:"La diferència entre DCL i demència",cu2:"El que tu fas importa",cu3:"Els 5 principis de la comunicació",cu4:"Quan es repeteix la mateixa pregunta",cu5:"Quan hi ha agitació o por",cu6:"Nivell 1 — Cansament normal",cu7:"Nivell 2 — Senyals d'alerta",cu8:"Nivell 3 — Burnout del cuidador",cu9:"La culpa no és la realitat",cu10:"El dol anticipat és real",cu11:"Estratègia: el micro-descans",cu12:"Estratègia: protegir el son",cu13:"Com demanar ajuda concreta",cu14:"Recursos a Espanya",cu15:"Recursos a Catalunya",cu16:"Recursos a França",cu17:"Com parlar amb el metge",cu18:"Senyals que alguna cosa ha de canviar",biblio:"Bases científiques i bibliografia"},
+    en: {c0:"Validate before correcting",c1:"Eyes before voice",c2:"Patience with repetition",c3:"One idea at a time",c4:"Silence also communicates",c5:"Give time to respond",c6:"When they say no to everything",c7:"Your calm is their calm",c8:"Self-care is not selfishness",c9:"Recognise where you are today",a0:"The popular saying",a1:"The personal playlist",a2:"Singing together",a3:"Body rhythm",a4:"Recognising melodies",a5:"The photo album",a6:"Life memories",a7:"Verbal categories",a8:"Reading aloud",a9:"The daily walk",a10:"Chair exercises",a11:"Gardening",a12:"Free painting",a13:"Cooking together",a14:"Household tasks",a15:"The texture box",a16:"Throw and catch",a17:"Headlines of the day",a18:"Themed collage",a19:"Tactile crafts",a20:"Adapted tai chi",a21:"Movement with music",a22:"Writing memories",a23:"Simple photography",cu0:"What is mild cognitive impairment?",cu1:"The difference between MCI and dementia",cu2:"What you do matters",cu3:"The 5 principles of communication",cu4:"When the same question repeats",cu5:"When there is agitation or fear",cu6:"Level 1 — Normal tiredness",cu7:"Level 2 — Warning signs",cu8:"Level 3 — Caregiver burnout",cu9:"Guilt is not reality",cu10:"Anticipatory grief is real",cu11:"Strategy: the micro-break",cu12:"Strategy: protect sleep",cu13:"How to ask for concrete help",cu14:"Resources in Spain",cu15:"Resources in Catalonia",cu16:"Resources in France",cu17:"How to talk to the doctor",cu18:"Signs that something must change",biblio:"Scientific foundations & bibliography"}
+  }
+};
+function locTitle(item){ var L=I18N.title[curLang]; return (L && L[item.id]) ? L[item.id] : item.title; }
+function locCat(item){ var c=item.catLabel||item.modulo||""; var L=I18N.cat[curLang]; return (L && L[c]) ? L[c] : c; }
+// Llama a la IA (proxy) y vuelca el resultado en un elemento, en el idioma actual. No descuenta cuota.
+function aiInto(targetId, prompt){
+  var el=document.getElementById(targetId); if(!el) return;
+  el.innerHTML="<span class='spin'></span> "+aiThinkingLabel();
+  fetch("/.netlify/functions/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({lang:curLang,messages:[{role:"user",content:prompt}]})})
+    .then(function(r){return r.json();})
+    .then(function(d){ if(d && d.error){ el.innerHTML="<p style='color:var(--rose)'>"+d.error+"</p>"; return; } var t=d && d.text ? d.text : ""; el.innerHTML = t ? t.replace(/```html?/gi,"").replace(/```/g,"") : "<p>"+aiMsg('retry')+"</p>"; })
+    .catch(function(){ el.innerHTML="<p style='color:var(--rose)'>"+aiMsg('err')+"</p>"; });
+}
 function aiThinkingLabel(){
   return ({es:"Pensando...",fr:"Réflexion...",ca:"Pensant...",en:"Thinking..."})[curLang] || "Pensando...";
 }
@@ -884,11 +909,17 @@ function callAI(prompt, targetId){
       el.innerHTML = html2 || "<p style='color:var(--text3)'>Sin contenido disponible.</p>";
     }
   } else if(tab === "p"){
-    var pKey = item.id+"_p_"+curLang; if(!EXPERT_CONTENT[pKey]) pKey = item.id+"_p";
-    var pc = EXPERT_CONTENT[pKey] || "";
-    if(pc){ el.innerHTML = pc; }
-    else if(item.pasos){ var h3="<h3>Paso a paso</h3><ul>"; item.pasos.split("..").forEach(function(s3){ if(s3.trim()) h3+="<li>"+s3.replace(/^\d+\.\s*/,"")+"</li>"; }); el.innerHTML=h3+"</ul>"; }
-    else { el.innerHTML = "<p>"+item.desc+"</p>"; }
+    var pLoc = EXPERT_CONTENT[item.id+"_p_"+curLang];
+    if(pLoc){ el.innerHTML = pLoc; }
+    else if(curLang === "es"){
+      var pc = EXPERT_CONTENT[item.id+"_p"] || "";
+      if(pc){ el.innerHTML = pc; }
+      else if(item.pasos){ var h3="<h3>Paso a paso</h3><ul>"; item.pasos.split("..").forEach(function(s3){ if(s3.trim()) h3+="<li>"+s3.replace(/^\d+\.\s*/,"")+"</li>"; }); el.innerHTML=h3+"</ul>"; }
+      else { el.innerHTML = "<p>"+(item.desc||"")+"</p>"; }
+    }
+    else {
+      aiInto("aiP", "Guía práctica titulada '¿Cómo aplicarlo hoy?' sobre el tema: "+locTitle(item)+". Para cuidadores de personas mayores con deterioro cognitivo leve. Da 3-4 pasos concretos, breves y accionables.");
+    }
   }
 }
 
@@ -1004,8 +1035,8 @@ function openItem(id){
   loadedTabs={};
   document.getElementById("mThumb").style.background=curItem.bg;
   document.getElementById("mThumb").textContent=curItem.icon;
-  document.getElementById("mSec").textContent=curItem.catLabel||curItem.modulo||"";
-  document.getElementById("mTitle").textContent=curItem.title;
+  document.getElementById("mSec").textContent=locCat(curItem)||curItem.modulo||"";
+  document.getElementById("mTitle").textContent=locTitle(curItem);
   buildFields();
   document.querySelector(".mtabs").style.display="";
   document.querySelectorAll(".tp").forEach(function(tp){tp.classList.remove("active");});
@@ -1191,8 +1222,8 @@ function renderSec(sec){
     d.className="ic";
     var bc=getBadgeClass(item), bt=getBadgeText(item);
     d.innerHTML='<div class="ic-thumb" style="background:'+item.bg+'">'+item.icon+'</div>'+
-      '<div class="ic-info"><div class="ic-title">'+item.title+'</div>'+
-      '<div class="ic-sub">'+(item.catLabel||item.paciente||"")+(item.fecha?" · "+item.fecha:"")+'</div></div>'+
+      '<div class="ic-info"><div class="ic-title">'+locTitle(item)+'</div>'+
+      '<div class="ic-sub">'+(locCat(item)||item.paciente||"")+(item.fecha?" · "+item.fecha:"")+'</div></div>'+
       (bt?'<div class="ic-badge '+bc+'">'+bt+"</div>":"");
     d.onclick=function(){ openItem(item.id); };
     listEl.appendChild(d);
