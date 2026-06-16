@@ -1,14 +1,16 @@
 {
-  "name": "cuidaAPP · CuidarConSentido",
+  "name": "cuidaAPP \u00b7 CuidarConSentido",
   "short_name": "cuidaAPP",
-  "description": "Formación, apoyo emocional y herramientas para quienes cuidan a personas con deterioro cognitivo leve.",
+  "description": "Formaci\u00f3n, apoyo emocional y herramientas para quienes cuidan a personas con deterioro cognitivo leve.",
   "lang": "es",
+  "id": "/",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#16291d",
   "theme_color": "#2f6045",
+  "categories": ["health", "lifestyle", "education"],
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
