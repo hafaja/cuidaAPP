@@ -243,13 +243,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
       <div class="feat-sub" id="ft-sub">Conecta emocionalmente primero →</div>
     </div>
     <div class="cpills">
-      <div class="cp active" onclick="filterCat('consejos','todos',this)">Todos</div>
-      <div class="cp" onclick="filterCat('consejos','comunicacion',this)">💬 Com.</div>
-      <div class="cp" onclick="filterCat('consejos','bienestar',this)">🌿 Bien.</div>
-      <div class="cp" onclick="filterCat('consejos','movilidad',this)">🦽 Mov.</div>
-      <div class="cp" onclick="filterCat('consejos','higiene',this)">🫧 Hig.</div>
-      <div class="cp" onclick="filterCat('consejos','nutricion',this)">🥗 Nutr.</div>
-      <div class="cp" onclick="filterCat('consejos','emergencias',this)">🚨 Emer.</div>
+      <div class="cp active" onclick="filterCat('consejos','todos',this)" id="cpc-todos">Todos</div>
+      <div class="cp" onclick="filterCat('consejos','comunicacion',this)" id="cpc-com">💬 Comunicación</div>
+      <div class="cp" onclick="filterCat('consejos','bienestar',this)" id="cpc-bien">🌿 Bienestar</div>
     </div>
     <div class="sh"><div class="sh-title" id="sec-title-consejos">Consejos</div><div class="sh-count" id="count-consejos">10</div></div>
     <div id="list-consejos"></div>
@@ -257,25 +253,44 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
 
   <div id="sec-actividades" style="display:none">
     <div class="cpills">
-      <div class="cp active" onclick="filterCat('actividades','todos',this)">Todos</div>
-      <div class="cp" onclick="filterCat('actividades','cognitiva',this)">🧠 Cog.</div>
-      <div class="cp" onclick="filterCat('actividades','sensorial',this)">✋ Sens.</div>
-      <div class="cp" onclick="filterCat('actividades','lenguaje',this)">🗣️ Leng.</div>
-      <div class="cp" onclick="filterCat('actividades','motriz',this)">🤸 Mot.</div>
-      <div class="cp" onclick="filterCat('actividades','emocional',this)">❤️ Emoc.</div>
+      <div class="cp active" onclick="filterCat('actividades','todos',this)" id="cpa-todos">Todos</div>
+      <div class="cp" onclick="filterCat('actividades','musica',this)" id="cpa-mus">🎵 Música</div>
+      <div class="cp" onclick="filterCat('actividades','memoria',this)" id="cpa-mem">📸 Memoria</div>
+      <div class="cp" onclick="filterCat('actividades','lenguaje',this)" id="cpa-len">📖 Lenguaje</div>
+      <div class="cp" onclick="filterCat('actividades','movimiento',this)" id="cpa-mov">🚶 Movimiento</div>
+      <div class="cp" onclick="filterCat('actividades','creatividad',this)" id="cpa-cre">🎨 Creatividad</div>
+      <div class="cp" onclick="filterCat('actividades','sensorial',this)" id="cpa-sen">🤲 Sensorial</div>
     </div>
     <div class="sh"><div class="sh-title" id="sec-title-actividades">Actividades</div><div class="sh-count" id="count-actividades">10</div></div>
     <div id="list-actividades"></div>
   </div>
 
   <div id="sec-incidencias" style="display:none">
-    <div class="cpills">
-      <div class="cp active" onclick="filterInc('todos',this)">Todos</div>
-      <div class="cp" onclick="filterInc('abierta',this)">🔴 Abiertas</div>
-      <div class="cp" onclick="filterInc('pendiente',this)">🟡 Pendientes</div>
-      <div class="cp" onclick="filterInc('resuelta',this)">🟢 Resueltas</div>
+    <div class="feat" style="background:linear-gradient(135deg,#3a4a6b,#6b7aa5);cursor:pointer" onclick="toggleIncForm()">
+      <div class="feat-tag" id="inc-add-tag">📋 Registro del cuidador</div>
+      <div class="feat-icon">➕</div>
+      <div class="feat-title" id="inc-add-title">Anotar una incidencia</div>
+      <div class="feat-sub" id="inc-add-sub">Caídas, medicación, comportamiento… →</div>
     </div>
-    <div class="sh"><div class="sh-title" id="sec-title-incidencias">Incidencias</div><div class="sh-count" id="count-incidencias">6</div></div>
+    <div id="incForm" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-bottom:5px" id="inc-l-type">Tipo de incidencia</div>
+      <select id="incType" style="width:100%;padding:9px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:13px;outline:none;margin-bottom:10px"></select>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-bottom:5px" id="inc-l-desc">Descripción</div>
+      <textarea id="incDesc" rows="3" style="width:100%;padding:9px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:13px;outline:none;margin-bottom:10px;resize:vertical"></textarea>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-bottom:5px" id="inc-l-status">Estado</div>
+      <select id="incStatus" style="width:100%;padding:9px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:13px;outline:none;margin-bottom:12px"></select>
+      <div style="display:flex;gap:8px">
+        <button onclick="saveInc()" style="flex:1;padding:10px;background:var(--gdim);border:none;border-radius:9px;color:var(--gpale);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit" id="inc-save">Guardar</button>
+        <button onclick="toggleIncForm()" style="padding:10px 14px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text3);font-size:13px;cursor:pointer;font-family:inherit" id="inc-cancel">Cancelar</button>
+      </div>
+    </div>
+    <div class="cpills">
+      <div class="cp active" onclick="filterInc('todos',this)" id="cpi-todos">Todos</div>
+      <div class="cp" onclick="filterInc('abierta',this)" id="cpi-ab">🔴 Abiertas</div>
+      <div class="cp" onclick="filterInc('pendiente',this)" id="cpi-pe">🟡 Pendientes</div>
+      <div class="cp" onclick="filterInc('resuelta',this)" id="cpi-re">🟢 Resueltas</div>
+    </div>
+    <div class="sh"><div class="sh-title" id="sec-title-incidencias">Incidencias</div><div class="sh-count" id="count-incidencias">0</div></div>
     <div id="list-incidencias"></div>
   </div>
 
@@ -291,6 +306,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
       <div class="feat-icon">📚</div>
       <div class="feat-title" id="ft-form-title">Bases científicas y bibliografía</div>
       <div class="feat-sub" id="ft-form-sub">Las referencias que sustentan el programa →</div>
+    </div>
+    <div class="sh" style="margin-top:8px"><div class="sh-title" id="lib-title">📒 Material de consulta</div></div>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:12px" id="lib-sub">Los 5 módulos completos, en tu idioma</p>
+    <div class="ic" onclick="openLib(1)" style="cursor:pointer">
+      <div class="ic-thumb" style="background:linear-gradient(135deg,#1a2a4a,#3a4a9b)">🧠</div>
+      <div class="ic-info"><div class="ic-title" id="libt1">Módulo 1</div><div class="ic-sub" id="libs1">Abrir módulo →</div></div>
+      <div class="ic-badge b-verde" id="libb1">4 🌐</div>
+    </div>
+    <div class="ic" onclick="openLib(2)" style="cursor:pointer">
+      <div class="ic-thumb" style="background:linear-gradient(135deg,#2a4a38,#3a7a55)">🗣️</div>
+      <div class="ic-info"><div class="ic-title" id="libt2">Módulo 2</div><div class="ic-sub" id="libs2">Abrir módulo →</div></div>
+      <div class="ic-badge b-azul" id="libb2">🔒</div>
+    </div>
+    <div class="ic" onclick="openLib(3)" style="cursor:pointer">
+      <div class="ic-thumb" style="background:linear-gradient(135deg,#3a4a2a,#6a8a3a)">🎵</div>
+      <div class="ic-info"><div class="ic-title" id="libt3">Módulo 3</div><div class="ic-sub" id="libs3">Abrir módulo →</div></div>
+      <div class="ic-badge b-azul" id="libb3">🔒</div>
+    </div>
+    <div class="ic" onclick="openLib(4)" style="cursor:pointer">
+      <div class="ic-thumb" style="background:linear-gradient(135deg,#5a3a6b,#9b6bb5)">🌿</div>
+      <div class="ic-info"><div class="ic-title" id="libt4">Módulo 4</div><div class="ic-sub" id="libs4">Abrir módulo →</div></div>
+      <div class="ic-badge b-azul" id="libb4">🔒</div>
+    </div>
+    <div class="ic" onclick="openLib(5)" style="cursor:pointer">
+      <div class="ic-thumb" style="background:linear-gradient(135deg,#2a3a4a,#3a6a8a)">🗺️</div>
+      <div class="ic-info"><div class="ic-title" id="libt5">Módulo 5</div><div class="ic-sub" id="libs5">Abrir módulo →</div></div>
+      <div class="ic-badge b-azul" id="libb5">🔒</div>
     </div>
     <div class="sh" style="margin-top:8px"><div class="sh-title" id="sec-title-programa">Programa CuidarConSentido</div></div>
     <div class="mgrid">
@@ -515,67 +557,25 @@ var EXPERT_CONTENT = {
   "mod4_p_en":"<h3>1. Self-assessment right now</h3><ul><li>How many hours did you sleep? Was it enough?</li><li>When did you last go out alone for pleasure?</li></ul><h3>2. One action this week</h3><ul><li>Call someone · Go out 20 min alone · Say no to something</li></ul><h3>3. Ask for concrete relief</h3><p><em>\"Can you come on [day] at [time] to [task] until [time]?\"</em></p><h3>4. If at level 3</h3><p>Call your GP today. UK: 116 123 (Samaritans).</p>",
   "c0":"<h3>La ciencia de la validación</h3><p>Cuando corregimos directamente, activamos la respuesta de amenaza — el cerebro se cierra. La validación emocional (Feil, 1993) parte de un principio: la realidad emocional de la persona es siempre válida aunque los hechos sean incorrectos.</p><h3>Frases que funcionan</h3><ul><li>❌ No, eso no es así → ✅ Entiendo que eso te preocupa</li><li>❌ Ya te lo he dicho → ✅ Cuéntame más sobre lo que sientes</li><li>❌ Estás confundido → ✅ Veo que esto te resulta difícil</li></ul><h3>Cuándo aplicarlo</h3><p>Siempre que la persona diga algo incorrecto, esté agitada, o busque algo que no existe. Valida primero, redirige después.</p>",
   "c1":"<h3>La neurociencia del contacto visual</h3><p>El cerebro procesa el contacto visual antes que las palabras. Establecerlo primero activa la atención y comunica presencia segura.</p><h3>Protocolo</h3><ul><li>Colócate siempre a la misma altura — nunca de pie si está sentado/a</li><li>Espera a que te mire antes de hablar</li><li>Sonríe primero — el cerebro responde a expresiones antes que a palabras</li><li>2-3 segundos de contacto visual antes de empezar a hablar</li></ul>",
-  "c2":"<h3>Qué es el Elderspeak</h3><p>El elderspeak es el lenguaje infantilizante que usamos inconscientemente: voz aguda, diminutivos, tono condescendiente. Daña la autoestima y genera resistencia (Williams et al., 2009).</p><h3>Reformulación práctica</h3><ul><li>❌ Bien hecho, cariñito → ✅ Gracias, María</li><li>❌ Vamos a comer → ✅ Es la hora del almuerzo</li><li>❌ Son las pastillitas → ✅ Aquí tienes tu medicación</li></ul>",
-  "c3":"<h3>El aseo como acto de dignidad</h3><p>La resistencia al aseo casi siempre comunica miedo, dolor o desorientación — nunca capricho.</p><ul><li>Avisa siempre: <em>María, vamos a asearnos ahora</em></li><li>Cierra la puerta — la privacidad es un derecho</li><li>Descubre solo la parte que estás aseando</li><li>Fomenta la participación: <em>¿Puedes tú lavarte la cara?</em></li><li>Ante resistencia: para, espera 10 min, vuelve</li></ul>",
-  "c4":"<h3>Mecánica corporal correcta</h3><ul><li>Espalda recta: flexiona rodillas, nunca la cintura</li><li>Pies separados a anchura de hombros</li><li>El peso cerca del cuerpo</li><li>Gira todo el cuerpo, nunca solo la cintura</li></ul><h3>Transferencia cama a silla</h3><ul><li>Silla en 45°, ruedas bloqueadas · Siéntalo en el borde, espera estabilización · Levantamiento con piernas, no espalda</li><li>Dile siempre lo que vas a hacer antes de hacerlo</li></ul>",
-  "c5":"<h3>Disfagia — la dificultad para tragar</h3><p>Afecta al 30-40% de los mayores institucionalizados (Clave & Shaker, 2015). Señales: tos durante las comidas, voz húmeda, rechazo de líquidos.</p><ul><li>Posición siempre a 90° — nunca tumbado</li><li>Cucharadas pequeñas, ritmo lento</li><li>Televisión apagada durante las comidas</li><li>Ante sospecha: consultar logopeda para evaluación IDDSI</li></ul>",
-  "c6":"<h3>Protocolo post-caída</h3><ul><li>1. Mantén la calma</li><li>2. No muevas si sospechas fractura o golpe en la cabeza</li><li>3. Habla: ¿Cómo te encuentras? ¿Te duele algo?</li><li>4. Evalúa: consciencia, respiración, deformaciones</li></ul><h3>Cuándo llamar al 112</h3><ul><li>Pérdida de consciencia aunque sea breve</li><li>Dolor intenso que impide moverse</li><li>Deformación visible · Confusión nueva o empeoramiento brusco</li></ul>",
-  "c7":"<h3>Organización de medicamentos</h3><ul><li>Pastillero semanal por horario — elimina la pregunta ¿ya tomó?</li><li>Lista actualizada visible para todos</li></ul><h3>Ante la resistencia</h3><ul><li>No forzar — puede provocar atragantamiento</li><li>Dar con alimento preferido si es compatible</li><li>Consultar formulaciones alternativas (jarabe, parche)</li></ul>",
-  "c8":"<h3>Por qué el movimiento importa</h3><p>30 minutos de movimiento suave al día tienen efectos documentados sobre el estado de ánimo, calidad del sueño y ralentización del deterioro.</p><h3>Ejercicios seguros sentado</h3><ul><li>Rotaciones de cuello: 3 cada lado · Elevación de hombros: 5 veces · Flexión de tobillos · Apertura de manos</li></ul><p><em>Siéntate enfrente y haz los movimientos primero — tú eres el espejo.</em></p>",
-  "c9":"<h3>Niveles de estimulación cognitiva</h3><ul><li><strong>Fácil:</strong> Refranes, nombrar objetos por categoría, canciones conocidas</li><li><strong>Medio:</strong> Álbum de fotos, ordenar por color, receta sencilla</li><li><strong>Avanzado:</strong> Dominó, puzzles, lectura compartida con preguntas</li></ul><p><em>15 minutos diarios valen más que 2 horas ocasionales. La actividad debe terminar siempre en éxito.</em></p>",
-  "cu0":"<h3>Los datos que importan</h3><p>Entre el 40-70% de los cuidadores informales presenta síntomas de depresión. El riesgo de mortalidad del cuidador es un 63% mayor con estrés elevado (Schulz & Beach, 1999, JAMA).</p><p><strong>No puedes dar desde el vacío.</strong> Cuidarte no es egoísmo — es la condición para poder cuidar bien.</p>",
-  "cu1":"<h3>Los 3 niveles de agotamiento</h3><ul><li><strong>Nivel 1 — Normal:</strong> Cansancio que desaparece con descanso. Momentos de alivio. Manejable.</li><li><strong>Nivel 2 — Alerta:</strong> El cansancio no desaparece. Irritabilidad frecuente. Descuidas tu salud. Actúa ahora.</li><li><strong>Nivel 3 — Burnout:</strong> Agotamiento profundo, desesperanza, síntomas físicos. Apoyo profesional necesario.</li></ul>",
-  "cu2":"<h3>6 estrategias de autocuidado reales</h3><ul><li><strong>Micro-descanso:</strong> 5 minutos sin nada relacionado con el cuidado</li><li><strong>Hablar con alguien:</strong> Verbalizar reduce la carga aunque no haya soluciones</li><li><strong>Escribir sin filtros:</strong> Un diario para soltar</li><li><strong>Salir solo/a:</strong> 20 minutos de movimiento sin responsabilidad</li><li><strong>Decir no:</strong> Los límites no son muros, son supervivencia</li><li><strong>Proteger el sueño:</strong> Base de todo</li></ul>",
-  "cu3":"<h3>Por qué cuesta pedir ayuda</h3><ul><li>Miedo a molestar o ser una carga</li><li>Creencia de que nadie lo hará tan bien</li><li>Culpa por aceptar descanso</li></ul><h3>Cómo pedirlo efectivamente</h3><p>❌ Necesito ayuda → ✅ ¿Puedes venir el martes de 17 a 19h?</p><p>Los cuidadores en grupos de apoyo tienen significativamente menos depresión y ansiedad (Brodaty & Donkin, 2009).</p>",
-  "cu4":"<h3>Las 6 emociones que no se hablan</h3><ul><li><strong>Miedo:</strong> Al futuro, a no poder más — la más honesta</li><li><strong>Culpa:</strong> Por descansar, por enfadarte — no refleja la realidad</li><li><strong>Rabia:</strong> Por la injusticia — válida, encuentra una válvula segura</li><li><strong>Duelo anticipatorio:</strong> Por la persona que era — es un duelo real</li><li><strong>Amor:</strong> Que convive con todo lo anterior</li><li><strong>Alivio:</strong> En días difíciles — no te hace mala persona, te hace humano</li></ul>",
-  "cu5":"<h3>España</h3><ul><li>Alzheimer España: 900 210 212 · alzheimer-spain.org</li><li>Ley de Dependencia: Servicios Sociales municipales</li><li>Cruz Roja: programas de respiro familiar</li></ul><h3>Francia</h3><ul><li>France Alzheimer: 0811 112 112 · francealzheimer.org</li><li>APA: Conseil Départemental</li></ul><h3>Reino Unido</h3><ul><li>Alzheimer's Society: 0333 150 3456</li><li>Carer's Allowance: gov.uk/carers-allowance</li></ul>",
+  "c2":"<h3>Por qué se repite</h3><p>Para la persona, cada vez es la primera vez: su memoria a corto plazo no registra que ya preguntó. No lo hace para molestar, no tiene control sobre ello.</p><h3>Detrás de la pregunta hay una emoción</h3><p>Casi siempre la repetición busca calmar algo: ansiedad, inseguridad, miedo o necesidad de conexión. Responde a la emoción, no solo al contenido.</p><h3>Cómo responder</h3><ul><li>Mismo tono la décima vez que la primera</li><li>Ten una respuesta corta y calmante preparada</li><li>Evita el «ya te lo dije»: genera vergüenza y más ansiedad</li><li>La paciencia no es infinita: descansa sin culpa</li></ul>",
+  "c3":"<h3>Simplifica el mensaje</h3><p>El cerebro con deterioro necesita más tiempo y menos carga. Una sola idea cada vez funciona mucho mejor que varias instrucciones seguidas.</p><h3>Cómo hacerlo</h3><ul><li>Frases cortas y palabras sencillas</li><li>Máximo dos opciones cada vez</li><li>Una acción, esperas, y luego la siguiente</li><li>Evita preguntas con varias partes a la vez</li></ul>",
+  "c4":"<h3>No siempre hacen falta palabras</h3><p>La presencia tranquila comunica seguridad. A veces lo que más calma no es lo que dices, sino estar.</p><h3>Acompañar en silencio</h3><ul><li>Sentarte cerca sin exigir conversación</li><li>Un contacto suave, si lo acepta</li><li>Poner música que le guste</li><li>Compartir una actividad sencilla sin hablar</li></ul>",
+  "c5":"<h3>El tiempo es respeto</h3><p>Tras una pregunta, el cerebro con deterioro necesita más segundos para procesar. Ese silencio no es vacío: es trabajo interno.</p><h3>Cómo hacerlo</h3><ul><li>Pregunta y espera, sin rellenar el silencio</li><li>No completes sus frases ni respondas por la persona</li><li>Si no llega, reformula con palabras más simples</li><li>Dar tiempo es una forma profunda de dignidad</li></ul>",
+  "c6":"<h3>La resistencia esconde miedo</h3><p>El «no» a todo casi siempre comunica miedo, pérdida de control o cansancio, no terquedad. Forzar aumenta la angustia.</p><h3>Cómo responder</h3><ul><li>No insistas en el momento</li><li>Deja pasar diez minutos y propón de otra forma</li><li>Ofrece opciones en vez de órdenes</li><li>Valida primero: veo que ahora no te apetece</li></ul>",
+  "c7":"<h3>La calma se contagia</h3><p>Tu estado interno se transmite antes de que digas una palabra. Si entras en calma, la persona lo nota; si entras tenso, también.</p><h3>Antes de entrar en contacto</h3><ul><li>Haz tres respiraciones lentas</li><li>Baja el tono y el ritmo de tu voz</li><li>Suelta los hombros, afloja la cara</li><li>Regularte a ti es el primer cuidado</li></ul>",
+  "c8":"<h3>No puedes dar desde el vacío</h3><p>Cuidar tu bienestar no te resta tiempo de cuidar: es lo que te permite seguir cuidando bien. El cuidador agotado cuida peor, sin querer.</p><h3>Algo pequeño hoy, solo para ti</h3><ul><li>Un paseo de 20 minutos</li><li>Una llamada a alguien que te hace bien</li><li>Diez minutos de silencio sin tareas</li><li>Pedir un relevo concreto, con día y hora</li></ul>",
+  "c9":"<h3>Tu semáforo interno</h3><p>Saber en qué nivel estás hoy cambia cómo actúas y cuándo pedir ayuda.</p><ul><li>🟢 <strong>Verde:</strong> cansado pero te recuperas con descanso</li><li>🟡 <strong>Amarillo:</strong> irritable, sin reservas, descuidas tu salud</li><li>🔴 <strong>Rojo:</strong> agotamiento profundo, busca apoyo ahora</li></ul><p>Reconocerlo sin juzgarte ya es autocuidado.</p>",
+  "cu0":"<h3>Un punto intermedio</h3><p>El DCL es un estado entre el envejecimiento normal del cerebro y la demencia. Hay un cambio real y medible, pero la persona puede llevar una vida prácticamente normal. No es Alzheimer automáticamente.</p><h3>Lo importante</h3><ul><li>Afecta al 15-20% de los mayores de 65 años</li><li>Una parte se estabiliza o mejora con estimulación y apoyo</li><li>La autonomía se conserva en gran medida</li><li>Lo que hace el entorno (tú) influye en su evolución</li></ul>",
+  "cu1":"<h3>La clave: la autonomía</h3><p>En el DCL las actividades cotidianas no se ven gravemente afectadas y la persona puede y debe seguir decidiendo sobre su vida. En la demencia la afectación es mayor y la dependencia crece.</p><h3>Qué significa para ti</h3><ul><li>Acompaña sin sustituir: deja que haga lo que pueda</li><li>Apoya la toma de decisiones, no la elimines</li><li>Vigila cambios sin tratar a la persona como incapaz</li></ul>",
+  "cu2":"<h3>No eres un espectador</h3><p>El entorno del cuidador es uno de los factores más influyentes en la evolución del DCL. Con estimulación adecuada y vínculo afectivo, muchas personas se estabilizan o mejoran.</p><h3>Tu papel</h3><ul><li>Estimulación diaria, breve y sin presión</li><li>Comunicación que valida y no corrige de más</li><li>Mantener rutinas, vínculos y sentido de utilidad</li></ul>",
+  "cu3":"<h3>Cinco claves que lo cambian todo</h3><ul><li><strong>1. Calma antes que palabras:</strong> tu estado interno se transmite</li><li><strong>2. Ojos antes que voz:</strong> contacto visual y a su altura</li><li><strong>3. Tiempo para responder:</strong> espera, no completes sus frases</li><li><strong>4. Una idea a la vez:</strong> frases cortas, máximo dos opciones</li><li><strong>5. Valida, no corrijas:</strong> primero la emoción, luego redirige</li></ul>",
+  "cu4":"<h3>Para la persona, es la primera vez</h3><p>Su memoria a corto plazo no registra que ya preguntó. No está siendo difícil a propósito: no tiene control sobre ello.</p><h3>Cómo acompañar</h3><ul><li>Mismo tono la décima vez que la primera</li><li>Busca la emoción detrás: ansiedad, miedo, necesidad de conexión</li><li>Ten una respuesta corta y calmante preparada</li><li>Evita el «ya te lo dije»</li></ul>",
+  "cu5":"<h3>Primero calmar, no convencer</h3><p>Ante la agitación no intentes explicar ni razonar. La persona necesita seguridad, no argumentos.</p><h3>Qué hacer</h3><ul><li>Baja el tono de voz y el ritmo</li><li>Acércate despacio; ofrece contacto si lo acepta</li><li>Frases breves: estoy aquí contigo</li><li>Reduce estímulos que sobreestimulan: ruido, prisa</li></ul>",
   "c0_fr":"<h3>La science de la validation</h3><p>Quand nous corrigeons directement, nous activons la réponse de menace. La validation émotionnelle (Feil, 1993) : la réalité émotionnelle est toujours valide même si les faits sont incorrects.</p><h3>Phrases qui fonctionnent</h3><ul><li>❌ Non, ce n'est pas ainsi → ✅ Je comprends que cela te préoccupe</li><li>❌ Je te l'ai déjà dit → ✅ Raconte-moi ce que tu ressens</li><li>❌ Tu es confus → ✅ Je vois que c'est difficile pour toi</li></ul>",
   "c1_fr":"<h3>La neuroscience du contact visuel</h3><p>Le cerveau traite le contact visuel avant les mots. L'établir en premier active l'attention.</p><ul><li>Toujours au même niveau — jamais debout si assise</li><li>Attendre qu'elle vous regarde avant de parler</li><li>Sourire d'abord · 2-3 secondes de contact visuel</li></ul>",
-  "c2_fr":"<h3>L'Elderspeak</h3><p>Le langage infantilisant nuit à l'estime de soi et génère de la résistance (Williams et al., 2009).</p><ul><li>❌ Bravo, mon petit → ✅ Merci, Marie</li><li>❌ On va manger → ✅ C'est l'heure du déjeuner</li><li>❌ Les petits médicaments → ✅ Voici votre traitement</li></ul>",
-  "c3_fr":"<h3>L'hygiène comme acte de dignité</h3><p>La résistance communique presque toujours peur, douleur ou désorientation.</p><ul><li>Prévenez toujours · Fermez la porte · Ne découvrez que la zone que vous lavez · En cas de résistance : arrêtez, attendez 10 min</li></ul>",
-  "c4_fr":"<h3>Mécanique corporelle</h3><ul><li>Dos droit : fléchissez les genoux · Pieds écartés · Poids près du corps · Tournez tout le corps</li></ul><h3>Transfert lit-fauteuil</h3><ul><li>Fauteuil à 45°, freins bloqués · Asseyez au bord, attendez · Levez avec les jambes · Dites toujours ce que vous allez faire</li></ul>",
-  "c5_fr":"<h3>Dysphagie</h3><p>Touche 30-40% des personnes âgées institutionnalisées (Clave & Shaker, 2015). Signes : toux, voix humide, refus des liquides.</p><ul><li>Position à 90° · Petites cuillerées · TV éteinte · Si suspicion : orthophoniste</li></ul>",
-  "c6_fr":"<h3>Protocole après une chute</h3><ul><li>1. Gardez votre calme · 2. Ne bougez pas si fracture suspectée · 3. Parlez · 4. Évaluez</li></ul><h3>Quand appeler le 15</h3><ul><li>Perte de conscience · Douleur intense · Déformation visible · Confusion nouvelle</li></ul>",
-  "c7_fr":"<h3>Organisation des médicaments</h3><ul><li>Pilulier hebdomadaire · Liste visible pour tous</li></ul><h3>Face à la résistance</h3><ul><li>Ne jamais forcer · Donner avec aliment préféré · Formulaciones alternatives</li></ul>",
-  "c8_fr":"<h3>Pourquoi le mouvement est important</h3><p>30 minutes d'activité douce par jour ont des effets documentés sur l'humeur et le sommeil.</p><h3>Exercices en chaise</h3><ul><li>Rotations du cou · Haussement d'épaules · Flexion des chevilles · Ouverture des mains</li></ul><p><em>Asseyez-vous en face et faites les mouvements en premier — vous êtes le miroir.</em></p>",
-  "c9_fr":"<h3>Niveaux de stimulation cognitive</h3><ul><li><strong>Facile :</strong> Proverbes, nommer par catégorie, chansons connues</li><li><strong>Moyen :</strong> Album photos, trier par couleur</li><li><strong>Avancé :</strong> Dominos, puzzles, lecture partagée</li></ul><p><em>15 minutes par jour valent mieux que 2 heures de temps en temps.</em></p>",
-  "cu0_fr":"<h3>Les données qui comptent</h3><p>Entre 40 et 70% des aidants présentent des symptômes de dépression. Le risque de mortalité est 63% plus élevé (Schulz & Beach, 1999).</p><p><strong>Vous ne pouvez pas donner depuis le vide.</strong></p>",
-  "cu1_fr":"<h3>Les 3 niveaux d'épuisement</h3><ul><li><strong>Niveau 1 :</strong> Fatigue qui disparaît avec le repos. Gérable.</li><li><strong>Niveau 2 :</strong> Fatigue persistante. Irritabilité. Agissez maintenant.</li><li><strong>Niveau 3 :</strong> Épuisement profond. Soutien professionnel nécessaire.</li></ul>",
-  "cu2_fr":"<h3>6 stratégies d'autosoins</h3><ul><li>Micro-pause · Parler à quelqu'un · Écrire sans filtre · Sortir seul·e · Dire non · Protéger le sommeil</li></ul>",
-  "cu3_fr":"<h3>Pourquoi demander de l'aide est difficile</h3><p>Peur de déranger · Croyance que personne ne fera aussi bien · Culpabilité</p><h3>Comment demander efficacement</h3><p>❌ J'ai besoin d'aide → ✅ Tu peux venir mardi de 17h à 19h ?</p>",
-  "cu4_fr":"<h3>Les 6 émotions qu'on ne dit pas</h3><ul><li>😨 Peur · 😔 Culpabilité · 😤 Colère · 😢 Deuil anticipé · ❤️ Amour · 😮‍💨 Soulagement</li><li>Toutes normales, toutes humaines, toutes méritent de l'espace.</li></ul>",
-  "cu5_fr":"<h3>France</h3><ul><li>France Alzheimer : 0811 112 112 · francealzheimer.org</li><li>APA : Conseil Départemental</li><li>MAIA/CLIC : coordination locale</li></ul><h3>Espagne</h3><ul><li>Alzheimer España : 900 210 212</li></ul><h3>Royaume-Uni</h3><ul><li>Alzheimer's Society : 0333 150 3456</li><li>Carer's Allowance : gov.uk/carers-allowance</li></ul>",
   "c0_ca":"<h3>La ciència de la validació</h3><p>Quan corregim directament, activem la resposta d'amenaça. La validació emocional (Feil, 1993): la realitat emocional és sempre vàlida.</p><ul><li>❌ No, això no és així → ✅ Entenc que això et preocupa</li><li>❌ Ja t'ho he dit → ✅ Explica'm més sobre el que sents</li></ul>",
   "c1_ca":"<h3>La neurociència del contacte visual</h3><ul><li>Sempre al mateix nivell · Espera que et miri · Somriu primer · 2-3 segons de contacte visual</li></ul>",
-  "c2_ca":"<h3>L'Elderspeak</h3><p>El llenguatge infantilitzant danya l'autoestima (Williams et al., 2009).</p><ul><li>❌ Molt bé, carinyó → ✅ Gràcies, Maria · ❌ Anem a menjar → ✅ És l'hora del dinar</li></ul>",
-  "c3_ca":"<h3>L'higiene com a acte de dignitat</h3><p>La resistència quasi sempre comunica por, dolor o desorientació.</p><ul><li>Avisa sempre · Tanca la porta · Davant resistència: para i torna en 10 min</li></ul>",
-  "c4_ca":"<h3>Mecànica corporal</h3><ul><li>Esquena recta: flexiona genolls · Peus separats · Gira tot el cos</li></ul><h3>Trasllat llit a cadira</h3><ul><li>Cadira a 45°, frens bloquejats · Espera l'estabilització · Aixeca amb les cames</li></ul>",
-  "c5_ca":"<h3>Disfàgia</h3><p>Afecta el 30-40% dels grans institucionalitzats (Clave & Shaker, 2015).</p><ul><li>Posició a 90° · Culleradetes petites · TV apagada · Si sospita: logopeda</li></ul>",
-  "c6_ca":"<h3>Protocol post-caiguda</h3><ul><li>1. Mantén la calma · 2. No moguis si sospites fractura · 3. Parla · 4. Avalua</li></ul><h3>Quan trucar al 112</h3><ul><li>Pèrdua de consciència · Dolor intens · Deformació visible · Confusió nova</li></ul>",
-  "c7_ca":"<h3>Organització de medicaments</h3><ul><li>Pastiller setmanal per horari · Llista visible per a tots</li></ul><h3>Davant la resistència</h3><ul><li>No forçar · Donar amb aliment preferit · Formulacions alternatives</li></ul>",
-  "c8_ca":"<h3>Per què el moviment importa</h3><h3>Exercicis segurs assegut</h3><ul><li>Rotacions de coll · Elevació d'espatlles · Flexió de turmells · Obertura de mans</li></ul><p><em>Seu davant i fes els moviments primer — tu ets el mirall.</em></p>",
-  "c9_ca":"<h3>Nivells d'estimulació cognitiva</h3><ul><li><strong>Fàcil:</strong> Refranys, nombrar per categoria, cançons</li><li><strong>Mitjà:</strong> Àlbum de fotos, ordenar per color</li><li><strong>Avançat:</strong> Dòmino, trencaclosques, lectura</li></ul><p><em>15 minuts diaris valen més que 2 hores ocasionals.</em></p>",
-  "cu0_ca":"<h3>Les dades que importen</h3><p>Entre el 40-70% dels cuidadors presenta símptomes de depressió. El risc de mortalitat és un 63% major (Schulz & Beach, 1999).</p><p><strong>No pots donar des del buit.</strong></p>",
-  "cu1_ca":"<h3>Els 3 nivells d'esgotament</h3><ul><li><strong>Nivell 1:</strong> El cansament desapareix amb el descans.</li><li><strong>Nivell 2:</strong> Cansament persistent. Irritabilitat. Actua ara.</li><li><strong>Nivell 3:</strong> Esgotament profund. Suport professional necessari.</li></ul>",
-  "cu2_ca":"<h3>6 estratègies d'autocura</h3><ul><li>Micro-pausa · Parlar amb algú · Escriure sense filtres · Sortir sol/a · Dir que no · Protegir el son</li></ul>",
-  "cu3_ca":"<h3>Com demanar ajuda efectivament</h3><p>❌ Necessito ajuda → ✅ Pots venir el dimarts de 17 a 19h?</p>",
-  "cu4_ca":"<h3>Les 6 emocions que no es diuen</h3><ul><li>😨 Por · 😔 Culpa · 😤 Ràbia · 😢 Dol anticipatori · ❤️ Amor · 😮‍💨 Alleujament — totes normals, totes humanes.</li></ul>",
-  "cu5_ca":"<h3>Catalunya</h3><ul><li>Alzheimer Catalunya: 93 430 49 93</li><li>PADES: equips d'atenció domiciliària · SAD: Serveis Socials municipals</li></ul><h3>Espanya</h3><ul><li>Alzheimer España: 900 210 212 · Llei de Dependència</li></ul>",
   "c1_en":"<h3>The neuroscience of eye contact</h3><p>The brain processes eye contact before words. Establishing it first activates attention.</p><ul><li>Always at the same level · Wait for them to look · Smile first · 2-3 seconds before speaking</li></ul>",
-  "c2_en":"<h3>Elderspeak</h3><p>The infantilising language damages self-esteem and generates resistance (Williams et al., 2009).</p><ul><li>❌ Well done, sweetheart → ✅ Thank you, Mary · ❌ We're going to eat → ✅ It's lunchtime</li></ul>",
-  "c3_en":"<h3>Personal care as an act of dignity</h3><p>Resistance almost always communicates fear, pain or disorientation.</p><ul><li>Always give advance notice · Close the door · Only uncover the area you are washing · Stop if resistance, return in 10 min</li></ul>",
-  "c4_en":"<h3>Body mechanics</h3><ul><li>Straight back: bend knees · Feet shoulder-width · Weight close · Rotate whole body</li></ul><h3>Bed to chair transfer</h3><ul><li>Chair at 45°, brakes locked · Wait for stabilisation · Lift with legs · Always say what you're going to do</li></ul>",
-  "c5_en":"<h3>Dysphagia</h3><p>Affects 30-40% of institutionalised older people (Clave & Shaker, 2015).</p><ul><li>Always at 90° · Small spoonfuls · TV off · If suspected: speech therapist</li></ul>",
-  "c6_en":"<h3>Post-fall protocol</h3><ul><li>1. Stay calm · 2. Don't move if fracture suspected · 3. Talk · 4. Assess</li></ul><h3>When to call 999</h3><ul><li>Loss of consciousness · Intense pain · Visible deformity · New confusion</li></ul>",
-  "c7_en":"<h3>Medication management</h3><ul><li>Weekly pill organiser · Updated list visible to all</li></ul><h3>Facing resistance</h3><ul><li>Never force · Give with preferred food · Ask about alternative formulations</li></ul>",
-  "c8_en":"<h3>Why movement matters</h3><p>30 minutes of gentle movement daily has documented effects on mood and sleep.</p><h3>Safe seated exercises</h3><ul><li>Neck rotations · Shoulder shrugs · Ankle flexions · Hand opening</li></ul><p><em>Sit opposite and do the movements first — you are the mirror.</em></p>",
-  "c9_en":"<h3>Levels of cognitive stimulation</h3><ul><li><strong>Easy:</strong> Proverbs, naming by category, familiar songs</li><li><strong>Medium:</strong> Photo album, sorting by colour</li><li><strong>Advanced:</strong> Dominoes, puzzles, shared reading</li></ul><p><em>15 minutes daily beats 2 hours occasionally. Always end in success.</em></p>",
-  "cu0_en":"<h3>The data that matters</h3><p>40-70% of informal caregivers present symptoms of depression. Mortality risk is 63% higher under elevated stress (Schulz & Beach, 1999).</p><p><strong>You cannot give from emptiness.</strong></p>",
-  "cu1_en":"<h3>The 3 levels of exhaustion</h3><ul><li><strong>Level 1:</strong> Tiredness disappears with rest. Manageable.</li><li><strong>Level 2:</strong> Persistent tiredness. Irritability. Act now.</li><li><strong>Level 3:</strong> Deep exhaustion. Professional support necessary.</li></ul>",
-  "cu2_en":"<h3>6 real self-care strategies</h3><ul><li>Micro-break · Talk to someone · Write without filters · Go out alone · Say no · Protect sleep</li></ul>",
-  "cu3_en":"<h3>How to ask effectively</h3><p>❌ I need help → ✅ Can you come Tuesday 5-7pm?</p><p>Caregivers in support groups have significantly less depression and anxiety (Brodaty & Donkin, 2009).</p>",
-  "cu4_en":"<h3>The 6 emotions nobody talks about</h3><ul><li>😨 Fear · 😔 Guilt · 😤 Anger · 😢 Anticipatory grief · ❤️ Love · 😮‍💨 Relief — all normal, all human.</li></ul>",
-  "cu5_en":"<h3>United Kingdom</h3><ul><li>Alzheimer's Society: 0333 150 3456 · alzheimers.org.uk</li><li>Carer's Allowance: gov.uk/carers-allowance</li><li>Lasting Power of Attorney: gov.uk/power-of-attorney</li></ul><h3>Spain</h3><ul><li>Alzheimer España: 900 210 212</li></ul><h3>France</h3><ul><li>France Alzheimer: 0811 112 112</li></ul>",
   "mod5":"<h3>El laberinto de los recursos tiene salida</h3>\n<p>Uno de los grandes problemas del cuidador es que no sabe lo que no sabe. Nadie le explica que existen ayudas económicas, que hay asociaciones gratuitas, que el médico puede derivar si se le pide correctamente.</p>\n<p style=\"font-style:italic;color:var(--green2)\">\"No estás solo. El sistema no siempre es visible, pero está ahí. Este módulo te ayuda a encontrarlo.\"</p>\n<h3>🇪🇸 España</h3>\n<ul>\n<li><strong>Ley de Dependencia (SAAD):</strong> Prestaciones y servicios para personas con limitación de autonomía. Solicitud en Servicios Sociales municipales. · imserso.es</li>\n<li><strong>Alzheimer España:</strong> Grupos de apoyo, línea de información gratuita. · alzheimer-spain.org / 900 210 212</li>\n<li><strong>Centros de Día:</strong> Atención diurna especializada. Gestionados por municipios y CCAA.</li>\n<li><strong>Unidades de Memoria:</strong> Evaluación neuropsicológica. Solicitar derivación al médico con informe de síntomas observados.</li>\n<li><strong>Programas de Respiro Familiar:</strong> Estancias temporales en centros especializados. · Cruz Roja / IMSERSO</li>\n</ul>\n<h3>🏴 Catalunya</h3>\n<ul>\n<li><strong>PADES:</strong> Equipos de atención domiciliaria especializados. A través del CAP.</li>\n<li><strong>Alzheimer Catalunya:</strong> Formación, grupos de apoyo, atención psicológica. · alzheimercatalunya.cat / 93 430 49 93</li>\n<li><strong>Prestació per Dependència:</strong> Tramitación en Serveis Socials del municipio.</li>\n<li><strong>SAD (Servei d'Atenció a Domicili):</strong> Cuidadores profesionales en el hogar por horas. Cofinanciado según renta.</li>\n</ul>\n<h3>🇫🇷 Francia</h3>\n<ul>\n<li><strong>APA (Allocation Personnalisée d'Autonomie):</strong> Para personas mayores de 60 años con pérdida de autonomía. Solicitud en el Conseil Départemental. · service-public.fr</li>\n<li><strong>France Alzheimer:</strong> Red nacional, grupos Café Alzheimer, formación para cuidadores (Pixel). · francealzheimer.org / 0 811 112 112</li>\n<li><strong>MAIA / CLIC:</strong> Coordinación local de todos los servicios del territorio.</li>\n<li><strong>CESU / Aide à Domicile:</strong> Cheque empleo con ventajas fiscales. Financiable con APA. · cesu.urssaf.fr</li>\n<li><strong>Mandat de Protection Future:</strong> Designar anticipadamente quien tomará decisiones. Notario.</li>\n</ul>\n<h3>🇬🇧 Reino Unido</h3>\n<ul>\n<li><strong>Carer's Allowance:</strong> Prestación semanal para cuidadores de al menos 35h/semana. · gov.uk/carers-allowance</li>\n<li><strong>Alzheimer's Society:</strong> Línea de apoyo, grupos locales, Dementia Connect. · alzheimers.org.uk / 0333 150 3456</li>\n<li><strong>Carer's Assessment:</strong> Evaluación gratuita de necesidades del cuidador por el Local Authority.</li>\n<li><strong>Attendance Allowance:</strong> Para la persona con deterioro cognitivo mayor de 65 años. · gov.uk/attendance-allowance</li>\n<li><strong>Lasting Power of Attorney:</strong> Figura legal para actuar en nombre de la persona. Registrar cuanto antes. · gov.uk/power-of-attorney</li>\n</ul>\n<h3>Capítulo 2 — Cómo hablar con el médico y que te escuchen</h3>\n<p>La cita dura 10 minutos. El médico va rápido. Tú no has dicho lo que más te preocupa. Esto tiene solución — con preparación.</p>\n<ul>\n<li>✓ <strong>Di esto:</strong> <em>\"En las últimas 6 semanas, he observado que repite la misma pregunta 3-4 veces en menos de una hora, y ayer se perdió en una calle que conoce de toda la vida.\"</em> — Concreto, observable, con tiempo y frecuencia.</li>\n<li>✓ <strong>Pide esto:</strong> <em>\"Me gustaría que valorara si necesita derivación a la Unidad de Memoria o un estudio neuropsicológico.\"</em></li>\n<li>✓ <strong>Infórmale sobre ti:</strong> <em>\"Yo también me encuentro muy agotado. ¿Hay recursos de apoyo para cuidadores en este centro de salud?\"</em></li>\n</ul>\n<p><strong>Lleva siempre una nota escrita:</strong> 3 cambios observados + 2 preguntas + 1 cosa que tú necesitas.</p>\n<h3>Capítulo 3 — Cuándo es el momento de buscar más ayuda</h3>\n<ul>\n<li>🟢 <strong>Manejable:</strong> La persona mantiene cierta autonomía. Tú tienes espacios de descanso. La red funciona.</li>\n<li>🟡 <strong>Señales de alerta:</strong> Episodios frecuentes de desorientación. El cuidado nocturno te agota. Tu salud se deteriora. La persona ya no puede quedarse sola de forma segura.</li>\n<li>🔴 <strong>Busca ayuda ahora:</strong> Riesgo de seguridad. Estás en nivel 3 de burnout. Sientes que ya no puedes más.</li>\n</ul>\n<p>Si llega el momento de considerar una residencia: no es abandono — es reconocer que las necesidades han crecido más allá de lo que puede ofrecer el cuidado domiciliar. Busca apoyo psicológico para acompañar ese proceso.</p>\n<p><em>El diagnóstico precoz permite planificar con tiempo: aspectos legales, financieros y de cuidado. Las personas que planifican tienen significativamente mejores resultados. · ADI (2021) World Alzheimer Report.</em></p>\n<h3>Has completado el programa</h3>\n<p style=\"font-style:italic;color:var(--green2)\">\"Cuidar con sentido no es hacerlo todo perfecto. Es hacerlo con presencia, con conocimiento y con el corazón abierto. Eso ya eres tú.\"</p>",
   "mod5_fr":"<h3>Le labyrinthe des ressources a une sortie</h3>\n<p>L'un des grands problèmes de l'aidant informel est qu'il ne sait pas ce qu'il ne sait pas. Personne ne lui explique qu'il existe des aides financières, des associations gratuites.</p>\n<p style=\"font-style:italic;color:var(--green2)\">« Vous n'êtes pas seul·e. Le système n'est pas toujours visible, mais il est là. »</p>\n<h3>🇫🇷 France</h3>\n<ul>\n<li><strong>APA (Allocation Personnalisée d'Autonomie) :</strong> Pour les personnes de plus de 60 ans en perte d'autonomie. Demande au Conseil Départemental. · service-public.fr</li>\n<li><strong>France Alzheimer :</strong> Réseau national, groupes Café Alzheimer, formation aidants (Pixel). · francealzheimer.org / 0 811 112 112</li>\n<li><strong>MAIA / CLIC :</strong> Points de coordination locaux pour orienter vers tous les services.</li>\n<li><strong>CESU / Aide à Domicile :</strong> Chèque emploi avec avantages fiscaux. · cesu.urssaf.fr</li>\n<li><strong>Mandat de Protection Future :</strong> Désigner à l'avance qui prendra les décisions. Notaire.</li>\n</ul>\n<h3>🇪🇸 Espagne</h3>\n<ul>\n<li><strong>Ley de Dependencia (SAAD) :</strong> Prestations pour personnes à autonomie limitée. Services Sociaux municipaux.</li>\n<li><strong>Alzheimer España :</strong> Groupes de soutien, ligne d'information gratuite. · 900 210 212</li>\n</ul>\n<h3>🇬🇧 Royaume-Uni</h3>\n<ul>\n<li><strong>Carer's Allowance :</strong> Prestation hebdomadaire (35h+/semaine). · gov.uk/carers-allowance</li>\n<li><strong>Alzheimer's Society :</strong> 0333 150 3456 · alzheimers.org.uk</li>\n<li><strong>Lasting Power of Attorney :</strong> À enregistrer rapidement. · gov.uk/power-of-attorney</li>\n</ul>\n<h3>Chapitre 2 — Comment parler au médecin et être écouté·e</h3>\n<ul>\n<li>✓ <strong>Dites ceci :</strong> <em>« Ces 6 dernières semaines, j'ai observé qu'il/elle répète la même question 3-4 fois en moins d'une heure. »</em></li>\n<li>✓ <strong>Demandez ceci :</strong> <em>« J'aimerais que vous évaluiez s'il/elle a besoin d'une orientation vers une consultation mémoire. »</em></li>\n<li>✓ <strong>Informez-le sur vous :</strong> <em>« Je me sens aussi très épuisé·e. Existe-t-il des ressources pour les aidants ici ? »</em></li>\n</ul>\n<p><strong>Apportez toujours une note écrite :</strong> 3 changements observés + 2 questions + 1 chose dont vous avez besoin.</p>\n<h3>Chapitre 3 — Quand chercher plus d'aide</h3>\n<ul>\n<li>🟢 <strong>Gérable :</strong> La personne maintient une certaine autonomie. Vous avez des temps de repos.</li>\n<li>🟡 <strong>Signaux d'alerte :</strong> Épisodes fréquents de désorientation. Soins nocturnes épuisants. Votre santé se détériore.</li>\n<li>🔴 <strong>Cherchez de l'aide maintenant :</strong> Risque de sécurité. Burnout niveau 3. Vous ne pouvez plus.</li>\n</ul>\n<h3>Vous avez terminé le programme</h3>\n<p style=\"font-style:italic;color:var(--green2)\">« Prendre soin avec sens, ce n'est pas tout faire parfaitement. C'est le faire avec présence, avec connaissance et avec le cœur ouvert. C'est déjà vous. »</p>",
   "mod5_ca":"<h3>El laberint dels recursos té sortida</h3>\n<p>Un dels grans problemes del cuidador és que no sap el que no sap. Ningú li explica que existeixen ajudes econòmiques, que hi ha associacions gratuïtes.</p>\n<p style=\"font-style:italic;color:var(--green2)\">\"No estàs sol. El sistema no sempre és visible, però hi és.\"</p>\n<h3>🏴 Catalunya</h3>\n<ul>\n<li><strong>PADES:</strong> Equips d'atenció domiciliària especialitzats. A través del CAP.</li>\n<li><strong>Alzheimer Catalunya:</strong> Formació, grups de suport, atenció psicològica. · alzheimercatalunya.cat / 93 430 49 93</li>\n<li><strong>Prestació per Dependència:</strong> Tramitació als Serveis Socials del municipi.</li>\n<li><strong>SAD (Servei d'Atenció a Domicili):</strong> Cuidadors professionals a la llar per hores. Cofinançat segons renda.</li>\n</ul>\n<h3>🇪🇸 Espanya</h3>\n<ul>\n<li><strong>Llei de Dependència (SAAD):</strong> Prestacions per a persones amb limitació d'autonomia. Serveis Socials municipals.</li>\n<li><strong>Alzheimer España:</strong> Grups de suport, línia d'informació gratuïta. · 900 210 212</li>\n</ul>\n<h3>Capítol 2 — Com parlar amb el metge i que t'escoltin</h3>\n<ul>\n<li>✓ <strong>Digues això:</strong> <em>\"En les darreres 6 setmanes, he observat que repeteix la mateixa pregunta 3-4 vegades en menys d'una hora.\"</em></li>\n<li>✓ <strong>Demana això:</strong> <em>\"M'agradaria que valorés si necessita una derivació a la Unitat de Memòria.\"</em></li>\n<li>✓ <strong>Informa'l sobre tu:</strong> <em>\"Jo també em trobo molt esgotat. Hi ha recursos de suport per a cuidadors aquí?\"</em></li>\n</ul>\n<h3>Capítol 3 — Quan és el moment de buscar més ajuda</h3>\n<ul>\n<li>🟢 <strong>Manejable:</strong> La persona manté certa autonomia. Tens espais de descans.</li>\n<li>🟡 <strong>Senyals d'alerta:</strong> Episodes freqüents de desorientació. La cura nocturna t'esgota. La teva salut es deteriora.</li>\n<li>🔴 <strong>Busca ajuda ara:</strong> Risc de seguretat. Nivell 3 de burnout. Ja no pots més.</li>\n</ul>\n<h3>Has completat el programa</h3>\n<p style=\"font-style:italic;color:var(--green2)\">\"Cuidar amb sentit no és fer-ho tot perfecte. És fer-ho amb presència, amb coneixement i amb el cor obert. Això ja ets tu.\"</p>",
@@ -887,6 +887,175 @@ function aiInto(targetId, prompt){
     .then(function(d){ if(d && d.error){ el.innerHTML="<p style='color:var(--rose)'>"+d.error+"</p>"; return; } var t=d && d.text ? d.text : ""; el.innerHTML = t ? t.replace(/```html?/gi,"").replace(/```/g,"") : "<p>"+aiMsg('retry')+"</p>"; })
     .catch(function(){ el.innerHTML="<p style='color:var(--rose)'>"+aiMsg('err')+"</p>"; });
 }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+// ---- Incidencias (registro del cuidador, guardadas en el dispositivo) ----
+var INC = {
+  statusVal:["abierta","pendiente","resuelta"],
+  types:{
+    es:["Caída","Medicación","Comportamiento","Salud / Médico","Sueño","Alimentación","Otro"],
+    fr:["Chute","Médication","Comportement","Santé / Médical","Sommeil","Alimentation","Autre"],
+    ca:["Caiguda","Medicació","Comportament","Salut / Mèdic","Son","Alimentació","Altre"],
+    en:["Fall","Medication","Behaviour","Health / Medical","Sleep","Eating","Other"]
+  },
+  status:{
+    es:["Abierta","Pendiente","Resuelta"], fr:["Ouverte","En attente","Résolue"],
+    ca:["Oberta","Pendent","Resolta"], en:["Open","Pending","Resolved"]
+  },
+  ui:{
+    addTag:{es:"📋 Registro del cuidador",fr:"📋 Journal de l'aidant",ca:"📋 Registre del cuidador",en:"📋 Carer's log"},
+    addTitle:{es:"Anotar una incidencia",fr:"Noter un incident",ca:"Anotar una incidència",en:"Log an incident"},
+    addSub:{es:"Caídas, medicación, comportamiento… →",fr:"Chutes, médication, comportement… →",ca:"Caigudes, medicació, comportament… →",en:"Falls, medication, behaviour… →"},
+    lType:{es:"Tipo de incidencia",fr:"Type d'incident",ca:"Tipus d'incidència",en:"Type of incident"},
+    lDesc:{es:"Descripción",fr:"Description",ca:"Descripció",en:"Description"},
+    lStatus:{es:"Estado",fr:"État",ca:"Estat",en:"Status"},
+    save:{es:"Guardar",fr:"Enregistrer",ca:"Desar",en:"Save"},
+    cancel:{es:"Cancelar",fr:"Annuler",ca:"Cancel·lar",en:"Cancel"},
+    empty:{es:"Aún no hay incidencias. Pulsa arriba para anotar la primera.",fr:"Aucun incident pour l'instant. Appuyez en haut pour en ajouter un.",ca:"Encara no hi ha incidències. Prem a dalt per anotar-ne una.",en:"No incidents yet. Tap above to add the first one."},
+    abAb:{es:"🔴 Abiertas",fr:"🔴 Ouvertes",ca:"🔴 Obertes",en:"🔴 Open"},
+    abPe:{es:"🟡 Pendientes",fr:"🟡 En attente",ca:"🟡 Pendents",en:"🟡 Pending"},
+    abRe:{es:"🟢 Resueltas",fr:"🟢 Résolues",ca:"🟢 Resoltes",en:"🟢 Resolved"}
+  }
+};
+function incL(key){ return INC.ui[key][curLang]||INC.ui[key].es; }
+function incStatusLabel(val){ var i=INC.statusVal.indexOf(val); if(i<0)i=0; return (INC.status[curLang]||INC.status.es)[i]; }
+function loadInc(){ try{ DATA.incidencias = JSON.parse(localStorage.getItem("ccs_inc")||"[]"); }catch(e){ DATA.incidencias=[]; } }
+function persistInc(){ localStorage.setItem("ccs_inc", JSON.stringify(DATA.incidencias)); }
+function fillIncSelects(){
+  var ts=INC.types[curLang]||INC.types.es;
+  var st=INC.status[curLang]||INC.status.es;
+  var typeSel=document.getElementById("incType"), stSel=document.getElementById("incStatus");
+  if(typeSel) typeSel.innerHTML=ts.map(function(t){return '<option value="'+esc(t)+'">'+esc(t)+'</option>';}).join("");
+  if(stSel) stSel.innerHTML=st.map(function(s,i){return '<option value="'+INC.statusVal[i]+'">'+esc(s)+'</option>';}).join("");
+}
+function toggleIncForm(){
+  var f=document.getElementById("incForm"); if(!f) return;
+  if(f.style.display==="none"){ fillIncSelects(); f.style.display="block"; }
+  else { f.style.display="none"; }
+}
+function saveInc(){
+  var type=(document.getElementById("incType")||{}).value||"";
+  var desc=(document.getElementById("incDesc")||{}).value||"";
+  var status=(document.getElementById("incStatus")||{}).value||"abierta";
+  if(!type){ return; }
+  var now=new Date();
+  var fecha=now.getDate()+"/"+(now.getMonth()+1)+"/"+now.getFullYear();
+  DATA.incidencias.unshift({id:"inc"+now.getTime(), type:type, desc:desc.trim(), status:status, fecha:fecha});
+  persistInc();
+  var dd=document.getElementById("incDesc"); if(dd) dd.value="";
+  toggleIncForm();
+  renderSec("incidencias");
+}
+function incCycle(id){
+  var it=DATA.incidencias.filter(function(x){return x.id===id;})[0]; if(!it) return;
+  var i=INC.statusVal.indexOf(it.status); it.status=INC.statusVal[(i+1)%3];
+  persistInc(); renderSec("incidencias");
+}
+function incDelete(id){
+  DATA.incidencias=DATA.incidencias.filter(function(x){return x.id!==id;});
+  persistInc(); renderSec("incidencias");
+}
+function renderIncList(items, listEl){
+  if(!items.length){
+    listEl.innerHTML='<div class="empty"><div class="empty-icon">📋</div><p>'+incL("empty")+'</p></div>';
+    return;
+  }
+  listEl.innerHTML="";
+  items.forEach(function(it){
+    var bc=it.status==="abierta"?"b-rojo":it.status==="pendiente"?"b-naranja":"b-verde";
+    var d=document.createElement("div"); d.className="ic";
+    d.innerHTML='<div class="ic-thumb" style="background:linear-gradient(135deg,#3a4a6b,#6b7aa5)">📋</div>'+
+      '<div class="ic-info"><div class="ic-title">'+esc(it.type)+'</div>'+
+      '<div class="ic-sub">'+esc(it.desc)+(it.fecha?" · "+it.fecha:"")+'</div></div>'+
+      '<div class="ic-badge '+bc+'">'+esc(incStatusLabel(it.status))+'</div>'+
+      '<div onclick="event.stopPropagation();incDelete(\''+it.id+'\')" style="margin-left:8px;color:var(--text3);font-size:15px;cursor:pointer;flex-shrink:0">🗑️</div>';
+    d.onclick=function(){ incCycle(it.id); };
+    listEl.appendChild(d);
+  });
+}
+
+// Etiqueta traducida para los filtros de categoría (usa el mapa I18N.cat)
+// ---- Biblioteca: títulos de los 5 módulos en 4 idiomas ----
+var LIB = {
+  modWord:{es:"Módulo",fr:"Module",ca:"Mòdul",en:"Module"},
+  titles:{
+    es:["Entender sin asustarse","Hablar y conectar","Activar con alegría","Cuidarse para poder cuidar","Orientarse y no perderse"],
+    fr:["Comprendre sans s'effrayer","Parler et se connecter","Stimuler avec joie","Prendre soin de soi","S'orienter et ne pas se perdre"],
+    ca:["Entendre sense por","Parlar i connectar","Activar amb alegria","Cuidar-se per poder cuidar","Orientar-se i no perdre's"],
+    en:["Understanding without fear","Speaking and connecting","Activating with joy","Taking care of yourself","Finding your way"]
+  },
+  open:{es:"Abrir módulo →",fr:"Ouvrir le module →",ca:"Obrir el mòdul →",en:"Open module →"},
+  heading:{es:"📒 Material de consulta",fr:"📒 Documentation",ca:"📒 Material de consulta",en:"📒 Reference library"},
+  sub:{es:"Los 5 módulos completos, en tu idioma",fr:"Les 5 modules complets, dans votre langue",ca:"Els 5 mòduls complets, en el teu idioma",en:"The 5 full modules, in your language"}
+};
+var LIB_URLS = ["","https://monumental-zuccutto-805df1.netlify.app/","https://visionary-blancmange-2b5818.netlify.app/","https://peaceful-moxie-06d2fb.netlify.app/","https://joyful-sunburst-3b1adc.netlify.app/","https://glittery-sopapillas-fca95e.netlify.app/"];
+var pendingLibUrl=null;
+function openLib(n){
+  var url=LIB_URLS[n];
+  if(n===1 || hasAccess){ if(url) window.open(url,"_blank"); return; }
+  showLibLock(n);
+}
+function libLockTxt(key){
+  var T={
+    locked:{es:"Este módulo forma parte del programa completo.",fr:"Ce module fait partie du programme complet.",ca:"Aquest mòdul forma part del programa complet.",en:"This module is part of the full programme."},
+    free1:{es:"El Módulo 1 es gratuito como muestra.",fr:"Le Module 1 est gratuit en démonstration.",ca:"El Mòdul 1 és gratuït com a mostra.",en:"Module 1 is free as a sample."},
+    haveCode:{es:"¿Ya tienes acceso? Introduce tu código:",fr:"Vous avez déjà accès ? Entrez votre code :",ca:"Ja tens accés? Introdueix el teu codi:",en:"Already have access? Enter your code:"},
+    buyFull:{es:"💳 Programa completo — €79",fr:"💳 Programme complet — 79 €",ca:"💳 Programa complet — 79 €",en:"💳 Full programme — €79"},
+    wrong:{es:"Código incorrecto.",fr:"Code incorrect.",ca:"Codi incorrecte.",en:"Incorrect code."}
+  };
+  return (T[key]&&T[key][curLang])||(T[key]&&T[key].es)||"";
+}
+function showLibLock(n){
+  pendingLibUrl=LIB_URLS[n];
+  var lt=LIB.titles[curLang]||LIB.titles.es; var mw=LIB.modWord[curLang]||"Módulo";
+  document.getElementById("mThumb").style.background="linear-gradient(135deg,#2a3a4a,#3a6a8a)";
+  document.getElementById("mThumb").textContent="📒";
+  document.getElementById("mSec").textContent=LIB.heading[curLang]||LIB.heading.es;
+  document.getElementById("mTitle").textContent=mw+" "+n+" — "+lt[n-1];
+  document.querySelector(".mtabs").style.display="none";
+  document.querySelectorAll(".tp").forEach(function(tp){tp.classList.remove("active");});
+  document.getElementById("mFields").innerHTML=
+    '<div style="text-align:center;padding:16px 0">'+
+    '<div style="font-size:44px;margin-bottom:10px">🔒</div>'+
+    '<div style="font-size:14px;color:var(--text3);margin-bottom:6px;line-height:1.5">'+libLockTxt("locked")+'<br>'+libLockTxt("free1")+'</div>'+
+    '<a href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" target="_blank" rel="noopener" style="display:block;padding:11px;background:linear-gradient(135deg,#635bff,#4f46e5);color:white;border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;text-align:center;margin:14px 0 8px">'+libLockTxt("buyFull")+'</a>'+
+    '<div style="font-size:12px;color:var(--text3);margin:12px 0 6px">'+libLockTxt("haveCode")+'</div>'+
+    '<div style="display:flex;gap:8px">'+
+    '<input id="accessCode" type="text" placeholder="..." style="flex:1;padding:9px 11px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:13px;outline:none">'+
+    '<button onclick="tryLibAccess()" style="padding:9px 14px;background:var(--gdim);border:none;border-radius:9px;color:var(--gpale);font-size:13px;font-weight:700;cursor:pointer">OK</button>'+
+    '</div>'+
+    '<div id="accessErr" style="font-size:11px;color:var(--rose);margin-top:5px;display:none">'+libLockTxt("wrong")+'</div>'+
+    '</div>';
+  document.getElementById("overlay").classList.add("open");
+  document.querySelector(".modal").scrollTop=0;
+}
+function tryLibAccess(){
+  var inp=document.getElementById("accessCode"); if(!inp) return;
+  if(inp.value.trim()===OWNER){
+    hasAccess=true; localStorage.setItem("ccsAccess","true");
+    closeModal();
+    applyLib();
+    if(pendingLibUrl){ var u=pendingLibUrl; pendingLibUrl=null; window.open(u,"_blank"); }
+  } else {
+    var err=document.getElementById("accessErr"); if(err){ err.style.display="block"; setTimeout(function(){err.style.display="none";},3000); }
+  }
+}
+
+function applyLib(){
+  sid("lib-title", LIB.heading[curLang]||LIB.heading.es);
+  sid("lib-sub", LIB.sub[curLang]||LIB.sub.es);
+  var lt=LIB.titles[curLang]||LIB.titles.es; var mw=LIB.modWord[curLang]||"Módulo";
+  for(var k=1;k<=5;k++){
+    sid("libt"+k, mw+" "+k+" — "+lt[k-1]);
+    sid("libs"+k, LIB.open[curLang]||LIB.open.es);
+    var b=document.getElementById("libb"+k);
+    if(b) b.textContent = (k===1||hasAccess) ? "🌐" : "🔒";
+  }
+}
+
+function pillLabel(esWord, emoji){ var L=I18N.cat[curLang]; var w=(L&&L[esWord])||esWord; return emoji+" "+w; }
+function allLabel(){ return ({es:"Todos",fr:"Tous",ca:"Tots",en:"All"})[curLang]||"Todos"; }
+
 function aiThinkingLabel(){
   return ({es:"Pensando...",fr:"Réflexion...",ca:"Pensant...",en:"Thinking..."})[curLang] || "Pensando...";
 }
@@ -897,17 +1066,33 @@ function callAI(prompt, targetId){
   var item = curItem;
   var tab = targetId === "aiE" ? "e" : targetId === "aiP" ? "p" : "q";
   if(tab === "e"){
-    var expert = EXPERT_CONTENT[item.id+"_"+curLang] || EXPERT_CONTENT[item.id] || "";
-    if(expert){
-      var html = item.objetivo ? "<p style='color:var(--text3);font-size:13px;margin-bottom:10px'>"+item.objetivo+"</p>" : "";
-      el.innerHTML = html + expert;
-    } else {
+    var st = "color:var(--text3);font-size:13px;margin-bottom:10px";
+    // 1) Contenido escrito en el idioma actual
+    var expertLoc = EXPERT_CONTENT[item.id+"_"+curLang];
+    if(expertLoc){
+      el.innerHTML = (item.objetivo ? "<p style='"+st+"'>"+item.objetivo+"</p>" : "") + expertLoc;
+      return;
+    }
+    // 2) Español: contenido base escrito o construido desde los datos
+    if(curLang === "es"){
+      var expertEs = EXPERT_CONTENT[item.id];
+      if(expertEs){ el.innerHTML = (item.objetivo ? "<p style='"+st+"'>"+item.objetivo+"</p>" : "") + expertEs; return; }
       var html2 = "";
       if(item.objetivo) html2 += "<h3>Objetivo</h3><p>"+item.objetivo+"</p>";
       if(item.desc) html2 += "<h3>Por qué importa</h3><p>"+item.desc+"</p>";
       if(item.pasos){ var steps=item.pasos.split(".."); html2+="<h3>Paso a paso</h3><ul>"; steps.forEach(function(s2){ if(s2.trim()) html2+="<li>"+s2.replace(/^\d+\.\s*/,"")+"</li>"; }); html2+="</ul>"; }
       el.innerHTML = html2 || "<p style='color:var(--text3)'>Sin contenido disponible.</p>";
+      return;
     }
+    // 3) Otro idioma sin traducción escrita: la IA traduce/explica fielmente el contenido base
+    var base = EXPERT_CONTENT[item.id];
+    if(base){
+      aiInto("aiE", "Traduce y adapta fielmente este contenido formativo para cuidadores, conservando el sentido, la estructura HTML (h3, p, ul, li, strong) y los datos y citas. No añadas información nueva. Contenido a traducir:\n"+base);
+    } else {
+      var ctx = (item.objetivo?("Objetivo: "+item.objetivo+". "):"")+(item.desc?("Descripción: "+item.desc+". "):"")+(item.materiales?("Materiales: "+item.materiales+". "):"")+(item.pasos?("Pasos: "+item.pasos.replace(/\.\./g," / ")):"");
+      aiInto("aiE", "Explica de forma clara y breve, para cuidadores de personas mayores con deterioro cognitivo leve, el tema: '"+locTitle(item)+"'. Básate solo en esta información y no inventes datos: "+ctx+". Devuelve HTML simple (h3, p, ul, li, strong).");
+    }
+    return;
   } else if(tab === "p"){
     var pLoc = EXPERT_CONTENT[item.id+"_p_"+curLang];
     if(pLoc){ el.innerHTML = pLoc; }
@@ -1053,12 +1238,14 @@ function openItem(id){
 
 function buildFields(){
   var i=curItem,html="";
-  var hasExpert=!!(EXPERT_CONTENT[i.id+"_"+curLang]||EXPERT_CONTENT[i.id]);
-  if(!hasExpert){
-    if(i.objetivo) html+='<div class="db"><div class="db-label">🎯 Objetivo</div><div class="db-text">'+i.objetivo+"</div></div>";
-    if(i.desc) html+='<div class="db"><div class="db-label">📝 Descripción</div><div class="db-text">'+i.desc+"</div></div>";
+  if(curLang==="es"){
+    var hasExpert=!!(EXPERT_CONTENT[i.id+"_"+curLang]||EXPERT_CONTENT[i.id]);
+    if(!hasExpert){
+      if(i.objetivo) html+='<div class="db"><div class="db-label">🎯 Objetivo</div><div class="db-text">'+i.objetivo+"</div></div>";
+      if(i.desc) html+='<div class="db"><div class="db-label">📝 Descripción</div><div class="db-text">'+i.desc+"</div></div>";
+    }
+    if(i.materiales) html+='<div class="db"><div class="db-label">🧰 Materiales</div><div class="db-text">'+i.materiales+"</div></div>";
   }
-  if(i.materiales) html+='<div class="db"><div class="db-label">🧰 Materiales</div><div class="db-text">'+i.materiales+"</div></div>";
   document.getElementById("mFields").innerHTML=html;
 }
 
@@ -1093,6 +1280,7 @@ function tryAccess(){
   var inp=document.getElementById("accessCode"); if(!inp) return;
   if(inp.value.trim()===OWNER){
     hasAccess=true; localStorage.setItem("ccsAccess","true");
+    applyLib();
     closeModal(); setTimeout(function(){ openItem(curLockedMod); },100);
   } else {
     var err=document.getElementById("accessErr");
@@ -1136,6 +1324,18 @@ function applyTxt(){
   }
   sid("pay-title",tx.payTitle); sid("pay-sub",tx.paySub);
   sid("contact-title",tx.contactTitle); sid("af-tag",tx.afTag);
+  // Filtros de categoría (consejos / actividades)
+  sid("cpc-todos",allLabel()); sid("cpc-com",pillLabel("Comunicación","💬")); sid("cpc-bien",pillLabel("Bienestar","🌿"));
+  sid("cpa-todos",allLabel()); sid("cpa-mus",pillLabel("Música","🎵")); sid("cpa-mem",pillLabel("Memoria","📸"));
+  sid("cpa-len",pillLabel("Lenguaje","📖")); sid("cpa-mov",pillLabel("Movimiento","🚶"));
+  sid("cpa-cre",pillLabel("Creatividad","🎨")); sid("cpa-sen",pillLabel("Sensorial","🤲"));
+  // Incidencias
+  sid("cpi-todos",allLabel()); sid("cpi-ab",incL("abAb")); sid("cpi-pe",incL("abPe")); sid("cpi-re",incL("abRe"));
+  sid("inc-add-tag",incL("addTag")); sid("inc-add-title",incL("addTitle")); sid("inc-add-sub",incL("addSub"));
+  sid("inc-l-type",incL("lType")); sid("inc-l-desc",incL("lDesc")); sid("inc-l-status",incL("lStatus"));
+  sid("inc-save",incL("save")); sid("inc-cancel",incL("cancel"));
+  fillIncSelects();
+  applyLib();
   if(profile) applyProfile();
 }
 
@@ -1202,7 +1402,7 @@ function getFiltered(sec){
   var list=sec==="incidencias"?DATA.incidencias:(DATA[sec]||[]);
   var cat=curCats[sec]||"todos";
   if(cat!=="todos") list=list.filter(function(i){return sec==="incidencias"?i.status===cat:i.cat===cat;});
-  if(q) list=list.filter(function(i){return i.title.toLowerCase().indexOf(q)>=0||(i.catLabel||"").toLowerCase().indexOf(q)>=0;});
+  if(q) list=list.filter(function(i){return (i.title||i.type||"").toLowerCase().indexOf(q)>=0||(i.catLabel||i.desc||"").toLowerCase().indexOf(q)>=0;});
   return list;
 }
 
@@ -1212,9 +1412,11 @@ function renderSec(sec){
   var countEl=document.getElementById("count-"+sec);
   if(!listEl) return;
   if(countEl) countEl.textContent=items.length;
+  if(sec==="incidencias"){ renderIncList(items, listEl); return; }
   listEl.innerHTML="";
   if(!items.length){
-    listEl.innerHTML='<div class="empty"><div class="empty-icon">🔍</div><p>Sin resultados</p></div>';
+    var noRes=({es:"Sin resultados",fr:"Aucun résultat",ca:"Sense resultats",en:"No results"})[curLang]||"Sin resultados";
+    listEl.innerHTML='<div class="empty"><div class="empty-icon">🔍</div><p>'+noRes+'</p></div>';
     return;
   }
   items.forEach(function(item){
@@ -1274,6 +1476,7 @@ if(profile){
   applyProfile();
   document.getElementById("ob").style.display="none";
 }
+loadInc();
 applyTxt();
 renderAll();
 </script>
