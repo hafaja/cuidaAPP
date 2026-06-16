@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>cuidaAPP · CuidarConSentido</title>
+<meta name="description" content="CuidarConSentido: formación, apoyo emocional y herramientas para quienes cuidan a personas con deterioro cognitivo leve.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2f6045">
+<link rel="icon" type="image/png" href="favicon-48.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="cuidaAPP">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#181f1d;--bg2:#1f2825;--bg3:#252e2b;--bg4:#2c3633;--green:#5c9e72;--green2:#7bbf8f;--gdim:#3a6b4d;--gpale:#d4ede0;--purple:#9b6bb5;--rose:#c47a7a;--text:#e6ede8;--text2:#a8bfac;--text3:#6a8570;--border:#2e3d38;--card:#1f2825}
@@ -1479,6 +1488,13 @@ if(profile){
 loadInc();
 applyTxt();
 renderAll();
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
 </script>
 </body>
 </html>
