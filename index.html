@@ -7,6 +7,16 @@
 <meta name="description" content="CuidarConSentido: formación, apoyo emocional y herramientas para quienes cuidan a personas con deterioro cognitivo leve.">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2f6045">
+<script>
+/* Detecta si la app corre dentro de la Play Store (TWA) para ocultar las compras externas */
+(function(){
+  try{
+    var fromApp = document.referrer && document.referrer.indexOf("android-app://")===0;
+    var standaloneAndroid = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) && /Android/i.test(navigator.userAgent);
+    if(fromApp || standaloneAndroid){ document.documentElement.classList.add("is-twa"); }
+  }catch(e){}
+})();
+</script>
 <link rel="icon" type="image/png" href="favicon-48.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -179,6 +189,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty{text-align:center;padding:30px 20px;color:var(--text3)}
 .empty-icon{font-size:36px;margin-bottom:10px}
+/* Ocultar compras externas dentro de la app de la Play Store (TWA) */
+html.is-twa .buy-hide{display:none!important}
+html.is-twa a[href*="buy.stripe.com"]{display:none!important}
 </style>
 </head>
 <body>
@@ -349,6 +362,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
       <div class="feat-title" id="cert-title">Certificado de finalización</div>
       <div class="feat-sub" id="cert-sub">Genera tu certificado del programa →</div>
     </div>
+    <div style="text-align:center;margin:20px 0 6px">
+      <a href="privacidad.html" target="_blank" rel="noopener" id="privlink" style="font-size:12px;color:var(--text3);text-decoration:underline">Política de privacidad</a>
+    </div>
     <div class="sh" style="margin-top:8px"><div class="sh-title" id="sec-title-programa">Programa CuidarConSentido</div></div>
     <div class="mgrid">
       <div class="mc" onclick="openItem('mod1')"><div class="mc-num" id="mn1">Módulo 1</div><div class="mc-icon">🧠</div><div class="mc-title" id="mt1">Estimulación cognitiva</div><div class="mc-bar"><div class="mc-fill"></div></div></div>
@@ -360,6 +376,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
     <div class="sh"><div class="sh-title" id="sec-title-cuidador">Para el cuidador</div><div class="sh-count" id="count-cuidador">6</div></div>
     <div id="list-cuidador"></div>
 
+    <div class="buy-hide">
     <div class="sh" style="margin-top:16px"><div class="sh-title" id="pay-title">💳 Servicios y tarifas</div></div>
     <p style="font-size:12px;color:var(--text3);margin-bottom:12px" id="pay-sub">Pago seguro con tarjeta vía Stripe</p>
 
@@ -420,6 +437,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
       <div class="pc-price">A consultar</div>
       <a class="pbtn pbtn-sec" href="mailto:hafaja14@gmail.com?subject=Formacion equipos cuidaAPP">📧 Solicitar presupuesto</a>
     </div>
+    </div><!-- /buy-hide -->
     <div class="sh" style="margin-top:16px"><div class="sh-title" id="contact-title">Contacto</div></div>
     <div class="cc">
       <div class="cc-name">Jean M. Vianney</div>
@@ -1428,6 +1446,7 @@ function applyTxt(){
   fillIncSelects();
   applyLib();
   applyCert();
+  sid("privlink", {es:"Política de privacidad",fr:"Politique de confidentialité",ca:"Política de privacitat",en:"Privacy Policy"}[curLang]||"Política de privacidad");
   if(profile) applyProfile();
 }
 
