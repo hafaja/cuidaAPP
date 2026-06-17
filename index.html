@@ -343,6 +343,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
       <div class="ic-info"><div class="ic-title" id="libt5">Módulo 5</div><div class="ic-sub" id="libs5">Abrir módulo →</div></div>
       <div class="ic-badge b-azul" id="libb5">🔒</div>
     </div>
+    <div class="feat" style="background:linear-gradient(135deg,#8a6d2a,#c9a24b)" onclick="openCert()">
+      <div class="feat-tag" id="cert-tag">🏅 Certificado</div>
+      <div class="feat-icon">🏅</div>
+      <div class="feat-title" id="cert-title">Certificado de finalización</div>
+      <div class="feat-sub" id="cert-sub">Genera tu certificado del programa →</div>
+    </div>
     <div class="sh" style="margin-top:8px"><div class="sh-title" id="sec-title-programa">Programa CuidarConSentido</div></div>
     <div class="mgrid">
       <div class="mc" onclick="openItem('mod1')"><div class="mc-num" id="mn1">Módulo 1</div><div class="mc-icon">🧠</div><div class="mc-title" id="mt1">Estimulación cognitiva</div><div class="mc-bar"><div class="mc-fill"></div></div></div>
@@ -1062,6 +1068,82 @@ function applyLib(){
   }
 }
 
+// ---- Certificado de finalización ----
+var CERT = {
+  tag:{es:"🏅 Certificado",fr:"🏅 Certificat",ca:"🏅 Certificat",en:"🏅 Certificate"},
+  cardTitle:{es:"Certificado de finalización",fr:"Certificat de réussite",ca:"Certificat de finalització",en:"Certificate of Completion"},
+  cardSub:{es:"Genera tu certificado del programa →",fr:"Génère ton certificat du programme →",ca:"Genera el teu certificat del programa →",en:"Generate your programme certificate →"},
+  formTitle:{es:"🏅 Tu certificado",fr:"🏅 Ton certificat",ca:"🏅 El teu certificat",en:"🏅 Your certificate"},
+  formP:{es:"Escribe tu nombre y genera tu certificado de finalización.",fr:"Écris ton nom et génère ton certificat de réussite.",ca:"Escriu el teu nom i genera el teu certificat de finalització.",en:"Enter your name and generate your certificate of completion."},
+  placeholder:{es:"Tu nombre completo",fr:"Ton nom complet",ca:"El teu nom complet",en:"Your full name"},
+  gen:{es:"Generar certificado",fr:"Générer le certificat",ca:"Generar el certificat",en:"Generate certificate"},
+  title:{es:"Certificado de finalización",fr:"Certificat de réussite",ca:"Certificat de finalització",en:"Certificate of Completion"},
+  awarded:{es:"Se otorga el presente certificado a",fr:"Le présent certificat est décerné à",ca:"S'atorga aquest certificat a",en:"This certificate is awarded to"},
+  body:{es:"por haber completado el programa de formación",fr:"pour avoir complété le programme de formation",ca:"per haver completat el programa de formació",en:"for completing the training programme"},
+  sub:{es:"Acompañamiento a personas con deterioro cognitivo leve",fr:"Accompagnement des personnes atteintes de troubles cognitifs légers",ca:"Acompanyament a persones amb deteriorament cognitiu lleu",en:"Support for people with mild cognitive impairment"},
+  dateLbl:{es:"Fecha",fr:"Date",ca:"Data",en:"Date"},
+  led:{es:"Dirigido por",fr:"Dirigé par",ca:"Dirigit per",en:"Led by"},
+  spec:{es:"especialista en psicología y gerontología",fr:"spécialiste en psychologie et gérontologie",ca:"especialista en psicologia i gerontologia",en:"specialist in psychology and gerontology"},
+  under:{es:"Bajo la supervisión del Profesor Mayi Marc Bruno",fr:"Sous la supervision du Professeur Mayi Marc Bruno",ca:"Sota la supervisió del Professor Mayi Marc Bruno",en:"Under the supervision of Professor Mayi Marc Bruno"},
+  print:{es:"🖨️ Imprimir / Guardar PDF",fr:"🖨️ Imprimer / Enregistrer en PDF",ca:"🖨️ Imprimir / Desar PDF",en:"🖨️ Print / Save PDF"},
+  close:{es:"Cerrar",fr:"Fermer",ca:"Tancar",en:"Close"},
+  needName:{es:"Por favor, escribe tu nombre.",fr:"Veuillez écrire votre nom.",ca:"Si us plau, escriu el teu nom.",en:"Please enter your name."},
+  lockTitle:{es:"Certificado del programa",fr:"Certificat du programme",ca:"Certificat del programa",en:"Programme certificate"},
+  lockMsg:{es:"El certificado es para quienes han completado el programa completo.",fr:"Le certificat est réservé à ceux qui ont complété le programme complet.",ca:"El certificat és per a qui ha completat el programa complet.",en:"The certificate is for those who have completed the full programme."},
+  haveCode:{es:"¿Ya tienes acceso? Introduce tu código:",fr:"Vous avez déjà accès ? Entrez votre code :",ca:"Ja tens accés? Introdueix el teu codi:",en:"Already have access? Enter your code:"},
+  buyFull:{es:"💳 Programa completo — €79",fr:"💳 Programme complet — 79 €",ca:"💳 Programa complet — 79 €",en:"💳 Full programme — €79"},
+  wrong:{es:"Código incorrecto.",fr:"Code incorrect.",ca:"Codi incorrecte.",en:"Incorrect code."}
+};
+function cT(k){ return (CERT[k]&&CERT[k][curLang])||(CERT[k]&&CERT[k].es)||""; }
+function applyCert(){
+  sid("cert-tag",cT("tag")); sid("cert-title",cT("cardTitle")); sid("cert-sub",cT("cardSub"));
+  sid("cert-fh",cT("formTitle")); sid("cert-fp",cT("formP"));
+  var ni=document.getElementById("certName"); if(ni) ni.placeholder=cT("placeholder");
+  sid("cert-gen",cT("gen"));
+  sid("cd-title",cT("title")); sid("cd-awarded",cT("awarded")); sid("cd-body",cT("body"));
+  sid("cd-sub",cT("sub")); sid("cd-led",cT("led")); sid("cd-spec",cT("spec")); sid("cd-under",cT("under"));
+  sid("cd-print",cT("print")); sid("cd-close",cT("close"));
+  sid("cert-lh",cT("lockTitle")); sid("cert-lp",cT("lockMsg"));
+  sid("cert-lcode",cT("haveCode")); sid("cert-buy",cT("buyFull")); sid("certErr",cT("wrong"));
+}
+function openCert(){
+  applyCert();
+  document.getElementById("certDoc").style.display="none";
+  document.getElementById("certForm").style.display="block";
+  if(hasAccess){
+    document.getElementById("certEntry").style.display="block";
+    document.getElementById("certLock").style.display="none";
+    document.getElementById("certName").value="";
+  } else {
+    document.getElementById("certEntry").style.display="none";
+    document.getElementById("certLock").style.display="block";
+  }
+  document.getElementById("certOverlay").classList.add("open");
+}
+function tryCertAccess(){
+  var inp=document.getElementById("certCode"); if(!inp) return;
+  if(inp.value.trim()===OWNER){
+    hasAccess=true; localStorage.setItem("ccsAccess","true"); applyLib();
+    document.getElementById("certLock").style.display="none";
+    document.getElementById("certEntry").style.display="block";
+    document.getElementById("certName").value="";
+  } else {
+    var e=document.getElementById("certErr"); if(e){ e.style.display="block"; setTimeout(function(){e.style.display="none";},3000); }
+  }
+}
+function closeCert(){ document.getElementById("certOverlay").classList.remove("open"); }
+function genCert(){
+  var n=document.getElementById("certName").value.trim();
+  if(!n){ alert(cT("needName")); return; }
+  document.getElementById("cdName").textContent=n;
+  var loc={es:'es-ES',fr:'fr-FR',ca:'ca-ES',en:'en-GB'}[curLang]||'es-ES';
+  var f=new Date().toLocaleDateString(loc,{year:'numeric',month:'long',day:'numeric'});
+  document.getElementById("cdDate").textContent=cT("dateLbl")+": "+f;
+  document.getElementById("certForm").style.display="none";
+  document.getElementById("certDoc").style.display="block";
+}
+function printCert(){ window.print(); }
+
 function pillLabel(esWord, emoji){ var L=I18N.cat[curLang]; var w=(L&&L[esWord])||esWord; return emoji+" "+w; }
 function allLabel(){ return ({es:"Todos",fr:"Tous",ca:"Tots",en:"All"})[curLang]||"Todos"; }
 
@@ -1345,6 +1427,7 @@ function applyTxt(){
   sid("inc-save",incL("save")); sid("inc-cancel",incL("cancel"));
   fillIncSelects();
   applyLib();
+  applyCert();
   if(profile) applyProfile();
 }
 
@@ -1489,6 +1572,86 @@ loadInc();
 applyTxt();
 renderAll();
 </script>
+<style>
+  .cert-overlay{ position:fixed; inset:0; background:rgba(10,20,14,.78); z-index:9999; display:none; overflow:auto; padding:18px; }
+  .cert-overlay.open{ display:block; }
+  .cert-panel{ max-width:680px; margin:18px auto; }
+  .cert-form{ background:#16291d; border-radius:16px; padding:26px 22px; text-align:center; color:#eafaf0; }
+  .cert-form h2{ margin:0 0 8px; font-size:19px; }
+  .cert-form p{ margin:0 0 6px; font-size:14px; color:#bfe6cf; }
+  .cert-form input{ width:100%; max-width:380px; padding:12px 14px; border-radius:11px; border:1px solid #3a6b4d; background:#0f1f16; color:#fff; font-size:15px; text-align:center; margin:14px 0; font-family:inherit; outline:none; }
+  .cert-form .cbtn{ display:inline-block; padding:12px 22px; border:none; border-radius:11px; background:linear-gradient(135deg,#8a6d2a,#c9a24b); color:#fff; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .cert-x{ position:absolute; top:26px; right:30px; background:none; border:none; color:#bfe6cf; font-size:22px; cursor:pointer; }
+  .cert{ background:#fffdf7; color:#1f2a23; border:3px solid #2f6045; border-radius:8px; padding:42px 30px 34px; text-align:center; position:relative; box-shadow:0 12px 44px rgba(0,0,0,.35); }
+  .cert::after{ content:""; position:absolute; inset:9px; border:1px solid #c9a24b; border-radius:4px; pointer-events:none; }
+  .cert .c-heart{ font-size:38px; }
+  .cert .c-title{ font-size:24px; color:#2f6045; letter-spacing:1px; margin:6px 0 18px; font-weight:700; }
+  .cert .c-awarded{ font-size:13px; color:#4a5a50; }
+  .cert .c-name{ font-size:28px; color:#1f2a23; margin:12px 0; font-weight:700; border-bottom:2px solid #c9a24b; display:inline-block; padding:0 22px 6px; }
+  .cert .c-body{ font-size:14px; color:#4a5a50; margin:16px auto 4px; max-width:460px; }
+  .cert .c-prog{ font-size:19px; color:#2f6045; font-weight:700; margin:4px 0 2px; }
+  .cert .c-sub{ font-size:13px; color:#4a5a50; font-style:italic; }
+  .cert .c-date{ font-size:13px; color:#4a5a50; margin-top:20px; }
+  .cert .c-sign{ margin-top:24px; font-size:12.5px; color:#1f2a23; line-height:1.7; border-top:1px solid #dce8e0; padding-top:14px; }
+  .cert .c-sign strong{ color:#2f6045; }
+  .cert-actions{ text-align:center; margin-top:16px; }
+  .cert-actions button{ margin:0 5px; padding:11px 18px; border:none; border-radius:11px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; }
+  #cd-print{ background:linear-gradient(135deg,#8a6d2a,#c9a24b); color:#fff; }
+  #cd-close{ background:#2a3a30; color:#eafaf0; }
+  @media print{
+    body{ background:#fff; }
+    body *{ visibility:hidden; }
+    #certOverlay, #certOverlay *{ visibility:visible; }
+    #certOverlay{ position:absolute; left:0; top:0; width:100%; padding:0; background:#fff; overflow:visible; }
+    .cert-overlay .cert-noprint{ display:none !important; }
+    .cert{ box-shadow:none; }
+  }
+</style>
+<div id="certOverlay" class="cert-overlay">
+  <div class="cert-panel">
+    <div id="certForm" class="cert-form cert-noprint" style="position:relative">
+      <button class="cert-x" onclick="closeCert()">✕</button>
+      <div id="certEntry">
+        <h2 id="cert-fh">🏅 Tu certificado</h2>
+        <p id="cert-fp">Escribe tu nombre y genera tu certificado de finalización.</p>
+        <input id="certName" type="text" placeholder="Tu nombre completo">
+        <br><button class="cbtn" id="cert-gen" onclick="genCert()">Generar certificado</button>
+      </div>
+      <div id="certLock" style="display:none">
+        <div style="font-size:40px">🔒</div>
+        <h2 id="cert-lh">Certificado del programa</h2>
+        <p id="cert-lp">El certificado es para quienes han completado el programa completo.</p>
+        <a id="cert-buy" href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" target="_blank" rel="noopener" class="cbtn" style="display:inline-block;text-decoration:none;margin:6px 0 4px">💳 Programa completo — €79</a>
+        <p id="cert-lcode" style="margin-top:14px">¿Ya tienes acceso? Introduce tu código:</p>
+        <input id="certCode" type="text" placeholder="...">
+        <br><button class="cbtn" onclick="tryCertAccess()" style="background:#2f6045">OK</button>
+        <div id="certErr" style="display:none;color:#ff9b9b;font-size:12px;margin-top:8px">Código incorrecto.</div>
+      </div>
+    </div>
+    <div id="certDoc" style="display:none">
+      <div class="cert">
+        <div class="c-heart">🤍🌿</div>
+        <div class="c-title" id="cd-title">Certificado de finalización</div>
+        <div class="c-awarded" id="cd-awarded">Se otorga el presente certificado a</div>
+        <div class="c-name" id="cdName">—</div>
+        <div class="c-body" id="cd-body">por haber completado el programa de formación</div>
+        <div class="c-prog">CuidarConSentido</div>
+        <div class="c-sub" id="cd-sub">Acompañamiento a personas con deterioro cognitivo leve</div>
+        <div class="c-date" id="cdDate">Fecha</div>
+        <div class="c-sign">
+          <div><strong>Equipo CuidarConSentido</strong></div>
+          <div><span id="cd-led">Dirigido por</span> Jean Marie Vianney, <span id="cd-spec">especialista en psicología y gerontología</span></div>
+          <div id="cd-under">Bajo la supervisión del Profesor Mayi Marc Bruno</div>
+          <div>Université de Yaoundé</div>
+        </div>
+      </div>
+      <div class="cert-actions cert-noprint">
+        <button id="cd-print" onclick="printCert()">🖨️ Imprimir / Guardar PDF</button>
+        <button id="cd-close" onclick="closeCert()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){
