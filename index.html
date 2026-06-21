@@ -192,6 +192,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
 /* Ocultar compras externas dentro de la app de la Play Store (TWA) */
 html.is-twa .buy-hide{display:none!important}
 html.is-twa a[href*="buy.stripe.com"]{display:none!important}
+/* Botón de lectura en voz alta (accesibilidad) */
+.tts-btn{position:fixed;right:14px;bottom:82px;z-index:9999;display:inline-flex;align-items:center;gap:7px;background:var(--green);color:#fff;border:none;border-radius:26px;padding:12px 18px;font-size:15px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.28);cursor:pointer;font-family:inherit}
+.tts-btn .tts-ico{font-size:18px;line-height:1}
+.tts-btn.on{background:#b4452f}
+@media print{.tts-btn{display:none}}
 </style>
 </head>
 <body>
@@ -1408,6 +1413,7 @@ function setLang(lang){
   applyTxt();
   renderAll();
   if(curItem && document.getElementById("overlay").classList.contains("open")){ loadedTabs={}; loadTab("e"); }
+  if(typeof applyTTSLabel==='function') applyTTSLabel();
 }
 
 function applyTxt(){
@@ -1474,6 +1480,7 @@ function resetProfile(){
 }
 
 function switchSec(sec,idx){
+  if(typeof ttsStop==='function') ttsStop();
   curSec=sec;
   for(var i=0;i<4;i++){
     var el=document.getElementById("nt"+i);
@@ -1677,6 +1684,76 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(function(){});
   });
 }
+</script>
+<button id="ttsBtn" class="tts-btn" onclick="toggleTTS()" aria-label="Escuchar el texto"><span class="tts-ico" id="ttsIco">🔊</span><span id="ttsLbl">Escuchar</span></button>
+<script>
+/* ---- Lectura en voz alta (accesibilidad) ---- */
+var TTS_LBL = {
+  listen: {es:"Escuchar", fr:"Écouter", ca:"Escoltar", en:"Listen"},
+  stop:   {es:"Parar",    fr:"Arrêter", ca:"Aturar",  en:"Stop"}
+};
+var TTS_LANG = {es:"es-ES", fr:"fr-FR", ca:"ca-ES", en:"en-US"};
+var ttsOn = false;
+
+function _lg(){ return (typeof curLang!=="undefined") ? curLang : "es"; }
+
+function applyTTSLabel(){
+  var l=document.getElementById("ttsLbl");
+  var ic=document.getElementById("ttsIco");
+  var b=document.getElementById("ttsBtn");
+  var lg=_lg();
+  if(l) l.textContent = ttsOn ? (TTS_LBL.stop[lg]||TTS_LBL.stop.es) : (TTS_LBL.listen[lg]||TTS_LBL.listen.es);
+  if(ic) ic.textContent = ttsOn ? "⏹" : "🔊";
+  if(b) b.classList.toggle("on", ttsOn);
+}
+
+function ttsGetText(){
+  var ov=document.getElementById("overlay");
+  if(ov && ov.classList.contains("open")){
+    var parts=[];
+    var t=document.getElementById("mTitle"); if(t && t.textContent) parts.push(t.textContent);
+    var active=document.querySelector("#overlay .tp.active");
+    if(active && active.innerText) parts.push(active.innerText);
+    return parts.join(". ");
+  }
+  var cs=(typeof curSec!=="undefined") ? curSec : "consejos";
+  var sec=document.getElementById("sec-"+cs);
+  return sec ? sec.innerText : "";
+}
+
+function ttsStop(){
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  ttsOn=false; applyTTSLabel();
+}
+
+function toggleTTS(){
+  if(!("speechSynthesis" in window)) return;
+  if(ttsOn){ ttsStop(); return; }
+  var text=(ttsGetText()||"").replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu," ").replace(/\s+/g," ").trim();
+  if(!text) return;
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  var u=new SpeechSynthesisUtterance(text);
+  var lg=_lg();
+  var lc=TTS_LANG[lg]||"es-ES";
+  u.lang=lc; u.rate=0.95; u.pitch=1;
+  try{
+    var voices=window.speechSynthesis.getVoices()||[];
+    var pref=lc.split("-")[0];
+    var v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(pref)===0;})[0];
+    if(!v && lg==="ca"){ v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf("es")===0;})[0]; if(v) u.lang="es-ES"; }
+    if(v) u.voice=v;
+  }catch(e){}
+  u.onend=function(){ ttsOn=false; applyTTSLabel(); };
+  u.onerror=function(){ ttsOn=false; applyTTSLabel(); };
+  ttsOn=true; applyTTSLabel();
+  window.speechSynthesis.speak(u);
+}
+
+(function(){
+  if(!("speechSynthesis" in window)){ var b=document.getElementById("ttsBtn"); if(b) b.style.display="none"; return; }
+  try{ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){}; }catch(e){}
+  applyTTSLabel();
+})();
 </script>
 </body>
 </html>
