@@ -1187,28 +1187,35 @@
 
   document.querySelectorAll('.section').forEach(s => observer.observe(s));
 
-  /* ---- Lectura en voz alta (accesibilidad) ---- */
+  /* ---- Lectura en voz alta (accesibilidad) — por frases ---- */
   var TTS_LBL={listen:{es:"Escuchar",fr:"Écouter",ca:"Escoltar",en:"Listen"},stop:{es:"Parar",fr:"Arrêter",ca:"Aturar",en:"Stop"}};
   var TTS_LANG={es:"es-ES",fr:"fr-FR",ca:"ca-ES",en:"en-US"};
-  var ttsOn=false;
+  var ttsOn=false, ttsQueue=[], ttsIdx=0;
   function ttsLang(){var a=document.querySelector('[data-lang].active');return (a&&a.dataset.lang)||'es';}
   function applyTTSLabel(){var lg=ttsLang();var l=document.getElementById('ttsLbl');var ic=document.getElementById('ttsIco');var b=document.getElementById('ttsBtn');if(l)l.textContent=ttsOn?(TTS_LBL.stop[lg]||TTS_LBL.stop.es):(TTS_LBL.listen[lg]||TTS_LBL.listen.es);if(ic)ic.textContent=ttsOn?'⏹':'🔊';if(b)b.classList.toggle('on',ttsOn);}
   function ttsGetText(){var parts=[];document.querySelectorAll('[data-lang].active').forEach(function(el){if(el.innerText)parts.push(el.innerText);});return parts.join('. ');}
-  function ttsStop(){try{window.speechSynthesis.cancel();}catch(e){}ttsOn=false;applyTTSLabel();}
+  function ttsPickVoice(lc,lg){try{var voices=window.speechSynthesis.getVoices()||[];var pref=lc.split("-")[0];var v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(pref)===0;})[0];if(!v&&lg==="ca"){v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf("es")===0;})[0];}return v||null;}catch(e){return null;}}
+  function ttsChunks(text){var raw=text.match(/[^.!?…\n]+[.!?…]*/g)||[text];var chunks=[],cur="";raw.forEach(function(s){s=(s||"").trim();if(!s)return;if((cur+" "+s).trim().length>200){if(cur)chunks.push(cur);if(s.length>200){for(var i=0;i<s.length;i+=200)chunks.push(s.slice(i,i+200));cur="";}else{cur=s;}}else{cur=cur?cur+" "+s:s;}});if(cur)chunks.push(cur);return chunks;}
+  function ttsSpeakNext(){
+    if(!ttsOn)return;
+    if(ttsIdx>=ttsQueue.length){ttsOn=false;applyTTSLabel();return;}
+    var lg=ttsLang();var lc=TTS_LANG[lg]||"es-ES";
+    var u=new SpeechSynthesisUtterance(ttsQueue[ttsIdx]);
+    u.lang=lc;u.rate=0.95;u.pitch=1;
+    var v=ttsPickVoice(lc,lg);if(v){u.voice=v;if(lg==="ca"&&v.lang&&v.lang.toLowerCase().indexOf("ca")!==0)u.lang="es-ES";}
+    u.onend=function(){ttsIdx++;ttsSpeakNext();};
+    u.onerror=function(){ttsIdx++;ttsSpeakNext();};
+    window.speechSynthesis.speak(u);
+  }
+  function ttsStop(){try{window.speechSynthesis.cancel();}catch(e){}ttsOn=false;ttsQueue=[];ttsIdx=0;applyTTSLabel();}
   function toggleTTS(){
     if(!("speechSynthesis" in window))return;
     if(ttsOn){ttsStop();return;}
     var text=(ttsGetText()||"").replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu," ").replace(/\s+/g," ").trim();
     if(!text)return;
     try{window.speechSynthesis.cancel();}catch(e){}
-    var u=new SpeechSynthesisUtterance(text);
-    var lg=ttsLang();var lc=TTS_LANG[lg]||"es-ES";
-    u.lang=lc;u.rate=0.95;u.pitch=1;
-    try{var voices=window.speechSynthesis.getVoices()||[];var pref=lc.split("-")[0];var v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(pref)===0;})[0];if(!v&&lg==="ca"){v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf("es")===0;})[0];if(v)u.lang="es-ES";}if(v)u.voice=v;}catch(e){}
-    u.onend=function(){ttsOn=false;applyTTSLabel();};
-    u.onerror=function(){ttsOn=false;applyTTSLabel();};
-    ttsOn=true;applyTTSLabel();
-    window.speechSynthesis.speak(u);
+    ttsQueue=ttsChunks(text);ttsIdx=0;ttsOn=true;applyTTSLabel();
+    ttsSpeakNext();
   }
   (function(){if(!("speechSynthesis" in window)){var b=document.getElementById("ttsBtn");if(b)b.style.display="none";return;}try{window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=function(){};}catch(e){}applyTTSLabel();})();
 </script>
