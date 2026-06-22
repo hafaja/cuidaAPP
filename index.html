@@ -6,6 +6,9 @@
 <title>cuidaAPP · CuidarConSentido</title>
 <meta name="description" content="CuidarConSentido: formación, apoyo emocional y herramientas para quienes cuidan a personas con deterioro cognitivo leve.">
 <link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap">
 <meta name="theme-color" content="#2f6045">
 <script>
 /* Detecta si la app corre dentro de la Play Store (TWA) para ocultar las compras externas */
@@ -1104,6 +1107,7 @@ var CERT = {
   awarded:{es:"Se otorga el presente certificado a",fr:"Le présent certificat est décerné à",ca:"S'atorga aquest certificat a",en:"This certificate is awarded to"},
   body:{es:"por haber completado el programa de formación",fr:"pour avoir complété le programme de formation",ca:"per haver completat el programa de formació",en:"for completing the training programme"},
   sub:{es:"Acompañamiento a personas con deterioro cognitivo leve",fr:"Accompagnement des personnes atteintes de troubles cognitifs légers",ca:"Acompanyament a persones amb deteriorament cognitiu lleu",en:"Support for people with mild cognitive impairment"},
+  hours:{es:"5 módulos · 20–40 horas de formación",fr:"5 modules · 20–40 heures de formation",ca:"5 mòduls · 20–40 hores de formació",en:"5 modules · 20–40 hours of training"},
   dateLbl:{es:"Fecha",fr:"Date",ca:"Data",en:"Date"},
   led:{es:"Dirigido por",fr:"Dirigé par",ca:"Dirigit per",en:"Led by"},
   spec:{es:"especialista en psicología y gerontología",fr:"spécialiste en psychologie et gérontologie",ca:"especialista en psicologia i gerontologia",en:"specialist in psychology and gerontology"},
@@ -1124,37 +1128,31 @@ function applyCert(){
   var ni=document.getElementById("certName"); if(ni) ni.placeholder=cT("placeholder");
   sid("cert-gen",cT("gen"));
   sid("cd-title",cT("title")); sid("cd-awarded",cT("awarded")); sid("cd-body",cT("body"));
-  sid("cd-sub",cT("sub")); sid("cd-led",cT("led")); sid("cd-spec",cT("spec")); sid("cd-under",cT("under"));
+  sid("cd-sub",cT("sub")); sid("cd-hours",cT("hours")); sid("cd-led",cT("led")); sid("cd-spec",cT("spec")); sid("cd-under",cT("under"));
   sid("cd-print",cT("print")); sid("cd-close",cT("close"));
   sid("cert-lh",cT("lockTitle")); sid("cert-lp",cT("lockMsg"));
   sid("cert-lcode",cT("haveCode")); sid("cert-buy",cT("buyFull")); sid("certErr",cT("wrong"));
+  var _rep=document.getElementById("certRepaso");
+  if(_rep && _rep.style.display!=="none" && typeof renderRepasoQ==="function") renderRepasoQ();
 }
 function openCert(){
   applyCert();
   document.getElementById("certDoc").style.display="none";
   document.getElementById("certForm").style.display="block";
-  if(hasAccess){
-    document.getElementById("certEntry").style.display="block";
-    document.getElementById("certLock").style.display="none";
-    document.getElementById("certName").value="";
-  } else {
-    document.getElementById("certEntry").style.display="none";
-    document.getElementById("certLock").style.display="block";
-  }
+  routeCert();
   document.getElementById("certOverlay").classList.add("open");
 }
 function tryCertAccess(){
   var inp=document.getElementById("certCode"); if(!inp) return;
   if(inp.value.trim()===OWNER){
     hasAccess=true; localStorage.setItem("ccsAccess","true"); applyLib();
-    document.getElementById("certLock").style.display="none";
-    document.getElementById("certEntry").style.display="block";
-    document.getElementById("certName").value="";
+    routeCert();
   } else {
     var e=document.getElementById("certErr"); if(e){ e.style.display="block"; setTimeout(function(){e.style.display="none";},3000); }
   }
 }
 function closeCert(){ document.getElementById("certOverlay").classList.remove("open"); }
+function ccsHash(s){ var h=0,i; for(i=0;i<s.length;i++){ h=((h<<5)-h+s.charCodeAt(i))|0; } return Math.abs(h); }
 function genCert(){
   var n=document.getElementById("certName").value.trim();
   if(!n){ alert(cT("needName")); return; }
@@ -1162,6 +1160,9 @@ function genCert(){
   var loc={es:'es-ES',fr:'fr-FR',ca:'ca-ES',en:'en-GB'}[curLang]||'es-ES';
   var f=new Date().toLocaleDateString(loc,{year:'numeric',month:'long',day:'numeric'});
   document.getElementById("cdDate").textContent=cT("dateLbl")+": "+f;
+  var fol="CCS-"+new Date().getFullYear()+"-"+(("00000"+(ccsHash(n+f)%100000)).slice(-5));
+  var fe=document.getElementById("cdFolio"); if(fe) fe.textContent="N.\u00ba "+fol+"  \u00b7  cuidarconsentido.netlify.app";
+  var sy=document.getElementById("sealYear"); if(sy) sy.textContent="\u2605 "+new Date().getFullYear()+" \u2605";
   document.getElementById("certForm").style.display="none";
   document.getElementById("certDoc").style.display="block";
 }
@@ -1608,6 +1609,15 @@ renderAll();
   .cert-form input{ width:100%; max-width:380px; padding:12px 14px; border-radius:11px; border:1px solid #3a6b4d; background:#0f1f16; color:#fff; font-size:15px; text-align:center; margin:14px 0; font-family:inherit; outline:none; }
   .cert-form .cbtn{ display:inline-block; padding:12px 22px; border:none; border-radius:11px; background:linear-gradient(135deg,#8a6d2a,#c9a24b); color:#fff; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; }
   .cert-x{ position:absolute; top:26px; right:30px; background:none; border:none; color:#bfe6cf; font-size:22px; cursor:pointer; }
+  .rep-prog{ font-size:12px; color:#bfe6cf; margin-bottom:8px; letter-spacing:.3px; }
+  .rep-q{ font-size:16px; font-weight:700; margin:6px auto 14px; color:#fff; max-width:440px; line-height:1.4; }
+  .rep-opt{ display:block; width:100%; max-width:430px; margin:8px auto; padding:12px 14px; border-radius:11px; border:1px solid #3a6b4d; background:#0f1f16; color:#eafaf0; font-size:14px; cursor:pointer; text-align:left; font-family:inherit; line-height:1.35; }
+  .rep-opt:hover{ border-color:#c9a24b; }
+  .rep-opt.correct{ background:#1f5132; border-color:#3fa06a; }
+  .rep-opt.wrong{ background:#5a2230; border-color:#b4452f; }
+  .rep-opt:disabled{ cursor:default; }
+  .rep-fb{ max-width:430px; margin:12px auto 0; font-size:13.5px; color:#dff3e6; background:#10241a; border-left:3px solid #c9a24b; border-radius:8px; padding:10px 12px; text-align:left; line-height:1.45; }
+  .rep-next{ margin-top:16px; padding:12px 22px; border:none; border-radius:11px; background:linear-gradient(135deg,#2f6045,#3fa06a); color:#fff; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; }
   .cert{ background:#fffdf7; color:#1f2a23; border:3px solid #2f6045; border-radius:8px; padding:42px 30px 34px; text-align:center; position:relative; box-shadow:0 12px 44px rgba(0,0,0,.35); }
   .cert::after{ content:""; position:absolute; inset:9px; border:1px solid #c9a24b; border-radius:4px; pointer-events:none; }
   .cert .c-heart{ font-size:38px; }
@@ -1620,6 +1630,18 @@ renderAll();
   .cert .c-date{ font-size:13px; color:#4a5a50; margin-top:20px; }
   .cert .c-sign{ margin-top:24px; font-size:12.5px; color:#1f2a23; line-height:1.7; border-top:1px solid #dce8e0; padding-top:14px; }
   .cert .c-sign strong{ color:#2f6045; }
+  .cert .c-signrow{ display:flex; align-items:flex-end; justify-content:center; gap:34px; margin-top:4px; flex-wrap:wrap; }
+  .cert .c-sigblock{ text-align:center; }
+  .cert .c-sigscript{ font-family:"Great Vibes","Segoe Script","Snell Roundhand","Brush Script MT",cursive; font-size:38px; color:#1f2a23; line-height:1; padding:0 16px 0; }
+  .cert .c-sigline{ width:215px; max-width:62vw; height:1px; background:#1f2a23; margin:2px auto 6px; }
+  .cert .c-signame{ font-size:13px; color:#2f6045; font-weight:700; }
+  .cert .c-sigtitle{ font-size:11.5px; color:#4a5a50; }
+  .cert .c-seal{ flex:0 0 auto; transform:rotate(-7deg); }
+  .cert .c-qr{ flex:0 0 auto; text-align:center; }
+  .cert .c-qr svg{ width:92px; height:92px; display:block; }
+  .cert .c-qrcap{ font-size:9px; color:#8a7a4a; margin-top:3px; letter-spacing:.2px; }
+  .cert .c-org{ font-size:11.5px; color:#4a5a50; margin-top:14px; line-height:1.6; }
+  .cert .c-folio{ font-size:11px; color:#8a7a4a; letter-spacing:.4px; margin-top:10px; }
   .cert-actions{ text-align:center; margin-top:16px; }
   .cert-actions button{ margin:0 5px; padding:11px 18px; border:none; border-radius:11px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; }
   #cd-print{ background:linear-gradient(135deg,#8a6d2a,#c9a24b); color:#fff; }
@@ -1643,6 +1665,15 @@ renderAll();
         <input id="certName" type="text" placeholder="Tu nombre completo">
         <br><button class="cbtn" id="cert-gen" onclick="genCert()">Generar certificado</button>
       </div>
+      <div id="certRepaso" style="display:none">
+        <h2 id="rep-title">Repaso final</h2>
+        <p id="rep-intro" style="margin-bottom:10px"></p>
+        <div class="rep-prog" id="rep-prog"></div>
+        <div class="rep-q" id="rep-q"></div>
+        <div id="rep-opts"></div>
+        <div class="rep-fb" id="rep-fb" style="display:none"></div>
+        <button class="rep-next" id="rep-next" onclick="nextRepaso()" style="display:none">Siguiente →</button>
+      </div>
       <div id="certLock" style="display:none">
         <div style="font-size:40px">🔒</div>
         <h2 id="cert-lh">Certificado del programa</h2>
@@ -1663,12 +1694,41 @@ renderAll();
         <div class="c-body" id="cd-body">por haber completado el programa de formación</div>
         <div class="c-prog">CuidarConSentido</div>
         <div class="c-sub" id="cd-sub">Acompañamiento a personas con deterioro cognitivo leve</div>
+        <div id="cd-hours" style="font-size:13px;color:#2f6045;font-weight:600;margin-top:8px"></div>
         <div class="c-date" id="cdDate">Fecha</div>
         <div class="c-sign">
-          <div><strong>Equipo CuidarConSentido</strong></div>
-          <div><span id="cd-led">Dirigido por</span> Jean Marie Vianney, <span id="cd-spec">especialista en psicología y gerontología</span></div>
-          <div id="cd-under">Bajo la supervisión del Profesor Mayi Marc Bruno</div>
-          <div>Université de Yaoundé</div>
+          <div class="c-signrow">
+            <div class="c-qr">
+              <svg viewBox="0 0 41 41" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg" aria-label="QR cuidarconsentido.netlify.app"><rect width="41" height="41" fill="#ffffff"/><g fill="#1f2a23"><rect x="6" y="6" width="7" height="1"/><rect x="14" y="6" width="1" height="1"/><rect x="16" y="6" width="1" height="1"/><rect x="18" y="6" width="2" height="1"/><rect x="21" y="6" width="1" height="1"/><rect x="24" y="6" width="3" height="1"/><rect x="28" y="6" width="7" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="15" y="7" width="5" height="1"/><rect x="23" y="7" width="2" height="1"/><rect x="28" y="7" width="1" height="1"/><rect x="34" y="7" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="8" y="8" width="3" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="14" y="8" width="3" height="1"/><rect x="22" y="8" width="1" height="1"/><rect x="25" y="8" width="1" height="1"/><rect x="28" y="8" width="1" height="1"/><rect x="30" y="8" width="3" height="1"/><rect x="34" y="8" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="8" y="9" width="3" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="14" y="9" width="3" height="1"/><rect x="18" y="9" width="1" height="1"/><rect x="20" y="9" width="4" height="1"/><rect x="25" y="9" width="1" height="1"/><rect x="28" y="9" width="1" height="1"/><rect x="30" y="9" width="3" height="1"/><rect x="34" y="9" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="8" y="10" width="3" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="14" y="10" width="1" height="1"/><rect x="17" y="10" width="2" height="1"/><rect x="20" y="10" width="3" height="1"/><rect x="25" y="10" width="1" height="1"/><rect x="28" y="10" width="1" height="1"/><rect x="30" y="10" width="3" height="1"/><rect x="34" y="10" width="1" height="1"/><rect x="6" y="11" width="1" height="1"/><rect x="12" y="11" width="1" height="1"/><rect x="16" y="11" width="2" height="1"/><rect x="19" y="11" width="1" height="1"/><rect x="22" y="11" width="4" height="1"/><rect x="28" y="11" width="1" height="1"/><rect x="34" y="11" width="1" height="1"/><rect x="6" y="12" width="7" height="1"/><rect x="14" y="12" width="1" height="1"/><rect x="16" y="12" width="1" height="1"/><rect x="18" y="12" width="1" height="1"/><rect x="20" y="12" width="1" height="1"/><rect x="22" y="12" width="1" height="1"/><rect x="24" y="12" width="1" height="1"/><rect x="26" y="12" width="1" height="1"/><rect x="28" y="12" width="7" height="1"/><rect x="16" y="13" width="1" height="1"/><rect x="18" y="13" width="1" height="1"/><rect x="23" y="13" width="2" height="1"/><rect x="6" y="14" width="4" height="1"/><rect x="12" y="14" width="1" height="1"/><rect x="14" y="14" width="1" height="1"/><rect x="16" y="14" width="4" height="1"/><rect x="23" y="14" width="1" height="1"/><rect x="25" y="14" width="3" height="1"/><rect x="30" y="14" width="3" height="1"/><rect x="34" y="14" width="1" height="1"/><rect x="7" y="15" width="1" height="1"/><rect x="10" y="15" width="1" height="1"/><rect x="16" y="15" width="1" height="1"/><rect x="18" y="15" width="3" height="1"/><rect x="22" y="15" width="9" height="1"/><rect x="34" y="15" width="1" height="1"/><rect x="6" y="16" width="2" height="1"/><rect x="12" y="16" width="2" height="1"/><rect x="15" y="16" width="5" height="1"/><rect x="22" y="16" width="1" height="1"/><rect x="24" y="16" width="1" height="1"/><rect x="26" y="16" width="1" height="1"/><rect x="29" y="16" width="1" height="1"/><rect x="32" y="16" width="2" height="1"/><rect x="10" y="17" width="2" height="1"/><rect x="13" y="17" width="4" height="1"/><rect x="22" y="17" width="1" height="1"/><rect x="26" y="17" width="4" height="1"/><rect x="34" y="17" width="1" height="1"/><rect x="6" y="18" width="1" height="1"/><rect x="8" y="18" width="2" height="1"/><rect x="11" y="18" width="2" height="1"/><rect x="15" y="18" width="2" height="1"/><rect x="18" y="18" width="1" height="1"/><rect x="20" y="18" width="2" height="1"/><rect x="23" y="18" width="1" height="1"/><rect x="25" y="18" width="1" height="1"/><rect x="31" y="18" width="2" height="1"/><rect x="6" y="19" width="2" height="1"/><rect x="11" y="19" width="1" height="1"/><rect x="17" y="19" width="2" height="1"/><rect x="20" y="19" width="3" height="1"/><rect x="25" y="19" width="1" height="1"/><rect x="27" y="19" width="2" height="1"/><rect x="32" y="19" width="3" height="1"/><rect x="6" y="20" width="1" height="1"/><rect x="9" y="20" width="6" height="1"/><rect x="16" y="20" width="2" height="1"/><rect x="19" y="20" width="1" height="1"/><rect x="22" y="20" width="5" height="1"/><rect x="28" y="20" width="2" height="1"/><rect x="32" y="20" width="3" height="1"/><rect x="6" y="21" width="1" height="1"/><rect x="8" y="21" width="2" height="1"/><rect x="11" y="21" width="1" height="1"/><rect x="17" y="21" width="1" height="1"/><rect x="20" y="21" width="1" height="1"/><rect x="22" y="21" width="1" height="1"/><rect x="24" y="21" width="1" height="1"/><rect x="26" y="21" width="3" height="1"/><rect x="33" y="21" width="1" height="1"/><rect x="7" y="22" width="1" height="1"/><rect x="11" y="22" width="2" height="1"/><rect x="14" y="22" width="2" height="1"/><rect x="18" y="22" width="1" height="1"/><rect x="20" y="22" width="2" height="1"/><rect x="24" y="22" width="1" height="1"/><rect x="26" y="22" width="2" height="1"/><rect x="29" y="22" width="3" height="1"/><rect x="33" y="22" width="1" height="1"/><rect x="8" y="23" width="1" height="1"/><rect x="11" y="23" width="1" height="1"/><rect x="13" y="23" width="2" height="1"/><rect x="20" y="23" width="3" height="1"/><rect x="26" y="23" width="1" height="1"/><rect x="29" y="23" width="1" height="1"/><rect x="31" y="23" width="3" height="1"/><rect x="6" y="24" width="1" height="1"/><rect x="8" y="24" width="1" height="1"/><rect x="12" y="24" width="1" height="1"/><rect x="15" y="24" width="2" height="1"/><rect x="19" y="24" width="4" height="1"/><rect x="26" y="24" width="2" height="1"/><rect x="29" y="24" width="2" height="1"/><rect x="32" y="24" width="1" height="1"/><rect x="11" y="25" width="1" height="1"/><rect x="15" y="25" width="1" height="1"/><rect x="17" y="25" width="1" height="1"/><rect x="19" y="25" width="2" height="1"/><rect x="23" y="25" width="6" height="1"/><rect x="32" y="25" width="1" height="1"/><rect x="6" y="26" width="2" height="1"/><rect x="9" y="26" width="2" height="1"/><rect x="12" y="26" width="1" height="1"/><rect x="14" y="26" width="1" height="1"/><rect x="19" y="26" width="3" height="1"/><rect x="23" y="26" width="10" height="1"/><rect x="14" y="27" width="2" height="1"/><rect x="22" y="27" width="1" height="1"/><rect x="25" y="27" width="2" height="1"/><rect x="30" y="27" width="5" height="1"/><rect x="6" y="28" width="7" height="1"/><rect x="15" y="28" width="1" height="1"/><rect x="20" y="28" width="1" height="1"/><rect x="23" y="28" width="4" height="1"/><rect x="28" y="28" width="1" height="1"/><rect x="30" y="28" width="2" height="1"/><rect x="33" y="28" width="1" height="1"/><rect x="6" y="29" width="1" height="1"/><rect x="12" y="29" width="1" height="1"/><rect x="16" y="29" width="6" height="1"/><rect x="26" y="29" width="1" height="1"/><rect x="30" y="29" width="2" height="1"/><rect x="34" y="29" width="1" height="1"/><rect x="6" y="30" width="1" height="1"/><rect x="8" y="30" width="3" height="1"/><rect x="12" y="30" width="1" height="1"/><rect x="15" y="30" width="1" height="1"/><rect x="17" y="30" width="1" height="1"/><rect x="21" y="30" width="1" height="1"/><rect x="23" y="30" width="1" height="1"/><rect x="26" y="30" width="5" height="1"/><rect x="32" y="30" width="1" height="1"/><rect x="6" y="31" width="1" height="1"/><rect x="8" y="31" width="3" height="1"/><rect x="12" y="31" width="1" height="1"/><rect x="14" y="31" width="1" height="1"/><rect x="17" y="31" width="1" height="1"/><rect x="19" y="31" width="1" height="1"/><rect x="21" y="31" width="2" height="1"/><rect x="27" y="31" width="1" height="1"/><rect x="30" y="31" width="2" height="1"/><rect x="34" y="31" width="1" height="1"/><rect x="6" y="32" width="1" height="1"/><rect x="8" y="32" width="3" height="1"/><rect x="12" y="32" width="1" height="1"/><rect x="14" y="32" width="1" height="1"/><rect x="16" y="32" width="1" height="1"/><rect x="18" y="32" width="1" height="1"/><rect x="20" y="32" width="1" height="1"/><rect x="24" y="32" width="1" height="1"/><rect x="26" y="32" width="1" height="1"/><rect x="29" y="32" width="1" height="1"/><rect x="32" y="32" width="1" height="1"/><rect x="34" y="32" width="1" height="1"/><rect x="6" y="33" width="1" height="1"/><rect x="12" y="33" width="1" height="1"/><rect x="14" y="33" width="2" height="1"/><rect x="18" y="33" width="2" height="1"/><rect x="21" y="33" width="1" height="1"/><rect x="24" y="33" width="1" height="1"/><rect x="26" y="33" width="1" height="1"/><rect x="28" y="33" width="2" height="1"/><rect x="31" y="33" width="1" height="1"/><rect x="33" y="33" width="1" height="1"/><rect x="6" y="34" width="7" height="1"/><rect x="14" y="34" width="1" height="1"/><rect x="17" y="34" width="1" height="1"/><rect x="21" y="34" width="1" height="1"/><rect x="24" y="34" width="6" height="1"/><rect x="33" y="34" width="1" height="1"/></g></svg>
+              <div class="c-qrcap">cuidarconsentido.netlify.app</div>
+            </div>
+            <div class="c-sigblock">
+              <div class="c-sigscript">Jean Marie Vianney</div>
+              <div class="c-sigline"></div>
+              <div class="c-signame">Jean Marie Vianney</div>
+              <div class="c-sigtitle"><span id="cd-spec">especialista en psicología y gerontología</span></div>
+            </div>
+            <div class="c-seal">
+              <svg viewBox="0 0 120 120" width="104" height="104" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true">
+                <defs>
+                  <path id="ccsSealTop" d="M 16,60 A 44,44 0 0 1 104,60" fill="none"/>
+                  <path id="ccsSealBot" d="M 16,60 A 44,44 0 0 0 104,60" fill="none"/>
+                </defs>
+                <circle cx="60" cy="60" r="56" fill="none" stroke="#2f6045" stroke-width="2.5"/>
+                <circle cx="60" cy="60" r="49" fill="none" stroke="#c9a24b" stroke-width="1.2"/>
+                <circle cx="60" cy="60" r="31" fill="none" stroke="#2f6045" stroke-width="1"/>
+                <text font-size="9" font-weight="700" fill="#2f6045" letter-spacing="1.4"><textPath xlink:href="#ccsSealTop" startOffset="50%" text-anchor="middle">CUIDARCONSENTIDO</textPath></text>
+                <text font-size="7.2" font-weight="600" fill="#2f6045" letter-spacing="1"><textPath xlink:href="#ccsSealBot" startOffset="50%" text-anchor="middle">PROGRAMA DE FORMACIÓN</textPath></text>
+                <path d="M60,69 C 52,61 46,56 46,51 C 46,47 49,45 52,45 C 55,45 58,47 60,50 C 62,47 65,45 68,45 C 71,45 74,47 74,51 C 74,56 68,61 60,69 Z" fill="#c9a24b"/>
+                <text id="sealYear" x="60" y="85" text-anchor="middle" font-size="9" font-weight="700" fill="#2f6045" letter-spacing="1">★ 2026 ★</text>
+              </svg>
+            </div>
+          </div>
+          <div class="c-org">
+            <span id="cd-under">Bajo la supervisión del Profesor Mayi Marc Bruno</span><br>
+            Université de Yaoundé · Programa CuidarConSentido
+          </div>
+          <div class="c-folio" id="cdFolio"></div>
         </div>
       </div>
       <div class="cert-actions cert-noprint">
@@ -1754,6 +1814,99 @@ function toggleTTS(){
   try{ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){}; }catch(e){}
   applyTTSLabel();
 })();
+</script>
+<script>
+/* ---- Repaso final: auto-chequeo que desbloquea el certificado ---- */
+var REP_UI={
+  title:{es:"Repaso final",fr:"Révision finale",ca:"Repàs final",en:"Final review"},
+  intro:{es:"Un repaso suave para afianzar lo aprendido. No se puede suspender. 🌿",fr:"Une révision douce pour consolider l'essentiel. Impossible d'échouer. 🌿",ca:"Un repàs suau per afermar el que has après. No es pot suspendre. 🌿",en:"A gentle review to reinforce what you've learned. You can't fail. 🌿"},
+  of:{es:"de",fr:"sur",ca:"de",en:"of"},
+  good:{es:"¡Muy bien! 🌿",fr:"Très bien ! 🌿",ca:"Molt bé! 🌿",en:"Well done! 🌿"},
+  almost:{es:"Casi 🌿 La respuesta correcta está marcada.",fr:"Presque 🌿 La bonne réponse est indiquée.",ca:"Quasi 🌿 La resposta correcta està marcada.",en:"Almost 🌿 The correct answer is highlighted."},
+  next:{es:"Siguiente →",fr:"Suivant →",ca:"Següent →",en:"Next →"},
+  finish:{es:"Generar mi certificado →",fr:"Générer mon certificat →",ca:"Generar el meu certificat →",en:"Generate my certificate →"}
+};
+var REPASO=[
+ {q:{es:"El deterioro cognitivo leve (DCL)…",fr:"Le trouble cognitif léger (TCL)…",ca:"El deteriorament cognitiu lleu (DCL)…",en:"Mild cognitive impairment (MCI)…"},
+  opts:{es:["siempre lleva inevitablemente a la demencia","es una etapa que conviene conocer con calma; no todas las personas evolucionan igual","no tiene ninguna importancia"],
+        fr:["mène toujours inévitablement à la démence","est une étape à connaître avec calme ; toutes les personnes n'évoluent pas pareil","n'a aucune importance"],
+        ca:["sempre porta inevitablement a la demència","és una etapa que convé conèixer amb calma; no totes les persones evolucionen igual","no té cap importància"],
+        en:["always leads inevitably to dementia","is a stage worth understanding calmly; not everyone progresses the same way","is of no importance at all"]},
+  correct:1,
+  fb:{es:"Entenderlo sin alarmarse ayuda a acompañar mejor: no todos los casos avanzan igual.",fr:"Le comprendre sans s'alarmer aide à mieux accompagner : tous les cas n'évoluent pas pareil.",ca:"Entendre-ho sense alarmar-se ajuda a acompanyar millor: no tots els casos avancen igual.",en:"Understanding it without alarm helps you support better: not all cases progress the same way."}},
+
+ {q:{es:"Para comunicarte mejor con la persona, conviene…",fr:"Pour mieux communiquer avec la personne, il vaut mieux…",ca:"Per comunicar-te millor amb la persona, convé…",en:"To communicate better with the person, it's best to…"},
+  opts:{es:["usar frases sencillas, dar tiempo y mantener la calma y el cariño","corregir cada error y discutir para que recuerde","hablar muy rápido para no aburrir"],
+        fr:["utiliser des phrases simples, laisser du temps et garder calme et tendresse","corriger chaque erreur et insister pour qu'elle se souvienne","parler très vite pour ne pas l'ennuyer"],
+        ca:["fer servir frases senzilles, donar temps i mantenir la calma i l'afecte","corregir cada error i discutir perquè recordi","parlar molt ràpid per no avorrir"],
+        en:["use simple sentences, give time and stay calm and warm","correct every mistake and argue so they remember","speak very fast so they don't get bored"]},
+  correct:0,
+  fb:{es:"Frases cortas, paciencia y un tono cálido conectan mucho más que corregir.",fr:"Des phrases courtes, de la patience et un ton chaleureux créent bien plus de lien que corriger.",ca:"Frases curtes, paciència i un to càlid connecten molt més que corregir.",en:"Short sentences, patience and a warm tone connect far more than correcting."}},
+
+ {q:{es:"Las actividades de estimulación funcionan mejor cuando…",fr:"Les activités de stimulation fonctionnent mieux quand…",ca:"Les activitats d'estimulació funcionen millor quan…",en:"Stimulation activities work best when…"},
+  opts:{es:["cuanto más difíciles y largas, mejor","se imponen aunque la persona no quiera","se adaptan a sus gustos y capacidades, y se disfrutan"],
+        fr:["plus elles sont difficiles et longues, mieux c'est","on les impose même si la personne ne veut pas","elles s'adaptent à ses goûts et capacités, et on les apprécie"],
+        ca:["com més difícils i llargues, millor","s'imposen encara que la persona no vulgui","s'adapten als seus gustos i capacitats, i es gaudeixen"],
+        en:["the harder and longer, the better","they are imposed even if the person doesn't want to","they fit their tastes and abilities, and are enjoyed"]},
+  correct:2,
+  fb:{es:"Lo que se disfruta y se ajusta a la persona estimula de verdad.",fr:"Ce qui est apprécié et adapté à la personne stimule vraiment.",ca:"El que es gaudeix i s'ajusta a la persona estimula de debò.",en:"What is enjoyed and suited to the person truly stimulates."}},
+
+ {q:{es:"Cuidar de ti mismo/a como cuidador/a…",fr:"Prendre soin de toi en tant qu'aidant·e…",ca:"Cuidar de tu mateix/a com a cuidador/a…",en:"Taking care of yourself as a caregiver…"},
+  opts:{es:["es egoísta y resta tiempo al cuidado","es esencial: si tú estás bien, cuidas mejor","solo hace falta cuando ya estás agotado/a"],
+        fr:["est égoïste et enlève du temps au soin","est essentiel : si tu vas bien, tu prends mieux soin","n'est nécessaire que lorsque tu es déjà épuisé·e"],
+        ca:["és egoista i treu temps a la cura","és essencial: si tu estàs bé, cuides millor","només cal quan ja estàs esgotat/da"],
+        en:["is selfish and takes time away from caring","is essential: if you're well, you care better","is only needed once you're already exhausted"]},
+  correct:1,
+  fb:{es:"Tu bienestar no es un lujo: es la base para poder cuidar.",fr:"Ton bien-être n'est pas un luxe : c'est la base pour pouvoir aider.",ca:"El teu benestar no és un luxe: és la base per poder cuidar.",en:"Your wellbeing isn't a luxury: it's the foundation for caring."}},
+
+ {q:{es:"Ante las dudas o dificultades del día a día, conviene…",fr:"Face aux doutes ou difficultés du quotidien, il vaut mieux…",ca:"Davant els dubtes o dificultats del dia a dia, convé…",en:"When facing daily doubts or difficulties, it's best to…"},
+  opts:{es:["apoyarte en recursos y profesionales, y pedir ayuda","afrontarlo todo en solitario","pensar que no hay ningún recurso disponible"],
+        fr:["t'appuyer sur des ressources et des professionnels, et demander de l'aide","tout affronter seul·e","penser qu'il n'existe aucune ressource"],
+        ca:["recolzar-te en recursos i professionals, i demanar ajuda","afrontar-ho tot en solitari","pensar que no hi ha cap recurs disponible"],
+        en:["lean on resources and professionals, and ask for help","face everything alone","assume there are no resources available"]},
+  correct:0,
+  fb:{es:"Conocer los recursos y pedir ayuda te orienta y te alivia.",fr:"Connaître les ressources et demander de l'aide t'oriente et te soulage.",ca:"Conèixer els recursos i demanar ajuda t'orienta i t'alleuja.",en:"Knowing the resources and asking for help guides and relieves you."}}
+];
+var repIdx=0, repChoice=[];
+var repasoDone=false; try{ repasoDone=(localStorage.getItem("ccsRepaso")==="true"); }catch(e){}
+function repT(o){ return (o&&o[typeof curLang!=="undefined"?curLang:"es"])||(o&&o.es)||""; }
+function routeCert(){
+  var entry=document.getElementById("certEntry"), lock=document.getElementById("certLock"), rp=document.getElementById("certRepaso");
+  if(!entry||!lock||!rp) return;
+  if(typeof hasAccess!=="undefined" && !hasAccess){ entry.style.display="none"; rp.style.display="none"; lock.style.display="block"; return; }
+  lock.style.display="none";
+  if(repasoDone){ rp.style.display="none"; entry.style.display="block"; var ni=document.getElementById("certName"); if(ni) ni.value=""; }
+  else { entry.style.display="none"; rp.style.display="block"; startRepaso(); }
+}
+function startRepaso(){ repIdx=0; repChoice=[]; for(var i=0;i<REPASO.length;i++) repChoice.push(-1); renderRepasoQ(); }
+function renderRepasoQ(){
+  if(!REPASO.length) return;
+  var t=document.getElementById("rep-title"); if(t) t.textContent=repT(REP_UI.title);
+  var intro=document.getElementById("rep-intro"); if(intro) intro.textContent=repT(REP_UI.intro);
+  var prog=document.getElementById("rep-prog"); if(prog) prog.textContent=(repIdx+1)+" "+repT(REP_UI.of)+" "+REPASO.length;
+  var Q=REPASO[repIdx];
+  var qel=document.getElementById("rep-q"); if(qel) qel.textContent=repT(Q.q);
+  var box=document.getElementById("rep-opts"); if(!box) return; box.innerHTML="";
+  var opts=Q.opts[(typeof curLang!=="undefined"?curLang:"es")]||Q.opts.es;
+  var answered=repChoice[repIdx]>=0;
+  for(var k=0;k<opts.length;k++){ (function(k){
+    var b=document.createElement("button"); b.className="rep-opt"; b.type="button"; b.textContent=opts[k];
+    if(answered){ b.disabled=true; if(k===Q.correct) b.className+=" correct"; else if(k===repChoice[repIdx]) b.className+=" wrong"; }
+    else { b.onclick=function(){ answerRepaso(k); }; }
+    box.appendChild(b);
+  })(k); }
+  var fb=document.getElementById("rep-fb"), nx=document.getElementById("rep-next");
+  if(answered){
+    var lead=(repChoice[repIdx]===Q.correct)?repT(REP_UI.good):repT(REP_UI.almost);
+    if(fb){ fb.textContent=lead+" "+repT(Q.fb); fb.style.display="block"; }
+    if(nx){ nx.textContent=(repIdx>=REPASO.length-1)?repT(REP_UI.finish):repT(REP_UI.next); nx.style.display="inline-block"; }
+  } else { if(fb) fb.style.display="none"; if(nx) nx.style.display="none"; }
+}
+function answerRepaso(k){ if(repChoice[repIdx]>=0) return; repChoice[repIdx]=k; renderRepasoQ(); }
+function nextRepaso(){
+  if(repIdx>=REPASO.length-1){ repasoDone=true; try{ localStorage.setItem("ccsRepaso","true"); }catch(e){} routeCert(); return; }
+  repIdx++; renderRepasoQ();
+}
 </script>
 </body>
 </html>
