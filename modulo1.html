@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 1 — Entender sin asustarse</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF6F0;
+    --warm-white: #FDF9F4;
+    --terracotta: #E07A54;
+    --terracotta-light: #F2B48E;
+    --sage: #7A9E7E;
+    --sage-light: #B5CEB8;
+    --deep-brown: #2C1A0E;
+    --mid-brown: #8A5230;
+    --gold: #D4A853;
+    --gold-light: #EDD49A;
+    --blue-soft: #5B7FA6;
+    --blue-light: #A8C4DC;
+    --text: #3A2A1A;
+    --text-light: #7A6A5A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  /* LANG SELECTOR */
+  .lang-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--deep-brown);
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+  }
+  .lang-btn {
+    padding: 10px 22px;
+    border: none;
+    background: transparent;
+    color: #BFA98A;
+    font-family: 'Source Serif 4', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+  }
+  .lang-btn.active {
+    color: var(--gold-light);
+    border-bottom: 3px solid var(--terracotta);
+  }
+  .lang-btn:hover { color: white; }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh;
+    background: var(--deep-brown);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,113,74,0.18) 0%, transparent 70%);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(122,158,126,0.15) 0%, transparent 70%);
+  }
+  .cover-module-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--terracotta-light);
+    margin-bottom: 24px;
+  }
+  .cover-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(36px, 6vw, 64px);
+    color: var(--warm-white);
+    text-align: center;
+    line-height: 1.2;
+    max-width: 700px;
+    margin-bottom: 16px;
+  }
+  .cover-title em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+  .cover-subtitle {
+    font-size: 16px;
+    color: #BFA98A;
+    text-align: center;
+    max-width: 500px;
+    margin-bottom: 48px;
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .cover-langs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+  .cover-lang-pill {
+    padding: 6px 18px;
+    border: 1px solid rgba(212,168,83,0.4);
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--gold-light);
+    text-transform: uppercase;
+  }
+  .cover-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--terracotta), transparent);
+    margin: 0 auto 40px;
+  }
+  .cover-intro {
+    max-width: 560px;
+    text-align: center;
+    color: #9A8A7A;
+    font-size: 15px;
+    line-height: 1.9;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #6A5A4A;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* CONTENT WRAPPER */
+  .content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-number {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--deep-brown);
+    margin-bottom: 28px;
+    line-height: 1.3;
+  }
+  .section-title em {
+    color: var(--terracotta);
+    font-style: italic;
+  }
+
+  p { margin-bottom: 20px; color: var(--text); }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 4px solid var(--terracotta);
+    padding: 20px 28px;
+    margin: 40px 0;
+    background: var(--warm-white);
+    border-radius: 0 8px 8px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--mid-brown);
+    font-style: italic;
+  }
+
+  /* SCIENCE BOX */
+  .science-box {
+    background: linear-gradient(135deg, #EEF4F8 0%, #E8F0EC 100%);
+    border: 1px solid var(--blue-light);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 36px 0;
+    position: relative;
+  }
+  .science-box::before {
+    content: '🔬';
+    position: absolute;
+    top: -14px;
+    left: 24px;
+    font-size: 22px;
+    background: var(--cream);
+    padding: 0 8px;
+  }
+  .science-box-title {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue-soft);
+    margin-bottom: 12px;
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+  }
+  .science-box p {
+    font-size: 15px;
+    color: #4A6070;
+    margin-bottom: 10px;
+  }
+  .science-box .source {
+    font-size: 12px;
+    color: var(--blue-soft);
+    font-style: italic;
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
+
+  /* HEART BOX — emotional */
+  .heart-box {
+    background: linear-gradient(135deg, #FDF3ED 0%, #FAF0E8 100%);
+    border: 1px solid var(--terracotta-light);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 36px 0;
+    position: relative;
+  }
+  .heart-box::before {
+    content: '♡';
+    position: absolute;
+    top: -14px;
+    left: 24px;
+    font-size: 20px;
+    background: var(--cream);
+    padding: 0 8px;
+    color: var(--terracotta);
+  }
+  .heart-box-title {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .heart-box p { font-size: 15px; color: var(--mid-brown); margin-bottom: 10px; }
+
+  /* RESIDENCE BOX */
+  .residence-box {
+    background: linear-gradient(135deg, #F0EDF8 0%, #EAE6F5 100%);
+    border: 1px solid #B8A8D8;
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 36px 0;
+    position: relative;
+  }
+  .residence-box::before {
+    content: '🏠';
+    position: absolute;
+    top: -14px;
+    left: 24px;
+    font-size: 22px;
+    background: var(--cream);
+    padding: 0 8px;
+  }
+  .residence-box-title {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #7A60A8;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .residence-box p { font-size: 15px; color: #4A3A6A; margin-bottom: 10px; }
+  .residence-box ul { margin: 12px 0 12px 20px; }
+  .residence-box ul li { font-size: 15px; color: #4A3A6A; margin-bottom: 6px; }
+
+  /* MYTH vs REALITY */
+  .myth-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 36px 0;
+  }
+  @media (max-width: 600px) { .myth-grid { grid-template-columns: 1fr; } }
+  .myth-card {
+    border-radius: 10px;
+    padding: 22px;
+  }
+  .myth-card.myth {
+    background: #FDE8E8;
+    border: 1px solid #E8A8A8;
+  }
+  .myth-card.reality {
+    background: #E8F4E8;
+    border: 1px solid #A8CCA8;
+  }
+  .myth-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .myth-card.myth .myth-label { color: #C84040; }
+  .myth-card.reality .myth-label { color: #3A8A3A; }
+  .myth-card p { font-size: 14px; margin-bottom: 0; }
+  .myth-card.myth p { color: #6A2A2A; }
+  .myth-card.reality p { color: #2A5A2A; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; margin: 20px 0; }
+  .checklist li {
+    padding: 10px 0 10px 36px;
+    position: relative;
+    border-bottom: 1px solid rgba(196,113,74,0.1);
+    font-size: 16px;
+    color: var(--text);
+  }
+  .checklist li::before {
+    content: '→';
+    position: absolute;
+    left: 8px;
+    color: var(--terracotta);
+    font-weight: bold;
+  }
+
+  /* STAGES TIMELINE */
+  .timeline {
+    position: relative;
+    margin: 40px 0;
+    padding-left: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--sage-light), var(--terracotta-light), var(--gold-light));
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 32px;
+    padding: 20px 24px;
+    background: var(--warm-white);
+    border-radius: 10px;
+    border: 1px solid rgba(196,113,74,0.15);
+  }
+  .timeline-dot {
+    position: absolute;
+    left: -33px;
+    top: 24px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+  .timeline-item:nth-child(1) .timeline-dot { background: var(--sage); }
+  .timeline-item:nth-child(2) .timeline-dot { background: var(--gold); }
+  .timeline-item:nth-child(3) .timeline-dot { background: var(--terracotta); }
+  .timeline-stage {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .timeline-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--deep-brown);
+    margin-bottom: 8px;
+  }
+  .timeline-desc { font-size: 14px; color: var(--text-light); margin-bottom: 0; }
+
+  /* SEPARATOR */
+  .sep {
+    text-align: center;
+    margin: 60px 0;
+    color: var(--terracotta-light);
+    font-size: 20px;
+    letter-spacing: 16px;
+  }
+
+  /* CHAPTER HEADER */
+  .chapter-header {
+    background: var(--deep-brown);
+    color: var(--warm-white);
+    padding: 48px 40px;
+    margin: 60px -40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .chapter-header::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(196,113,74,0.15);
+  }
+  .chapter-header .section-number { color: var(--terracotta-light); }
+  .chapter-header .section-title { color: var(--warm-white); margin-bottom: 0; }
+
+  /* FOOTER */
+  .doc-footer {
+    background: var(--deep-brown);
+    color: #7A6A5A;
+    text-align: center;
+    padding: 48px 40px;
+    font-size: 13px;
+    line-height: 2;
+  }
+  .doc-footer strong { color: var(--gold-light); }
+
+  /* LANG CONTENT */
+  [data-lang] { display: none; }
+  [data-lang].active { display: block; }
+  .cover [data-lang] { display: none; }
+  .cover [data-lang].active { display: block; }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed;
+    top: 44px; left: 0;
+    height: 3px;
+    background: var(--terracotta);
+    width: 0%;
+    transition: width 0.1s;
+    z-index: 99;
+  }
+  /* Botón de lectura en voz alta (accesibilidad) */
+  .tts-btn{position:fixed;right:14px;bottom:18px;z-index:99999;display:inline-flex;align-items:center;gap:7px;background:#2f6045;color:#fff;border:none;border-radius:26px;padding:12px 18px;font-size:15px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.28);cursor:pointer;font-family:inherit}
+  .tts-btn .tts-ico{font-size:18px;line-height:1}
+  .tts-btn.on{background:#b4452f}
+  @media print{.tts-btn{display:none}}
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('es')">🇪🇸 Español</button>
+  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+  <button class="lang-btn" onclick="setLang('ca')">🏴 Català</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+</div>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ═══════════════════════════════════ COVER ═══════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-module-label">Programa CuidarConSentido · Mòdul 1 · Module 1</div>
+
+  <div data-lang="es" class="active">
+    <h1 class="cover-title">Entender<br><em>sin asustarse</em></h1>
+    <p class="cover-subtitle">Todo lo que necesitas saber sobre el deterioro cognitivo leve — sin jerga médica, con todo el amor del mundo</p>
+  </div>
+  <div data-lang="fr">
+    <h1 class="cover-title">Comprendre<br><em>sans s'effrayer</em></h1>
+    <p class="cover-subtitle">Tout ce que vous devez savoir sur le déclin cognitif léger — sans jargon médical, avec tout l'amour du monde</p>
+  </div>
+  <div data-lang="ca">
+    <h1 class="cover-title">Entendre<br><em>sense por</em></h1>
+    <p class="cover-subtitle">Tot el que necessites saber sobre el deteriorament cognitiu lleu — sense tecnicismes mèdics, amb tot l'amor del món</p>
+  </div>
+  <div data-lang="en">
+    <h1 class="cover-title">Understanding<br><em>without fear</em></h1>
+    <p class="cover-subtitle">Everything you need to know about mild cognitive impairment — without medical jargon, with all the love in the world</p>
+  </div>
+
+  <div class="cover-langs">
+    <span class="cover-lang-pill">Español</span>
+    <span class="cover-lang-pill">Français</span>
+    <span class="cover-lang-pill">Català</span>
+    <span class="cover-lang-pill">English</span>
+  </div>
+  <div class="cover-divider"></div>
+
+  <div data-lang="es" class="active">
+    <p class="cover-intro">Para toda persona que cuida con el corazón — sin importar si eres hijo, hija, cónyuge, vecino o amigo. Lo que importa es que estás aquí, queriendo hacerlo bien.</p>
+  </div>
+  <div data-lang="fr">
+    <p class="cover-intro">Pour toute personne qui prend soin avec le cœur — que vous soyez fils, fille, conjoint·e, voisin·e ou ami·e. Ce qui compte, c'est que vous êtes là, avec la volonté de bien faire.</p>
+  </div>
+  <div data-lang="ca">
+    <p class="cover-intro">Per a tota persona que cuida amb el cor — siguis fill, filla, cònjuge, veí o amic. El que importa és que ets aquí, amb el desig de fer-ho bé.</p>
+  </div>
+  <div data-lang="en">
+    <p class="cover-intro">For every person who cares with their heart — whether you are a son, daughter, partner, neighbour or friend. What matters is that you are here, with the desire to do it well.</p>
+  </div>
+
+  <div class="scroll-hint">▼ &nbsp; continúa</div>
+</div>
+
+<!-- ═══════════════════════════════════ CONTENT ═══════════════════════════════════ -->
+<div class="content">
+
+  <!-- ── INTRO ── -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Introducción</span>
+      <h2 class="section-title">Antes de empezar:<br><em>esto es para ti</em></h2>
+      <p>Nadie te ha preparado para esto. Un día, algo cambió. Quizá fue una conversación que se repitió tres veces en diez minutos. Quizá fue un nombre olvidado, una llave perdida, una mirada diferente. Y de repente te encontraste en un territorio nuevo, sin mapa.</p>
+      <p>Este material no va a convertirte en experto. No es un manual clínico. Es una guía de acompañante — para que puedas estar presente con más tranquilidad, con más comprensión y con menos miedo.</p>
+      <div class="pull-quote">"No necesitas saberlo todo. Necesitas entender lo suficiente para acompañar con amor y con sentido."</div>
+      <p>Lo que leerás aquí está basado en evidencia científica actual, pero escrito para personas reales. Cuando citemos estudios o datos, lo haremos con claridad — pero siempre en un lenguaje que puedas llevar contigo al día a día.</p>
+    </div>
+    <div data-lang="fr">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">Avant de commencer :<br><em>ceci est pour vous</em></h2>
+      <p>Personne ne vous a préparé à cela. Un jour, quelque chose a changé. Peut-être une conversation répétée trois fois en dix minutes. Peut-être un prénom oublié, des clés perdues, un regard différent. Et vous vous êtes retrouvé·e sur un territoire inconnu, sans carte.</p>
+      <p>Ce document ne va pas faire de vous un expert. Ce n'est pas un manuel clinique. C'est un guide d'accompagnant — pour que vous puissiez être présent·e avec plus de sérénité, plus de compréhension et moins de peur.</p>
+      <div class="pull-quote">« Vous n'avez pas besoin de tout savoir. Vous avez besoin de comprendre suffisamment pour accompagner avec amour et avec sens. »</div>
+      <p>Ce que vous lirez ici est fondé sur des données scientifiques actuelles, mais écrit pour des personnes réelles. Quand nous citerons des études, nous le ferons clairement — mais toujours dans un langage que vous pourrez emporter dans votre quotidien.</p>
+    </div>
+    <div data-lang="ca">
+      <span class="section-number">Introducció</span>
+      <h2 class="section-title">Abans de començar:<br><em>això és per a tu</em></h2>
+      <p>Ningú t'ha preparat per a això. Un dia, alguna cosa va canviar. Potser va ser una conversa repetida tres vegades en deu minuts. Potser va ser un nom oblidat, unes claus perdudes, una mirada diferent. I de sobte et vas trobar en un territori nou, sense mapa.</p>
+      <p>Aquest material no et convertirà en expert. No és un manual clínic. És una guia d'acompanyant — perquè puguis estar present amb més tranquil·litat, amb més comprensió i amb menys por.</p>
+      <div class="pull-quote">"No necessites saber-ho tot. Necessites entendre prou per acompanyar amb amor i amb sentit."</div>
+      <p>El que llegiràs aquí està basat en evidència científica actual, però escrit per a persones reals. Quan citem estudis o dades, ho farem amb claredat — però sempre en un llenguatge que puguis portar amb tu al dia a dia.</p>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">Before we begin:<br><em>this is for you</em></h2>
+      <p>Nobody prepared you for this. One day, something changed. Perhaps it was a conversation repeated three times in ten minutes. Perhaps a forgotten name, lost keys, a different look in their eyes. And suddenly you found yourself in unfamiliar territory, without a map.</p>
+      <p>This material will not turn you into an expert. It is not a clinical manual. It is a companion guide — so that you can be present with more calm, more understanding and less fear.</p>
+      <div class="pull-quote">"You don't need to know everything. You need to understand enough to accompany with love and with meaning."</div>
+      <p>What you read here is based on current scientific evidence, but written for real people. When we cite studies or data, we will do so clearly — always in language you can carry with you into daily life.</p>
+    </div>
+  </div>
+
+  <div class="sep">· · ·</div>
+
+  <!-- ── CAPÍTULO 1 ── -->
+  <div class="section">
+    <div class="chapter-header">
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 1</span><h2 class="section-title">¿Qué está pasando realmente?</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 1</span><h2 class="section-title">Que se passe-t-il vraiment ?</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 1</span><h2 class="section-title">Què està passant realment?</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 1</span><h2 class="section-title">What is really happening?</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>El <strong>deterioro cognitivo leve (DCL)</strong> es un estado intermedio entre el envejecimiento normal del cerebro y la demencia. No es "estar un poco senil". No es "cosa de la edad". Y tampoco es, necesariamente, el inicio de una enfermedad grave.</p>
+      <p>Es un cambio real, medible, que afecta sobre todo a la memoria, la atención o la capacidad de planificar — pero que <em>no impide a la persona llevar una vida prácticamente normal</em>. Esa es la diferencia clave con la demencia.</p>
+
+      <div class="science-box">
+        <div class="science-box-title">Lo que dice la ciencia</div>
+        <p>El DCL afecta entre el <strong>15 y el 20% de las personas mayores de 65 años</strong>. De ellas, alrededor del 10-15% al año evolucionan hacia una demencia — pero un porcentaje similar <em>se estabiliza o incluso mejora</em>, especialmente con estimulación adecuada y entorno de apoyo.</p>
+        <p class="source">Fuente: Petersen RC et al. (2018). "Mild Cognitive Impairment: 10 years later." <em>Archives of Neurology</em>. / OMS, Informe Mundial sobre el Envejecimiento 2021.</p>
+      </div>
+
+      <p>Esto significa algo muy importante: <strong>lo que tú haces como cuidador importa</strong>. No eres un espectador. Eres parte del entorno que puede marcar la diferencia.</p>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Para residencias y equipos profesionales</div>
+        <p>En contexto residencial, el DCL es frecuentemente infradetectado. Muchos residentes con DCL son tratados con los mismos protocolos que personas con demencia avanzada, perdiendo oportunidades valiosas de estimulación.</p>
+        <ul>
+          <li>Implemente escalas validadas de cribado (MoCA, Mini-Cog) al ingreso y de forma periódica</li>
+          <li>Diferencie en los planes de cuidado individualizados entre DCL y demencia establecida</li>
+          <li>Forme al personal de base en la detección de señales sutiles de cambio cognitivo</li>
+          <li>Cree grupos de estimulación diferenciados según nivel cognitivo</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>Le <strong>déclin cognitif léger (DCL)</strong> est un état intermédiaire entre le vieillissement normal du cerveau et la démence. Ce n'est pas « être un peu sénile ». Ce n'est pas « normal à cet âge ». Et ce n'est pas non plus, nécessairement, le début d'une maladie grave.</p>
+      <p>C'est un changement réel, mesurable, qui touche surtout la mémoire, l'attention ou la capacité à planifier — mais qui <em>ne empêche pas la personne de mener une vie pratiquement normale</em>. C'est là la différence clé avec la démence.</p>
+
+      <div class="science-box">
+        <div class="science-box-title">Ce que dit la science</div>
+        <p>Le DCL touche entre <strong>15 et 20% des personnes de plus de 65 ans</strong>. Parmi elles, environ 10 à 15% par an évoluent vers une démence — mais un pourcentage similaire <em>se stabilise ou s'améliore</em>, notamment grâce à une stimulation adaptée et un environnement de soutien.</p>
+        <p class="source">Source : Petersen RC et al. (2018). « Mild Cognitive Impairment: 10 years later. » <em>Archives of Neurology</em>. / OMS, Rapport mondial sur le vieillissement 2021.</p>
+      </div>
+
+      <p>Cela signifie quelque chose de très important : <strong>ce que vous faites en tant qu'aidant compte</strong>. Vous n'êtes pas spectateur. Vous faites partie de l'environnement qui peut faire la différence.</p>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Pour les établissements et les équipes professionnelles</div>
+        <p>En contexte résidentiel, le DCL est fréquemment sous-détecté. De nombreux résidents avec DCL sont pris en charge avec les mêmes protocoles que des personnes atteintes de démence avancée, perdant de précieuses opportunités de stimulation.</p>
+        <ul>
+          <li>Mettre en place des échelles de dépistage validées (MoCA, Mini-Cog) à l'entrée et périodiquement</li>
+          <li>Différencier dans les plans de soins individualisés entre DCL et démence établie</li>
+          <li>Former le personnel de base à détecter les signes subtils de changement cognitif</li>
+          <li>Créer des groupes de stimulation différenciés selon le niveau cognitif</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>El <strong>deteriorament cognitiu lleu (DCL)</strong> és un estat intermedi entre l'envelliment normal del cervell i la demència. No és "estar una mica senil". No és "cosa de l'edat". I tampoc és, necessàriament, l'inici d'una malaltia greu.</p>
+      <p>És un canvi real, mesurable, que afecta sobretot la memòria, l'atenció o la capacitat de planificar — però que <em>no impedeix a la persona portar una vida pràcticament normal</em>. Aquesta és la diferència clau amb la demència.</p>
+
+      <div class="science-box">
+        <div class="science-box-title">El que diu la ciència</div>
+        <p>El DCL afecta entre el <strong>15 i el 20% de les persones majors de 65 anys</strong>. D'elles, al voltant del 10-15% a l'any evolucionen cap a una demència — però un percentatge similar <em>s'estabilitza o fins i tot millora</em>, especialment amb estimulació adequada i entorn de suport.</p>
+        <p class="source">Font: Petersen RC et al. (2018). "Mild Cognitive Impairment: 10 years later." <em>Archives of Neurology</em>. / OMS, Informe Mundial sobre l'Envelliment 2021.</p>
+      </div>
+
+      <p>Això significa quelcom molt important: <strong>el que tu fas com a cuidador importa</strong>. No ets un espectador. Ets part de l'entorn que pot marcar la diferència.</p>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Per a residències i equips professionals</div>
+        <p>En context residencial, el DCL és freqüentment infradetectat. Molts residents amb DCL reben els mateixos protocols que persones amb demència avançada, perdent oportunitats valuoses d'estimulació.</p>
+        <ul>
+          <li>Implementeu escales de cribratge validades (MoCA, Mini-Cog) a l'ingrés i periòdicament</li>
+          <li>Diferencieu en els plans de cures individuals entre DCL i demència establerta</li>
+          <li>Formeu el personal de base en la detecció de senyals subtils de canvi cognitiu</li>
+          <li>Creeu grups d'estimulació diferenciats segons el nivell cognitiu</li>
+        </ul>
+      </div>
+    </div>
+    <div data-lang="en">
+      <p><strong>Mild Cognitive Impairment (MCI)</strong> is an intermediate state between the normal ageing of the brain and dementia. It is not "being a little senile". It is not "just part of getting old". And it is not necessarily the beginning of a serious illness.</p>
+      <p>It is a real, measurable change that mainly affects memory, attention or the capacity to plan — but one that <em>does not prevent the person from leading a practically normal life</em>. That is the key difference from dementia.</p>
+
+      <div class="science-box">
+        <div class="science-box-title">What the science says</div>
+        <p>MCI affects between <strong>15 and 20% of people over 65</strong>. Of those, around 10–15% per year progress toward dementia — but a similar percentage <em>stabilises or even improves</em>, especially with appropriate stimulation and a supportive environment.</p>
+        <p class="source">Source: Petersen RC et al. (2018). "Mild Cognitive Impairment: 10 years later." <em>Archives of Neurology</em>. / WHO, World Report on Ageing 2021.</p>
+      </div>
+
+      <p>This means something very important: <strong>what you do as a caregiver matters</strong>. You are not a bystander. You are part of the environment that can make a real difference.</p>
+
+      <div class="residence-box">
+        <div class="residence-box-title">For care homes and professional teams</div>
+        <p>In residential settings, MCI is frequently under-detected. Many residents with MCI are managed under the same protocols as people with advanced dementia, missing valuable opportunities for stimulation.</p>
+        <ul>
+          <li>Implement validated screening scales (MoCA, Mini-Cog) at admission and periodically thereafter</li>
+          <li>Differentiate between MCI and established dementia in individualised care plans</li>
+          <li>Train frontline staff to detect subtle signs of cognitive change</li>
+          <li>Create differentiated stimulation groups according to cognitive level</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CAPÍTULO 2: MITOS ── -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Capítulo 2</span>
+      <h2 class="section-title">Mitos y <em>realidades</em></h2>
+      <p>Hay ideas muy extendidas sobre el deterioro cognitivo que generan miedo innecesario — o, al contrario, que llevan a minimizar algo que merece atención. Vamos a desmontarlos con honestidad.</p>
+
+      <div class="myth-grid">
+        <div class="myth-card myth"><div class="myth-label">❌ Mito</div><p>"Si olvida cosas, es porque tiene Alzheimer."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Realidad</div><p>El olvido leve es parte del envejecimiento normal. El DCL y el Alzheimer son diagnósticos específicos que requieren evaluación médica.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Mito</div><p>"No hay nada que hacer. Es un camino sin vuelta."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Realidad</div><p>Con estimulación cognitiva, ejercicio físico, vínculo social y buen sueño, muchas personas con DCL se estabilizan o mejoran.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Mito</div><p>"Si le corrijo cada vez que se equivoca, le ayudo."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Realidad</div><p>La corrección constante genera ansiedad y pérdida de confianza. A menudo es más útil acompañar que corregir.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Mito</div><p>"Tiene DCL, ya no puede decidir sobre su vida."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Realidad</div><p>En el DCL, la autonomía se conserva en gran medida. La persona puede y debe seguir tomando decisiones sobre su propia vida.</p></div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Lo que sientes también importa</div>
+        <p>Es normal sentir miedo, tristeza, frustración o incluso alivio cuando hay un diagnóstico. Es normal tener días en que todo parece demasiado. No estás fallando — estás siendo humano.</p>
+        <p>El agotamiento emocional del cuidador es uno de los factores que más impacta en la calidad del cuidado. Cuidarte a ti mismo no es egoísmo — es condición necesaria para poder cuidar bien.</p>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <span class="section-number">Chapitre 2</span>
+      <h2 class="section-title">Mythes et <em>réalités</em></h2>
+      <p>Il existe de nombreuses idées répandues sur le déclin cognitif qui génèrent une peur inutile — ou, au contraire, qui conduisent à minimiser quelque chose qui mérite attention. Démêlons-les avec honnêteté.</p>
+
+      <div class="myth-grid">
+        <div class="myth-card myth"><div class="myth-label">❌ Mythe</div><p>« S'il oublie des choses, c'est qu'il a Alzheimer. »</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Réalité</div><p>Un léger oubli fait partie du vieillissement normal. Le DCL et Alzheimer sont des diagnostics spécifiques qui nécessitent une évaluation médicale.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Mythe</div><p>« Il n'y a rien à faire. C'est sans retour. »</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Réalité</div><p>Avec stimulation cognitive, exercice physique, lien social et sommeil réparateur, beaucoup de personnes avec DCL se stabilisent ou s'améliorent.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Mythe</div><p>« Si je le corrige à chaque erreur, je l'aide. »</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Réalité</div><p>La correction constante génère anxiété et perte de confiance. Accompagner est souvent plus utile que corriger.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Mythe</div><p>« Avec un DCL, il ne peut plus décider de sa vie. »</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Réalité</div><p>Dans le DCL, l'autonomie est largement préservée. La personne peut et doit continuer à prendre ses propres décisions.</p></div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Ce que vous ressentez compte aussi</div>
+        <p>Il est normal de ressentir de la peur, de la tristesse, de la frustration ou même du soulagement face à un diagnostic. Il est normal d'avoir des jours où tout semble trop lourd. Vous ne défaillez pas — vous êtes humain·e.</p>
+        <p>L'épuisement émotionnel de l'aidant est l'un des facteurs qui impacte le plus la qualité du soin. Prendre soin de vous-même n'est pas de l'égoïsme — c'est une condition nécessaire pour bien prendre soin de l'autre.</p>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <span class="section-number">Capítol 2</span>
+      <h2 class="section-title">Mites i <em>realitats</em></h2>
+      <p>Hi ha idees molt esteses sobre el deteriorament cognitiu que generen por innecessària — o, al contrari, que porten a minimitzar alguna cosa que mereix atenció. Desmuntem-les amb honestedat.</p>
+
+      <div class="myth-grid">
+        <div class="myth-card myth"><div class="myth-label">❌ Mite</div><p>"Si oblida coses, és que té Alzheimer."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Realitat</div><p>L'oblit lleu és part de l'envelliment normal. El DCL i l'Alzheimer són diagnòstics específics que requereixen avaluació mèdica.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Mite</div><p>"No hi ha res a fer. És un camí sense tornada."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Realitat</div><p>Amb estimulació cognitiva, exercici físic, vincle social i bon son, moltes persones amb DCL s'estabilitzen o milloren.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Mite</div><p>"Si el corregeixo cada vegada que s'equivoca, l'ajudo."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Realitat</div><p>La correcció constant genera ansietat i pèrdua de confiança. Sovint és més útil acompanyar que corregir.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Mite</div><p>"Té DCL, ja no pot decidir sobre la seva vida."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Realitat</div><p>En el DCL, l'autonomia es conserva en gran mesura. La persona pot i ha de continuar prenent decisions sobre la seva pròpia vida.</p></div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">El que sents també importa</div>
+        <p>És normal sentir por, tristesa, frustració o fins i tot alleujament quan hi ha un diagnòstic. És normal tenir dies en què tot sembla massa. No estàs fallant — estàs sent humà.</p>
+        <p>L'esgotament emocional del cuidador és un dels factors que més impacta en la qualitat de la cura. Cuidar-te a tu mateix no és egoisme — és condició necessària per poder cuidar bé.</p>
+      </div>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">Chapter 2</span>
+      <h2 class="section-title">Myths and <em>realities</em></h2>
+      <p>There are many widespread ideas about cognitive decline that generate unnecessary fear — or, on the contrary, lead to minimising something that deserves attention. Let's address them honestly.</p>
+
+      <div class="myth-grid">
+        <div class="myth-card myth"><div class="myth-label">❌ Myth</div><p>"If they forget things, they must have Alzheimer's."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Reality</div><p>Mild forgetfulness is part of normal ageing. MCI and Alzheimer's are specific diagnoses that require medical evaluation.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Myth</div><p>"There's nothing to do. It only goes one way."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Reality</div><p>With cognitive stimulation, physical exercise, social connection and good sleep, many people with MCI stabilise or improve.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Myth</div><p>"Correcting them every time helps."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Reality</div><p>Constant correction creates anxiety and erodes confidence. Accompanying is usually more helpful than correcting.</p></div>
+        <div class="myth-card myth"><div class="myth-label">❌ Myth</div><p>"With MCI, they can no longer decide anything."</p></div>
+        <div class="myth-card reality"><div class="myth-label">✓ Reality</div><p>In MCI, autonomy is largely preserved. The person can and should continue making decisions about their own life.</p></div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">What you feel also matters</div>
+        <p>It is normal to feel fear, sadness, frustration or even relief when there is a diagnosis. It is normal to have days when everything feels too much. You are not failing — you are being human.</p>
+        <p>Caregiver emotional exhaustion is one of the factors that most affects the quality of care. Taking care of yourself is not selfishness — it is a necessary condition for being able to care well.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CAPÍTULO 3: ETAPAS ── -->
+  <div class="section">
+    <div class="chapter-header">
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 3</span><h2 class="section-title">¿Qué puedo esperar?</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 3</span><h2 class="section-title">À quoi puis-je m'attendre ?</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 3</span><h2 class="section-title">Què puc esperar?</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 3</span><h2 class="section-title">What can I expect?</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>No hay dos trayectorias iguales. El DCL no es una condena ni un guion fijo. Pero conocer las posibilidades ayuda a reducir el miedo a lo desconocido.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Posibilidad 1</div>
+          <div class="timeline-title">Estabilización</div>
+          <p class="timeline-desc">La persona mantiene su nivel actual durante años. Esto ocurre con frecuencia, sobre todo cuando hay buena estimulación, apoyo social y salud general.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Posibilidad 2</div>
+          <div class="timeline-title">Mejora parcial</div>
+          <p class="timeline-desc">Algunos aspectos mejoran. Especialmente posible si hay factores reversibles (falta de sueño, depresión, medicación inadecuada, aislamiento social).</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Posibilidad 3</div>
+          <div class="timeline-title">Progresión gradual</div>
+          <p class="timeline-desc">El declive avanza hacia demencia. Incluso en este caso, el ritmo de progresión puede modularse. Y tú puedes hacer que cada etapa sea más digna y significativa.</p>
+        </div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">Factores que marcan la diferencia</div>
+        <p>La <strong>reserva cognitiva</strong> — el conjunto de conexiones cerebrales acumuladas a lo largo de la vida — actúa como amortiguador. Se construye con educación, actividades intelectuales, música, relaciones sociales y nuevas experiencias. <em>Nunca es tarde para construirla.</em></p>
+        <p>El ejercicio físico aeróbico regular (30 minutos, 5 veces por semana) es uno de los factores más protectores documentados para el cerebro en cualquier edad.</p>
+        <p class="source">Fuente: Livingston G et al. (2020). "Dementia prevention, intervention, and care." <em>The Lancet</em>, 396(10248), 413–446.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Para residencias: construir entornos que protegen</div>
+        <p>Los entornos residenciales pueden ser factores protectores o aceleradores del declive, según cómo estén diseñados:</p>
+        <ul>
+          <li><strong>Estimulante:</strong> actividades variadas, contacto social, propósito diario</li>
+          <li><strong>Predecible:</strong> rutinas claras que dan seguridad sin ser monótonas</li>
+          <li><strong>Afectivo:</strong> personal que conoce la historia de vida de cada residente</li>
+          <li><strong>Físicamente activo:</strong> movilidad integrada en el día, no solo fisioterapia formal</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>Il n'existe pas deux trajectoires identiques. Le DCL n'est ni une condamnation ni un scénario figé. Mais connaître les possibilités aide à réduire la peur de l'inconnu.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Possibilité 1</div>
+          <div class="timeline-title">Stabilisation</div>
+          <p class="timeline-desc">La personne maintient son niveau actuel pendant des années. Cela arrive fréquemment, surtout avec une bonne stimulation, un soutien social et une bonne santé générale.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Possibilité 2</div>
+          <div class="timeline-title">Amélioration partielle</div>
+          <p class="timeline-desc">Certains aspects s'améliorent. Particulièrement possible s'il y a des facteurs réversibles (manque de sommeil, dépression, médicaments inadaptés, isolement social).</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Possibilité 3</div>
+          <div class="timeline-title">Progression graduelle</div>
+          <p class="timeline-desc">Le déclin évolue vers la démence. Même dans ce cas, le rythme de progression peut être modulé. Et vous pouvez faire de chaque étape un moment plus digne et plus riche de sens.</p>
+        </div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">Les facteurs qui font la différence</div>
+        <p>La <strong>réserve cognitive</strong> — l'ensemble des connexions cérébrales accumulées au fil de la vie — agit comme amortisseur. Elle se construit avec l'éducation, les activités intellectuelles, la musique, les relations sociales et les nouvelles expériences. <em>Il n'est jamais trop tard pour la développer.</em></p>
+        <p>L'exercice physique aérobique régulier (30 minutes, 5 fois par semaine) est l'un des facteurs protecteurs les mieux documentés pour le cerveau à tout âge.</p>
+        <p class="source">Source : Livingston G et al. (2020). « Dementia prevention, intervention, and care. » <em>The Lancet</em>, 396(10248), 413–446.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Pour les établissements : construire des environnements protecteurs</div>
+        <p>Les environnements résidentiels peuvent être des facteurs protecteurs ou accélérateurs du déclin selon leur conception :</p>
+        <ul>
+          <li><strong>Stimulant :</strong> activités variées, contact social, sens donné à chaque journée</li>
+          <li><strong>Prévisible :</strong> routines claires qui apportent sécurité sans être monotones</li>
+          <li><strong>Affectif :</strong> personnel qui connaît l'histoire de vie de chaque résident</li>
+          <li><strong>Physiquement actif :</strong> mobilité intégrée dans la journée, pas seulement kinésithérapie formelle</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>No hi ha dues trajectòries iguals. El DCL no és una condemna ni un guió fix. Però conèixer les possibilitats ajuda a reduir la por al desconegut.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Possibilitat 1</div>
+          <div class="timeline-title">Estabilització</div>
+          <p class="timeline-desc">La persona manté el seu nivell actual durant anys. Això passa sovint, sobretot quan hi ha bona estimulació, suport social i salut general.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Possibilitat 2</div>
+          <div class="timeline-title">Millora parcial</div>
+          <p class="timeline-desc">Alguns aspectes milloren. Especialment possible si hi ha factors reversibles (falta de son, depressió, medicació inadequada, aïllament social).</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Possibilitat 3</div>
+          <div class="timeline-title">Progressió gradual</div>
+          <p class="timeline-desc">El declivi avança cap a demència. Fins i tot en aquest cas, el ritme de progressió pot modular-se. I tu pots fer que cada etapa sigui més digna i significativa.</p>
+        </div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">Factors que marquen la diferència</div>
+        <p>La <strong>reserva cognitiva</strong> — el conjunt de connexions cerebrals acumulades al llarg de la vida — actua com a amortidor. Es construeix amb educació, activitats intel·lectuals, música, relacions socials i noves experiències. <em>Mai és tard per construir-la.</em></p>
+        <p>L'exercici físic aeròbic regular (30 minuts, 5 vegades per setmana) és un dels factors protectors més documentats per al cervell a qualsevol edat.</p>
+        <p class="source">Font: Livingston G et al. (2020). "Dementia prevention, intervention, and care." <em>The Lancet</em>, 396(10248), 413–446.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Per a residències: construir entorns que protegeixen</div>
+        <p>Els entorns residencials poden ser factors protectors o acceleradors del declivi, segons com estiguin dissenyats:</p>
+        <ul>
+          <li><strong>Estimulant:</strong> activitats variades, contacte social, propòsit diari</li>
+          <li><strong>Previsible:</strong> rutines clares que donen seguretat sense ser monòtones</li>
+          <li><strong>Afectiu:</strong> personal que coneix la història de vida de cada resident</li>
+          <li><strong>Físicament actiu:</strong> mobilitat integrada al dia, no només fisioteràpia formal</li>
+        </ul>
+      </div>
+    </div>
+    <div data-lang="en">
+      <p>No two trajectories are the same. MCI is neither a sentence nor a fixed script. But knowing the possibilities helps reduce fear of the unknown.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Possibility 1</div>
+          <div class="timeline-title">Stabilisation</div>
+          <p class="timeline-desc">The person maintains their current level for years. This happens frequently, especially with good stimulation, social support and general health.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Possibility 2</div>
+          <div class="timeline-title">Partial improvement</div>
+          <p class="timeline-desc">Some aspects improve. Especially possible if there are reversible factors (poor sleep, depression, inappropriate medication, social isolation).</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Possibility 3</div>
+          <div class="timeline-title">Gradual progression</div>
+          <p class="timeline-desc">The decline advances toward dementia. Even in this case, the rate of progression can be influenced. And you can make every stage more dignified and meaningful.</p>
+        </div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">Factors that make a difference</div>
+        <p><strong>Cognitive reserve</strong> — the network of brain connections accumulated over a lifetime — acts as a buffer. It is built through education, intellectual activities, music, social relationships and new experiences. <em>It is never too late to build it.</em></p>
+        <p>Regular aerobic physical exercise (30 minutes, 5 times per week) is one of the most well-documented protective factors for the brain at any age.</p>
+        <p class="source">Source: Livingston G et al. (2020). "Dementia prevention, intervention, and care." <em>The Lancet</em>, 396(10248), 413–446.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">For care homes: building environments that protect</div>
+        <p>Residential environments can be protective or accelerating factors for cognitive decline, depending on how they are designed:</p>
+        <ul>
+          <li><strong>Stimulating:</strong> varied activities, social contact, daily purpose</li>
+          <li><strong>Predictable:</strong> clear routines that give security without being monotonous</li>
+          <li><strong>Affective:</strong> staff who know the life history of each resident</li>
+          <li><strong>Physically active:</strong> movement integrated into the day, not only formal physiotherapy</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CAPÍTULO 4: SEÑALES ── -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Capítulo 4</span>
+      <h2 class="section-title">Señales que merecen <em>atención</em></h2>
+      <p>No todo olvido es deterioro. Pero hay señales que distinguen el envejecimiento normal del DCL — y el DCL de una demencia más avanzada. Conocerlas te ayuda a actuar a tiempo, sin alarmarte innecesariamente.</p>
+
+      <div class="myth-grid">
+        <div class="myth-card" style="background:#F0F4F8; border:1px solid #BDD0E0;">
+          <div class="myth-label" style="color:#3A6080;">🟢 Envejecimiento normal</div>
+          <p style="color:#2A4A60; font-size:14px;">Olvidar dónde dejó las llaves, pero acordarse luego. Tardar más en aprender algo nuevo. Confundir un nombre momentáneamente.</p>
+        </div>
+        <div class="myth-card" style="background:#FFF8EC; border:1px solid #E8D090;">
+          <div class="myth-label" style="color:#806020;">🟡 DCL — Señales a observar</div>
+          <p style="color:#604010; font-size:14px;">Olvidar conversaciones recientes con frecuencia. Repetir la misma pregunta en poco tiempo. Dificultad para seguir una receta conocida o gestionar citas.</p>
+        </div>
+      </div>
+
+      <ul class="checklist">
+        <li>Pérdida de memoria que afecta la vida cotidiana (no solo momentos puntuales)</li>
+        <li>Dificultad para planificar o resolver problemas simples que antes hacía con facilidad</li>
+        <li>Desorientación en lugares conocidos</li>
+        <li>Cambios de humor o de personalidad sin causa aparente</li>
+        <li>Retirada de actividades sociales o pasatiempos que antes disfrutaba</li>
+        <li>Dificultad para seguir conversaciones o encontrar palabras habituales</li>
+      </ul>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Si observas estas señales</div>
+        <p>No esperes. Pide una cita con el médico de cabecera y describe lo que has observado con ejemplos concretos. No se trata de "etiquetar" a tu familiar — se trata de tener información para poder acompañarle mejor.</p>
+        <p>Recuerda: el diagnóstico precoz es siempre una ventaja, no una sentencia.</p>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <span class="section-number">Chapitre 4</span>
+      <h2 class="section-title">Signes qui méritent <em>attention</em></h2>
+      <p>Tout oubli n'est pas un déclin. Mais certains signes distinguent le vieillissement normal du DCL — et le DCL d'une démence plus avancée. Les connaître vous aide à agir à temps, sans vous alarmer inutilement.</p>
+
+      <div class="myth-grid">
+        <div class="myth-card" style="background:#F0F4F8; border:1px solid #BDD0E0;">
+          <div class="myth-label" style="color:#3A6080;">🟢 Vieillissement normal</div>
+          <p style="color:#2A4A60; font-size:14px;">Oublier où on a posé ses clés, mais s'en souvenir plus tard. Mettre plus de temps à apprendre quelque chose de nouveau. Confondre momentanément un prénom.</p>
+        </div>
+        <div class="myth-card" style="background:#FFF8EC; border:1px solid #E8D090;">
+          <div class="myth-label" style="color:#806020;">🟡 DCL — Signes à observer</div>
+          <p style="color:#604010; font-size:14px;">Oublier fréquemment des conversations récentes. Répéter la même question en peu de temps. Difficulté à suivre une recette connue ou à gérer des rendez-vous.</p>
+        </div>
+      </div>
+
+      <ul class="checklist">
+        <li>Perte de mémoire affectant la vie quotidienne (pas seulement des moments ponctuels)</li>
+        <li>Difficulté à planifier ou résoudre des problèmes simples autrefois faciles</li>
+        <li>Désorientation dans des lieux familiers</li>
+        <li>Changements d'humeur ou de personnalité sans raison apparente</li>
+        <li>Retrait des activités sociales ou des loisirs appréciés auparavant</li>
+        <li>Difficulté à suivre les conversations ou à trouver des mots habituels</li>
+      </ul>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Si vous observez ces signes</div>
+        <p>N'attendez pas. Prenez rendez-vous avec le médecin traitant et décrivez ce que vous avez observé avec des exemples concrets. Il ne s'agit pas d'« étiqueter » votre proche — il s'agit d'avoir les informations pour mieux l'accompagner.</p>
+        <p>Rappel : le diagnostic précoce est toujours un avantage, pas une sentence.</p>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <span class="section-number">Capítol 4</span>
+      <h2 class="section-title">Senyals que mereixen <em>atenció</em></h2>
+      <p>No tot oblit és deteriorament. Però hi ha senyals que distingeixen l'envelliment normal del DCL — i el DCL d'una demència més avançada. Conèixer-los t'ajuda a actuar a temps, sense alarmar-te innecessàriament.</p>
+
+      <div class="myth-grid">
+        <div class="myth-card" style="background:#F0F4F8; border:1px solid #BDD0E0;">
+          <div class="myth-label" style="color:#3A6080;">🟢 Envelliment normal</div>
+          <p style="color:#2A4A60; font-size:14px;">Oblidar on ha deixat les claus, però recordar-ho més tard. Trigar més a aprendre alguna cosa nova. Confondre un nom momentàniament.</p>
+        </div>
+        <div class="myth-card" style="background:#FFF8EC; border:1px solid #E8D090;">
+          <div class="myth-label" style="color:#806020;">🟡 DCL — Senyals a observar</div>
+          <p style="color:#604010; font-size:14px;">Oblidar converses recents amb freqüència. Repetir la mateixa pregunta en poc temps. Dificultat per seguir una recepta coneguda o gestionar cites.</p>
+        </div>
+      </div>
+
+      <ul class="checklist">
+        <li>Pèrdua de memòria que afecta la vida quotidiana (no només moments puntuals)</li>
+        <li>Dificultat per planificar o resoldre problemes simples que abans feia amb facilitat</li>
+        <li>Desorientació en llocs coneguts</li>
+        <li>Canvis d'humor o de personalitat sense causa aparent</li>
+        <li>Retirada d'activitats socials o passatemps que abans gaudia</li>
+        <li>Dificultat per seguir converses o trobar paraules habituals</li>
+      </ul>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Si observes aquests senyals</div>
+        <p>No esperis. Demana cita amb el metge de capçalera i descriu el que has observat amb exemples concrets. No es tracta d'"etiquetar" el teu familiar — es tracta de tenir informació per poder acompanyar-lo millor.</p>
+        <p>Recorda: el diagnòstic precoç és sempre un avantatge, no una sentència.</p>
+      </div>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">Chapter 4</span>
+      <h2 class="section-title">Signs that deserve <em>attention</em></h2>
+      <p>Not every instance of forgetting is cognitive decline. But there are signs that distinguish normal ageing from MCI — and MCI from more advanced dementia. Knowing them helps you act in time, without unnecessary alarm.</p>
+
+      <div class="myth-grid">
+        <div class="myth-card" style="background:#F0F4F8; border:1px solid #BDD0E0;">
+          <div class="myth-label" style="color:#3A6080;">🟢 Normal ageing</div>
+          <p style="color:#2A4A60; font-size:14px;">Forgetting where the keys are, but remembering later. Taking longer to learn something new. Momentarily confusing a name.</p>
+        </div>
+        <div class="myth-card" style="background:#FFF8EC; border:1px solid #E8D090;">
+          <div class="myth-label" style="color:#806020;">🟡 MCI — Signs to watch for</div>
+          <p style="color:#604010; font-size:14px;">Frequently forgetting recent conversations. Repeating the same question in a short space of time. Difficulty following a familiar recipe or managing appointments.</p>
+        </div>
+      </div>
+
+      <ul class="checklist">
+        <li>Memory loss that affects daily life (not just occasional moments)</li>
+        <li>Difficulty planning or solving simple problems that were previously easy</li>
+        <li>Disorientation in familiar places</li>
+        <li>Mood or personality changes without apparent cause</li>
+        <li>Withdrawal from social activities or hobbies previously enjoyed</li>
+        <li>Difficulty following conversations or finding familiar words</li>
+      </ul>
+
+      <div class="heart-box">
+        <div class="heart-box-title">If you notice these signs</div>
+        <p>Don't wait. Make an appointment with the GP and describe what you have observed with concrete examples. This is not about "labelling" your loved one — it is about having information to accompany them better.</p>
+        <p>Remember: early diagnosis is always an advantage, not a sentence.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sep">· · ·</div>
+
+  <!-- ── CIERRE ── -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Para terminar este módulo</span>
+      <h2 class="section-title">Lo que ya <em>sabes hacer</em></h2>
+      <p>Si has llegado hasta aquí, ya tienes algo valioso: una comprensión honesta y sin miedo de lo que es el DCL. Eso ya es más de lo que tenía la mayoría cuando empezó.</p>
+      <div class="pull-quote">"El cuidado no empieza cuando todo va mal. Empieza aquí, en este momento, con este deseo de entender."</div>
+      <p>En el siguiente módulo veremos cómo comunicarse con una persona con DCL — qué palabras ayudan, cuáles generan ansiedad, y cómo estar presente cuando las palabras no son suficientes.</p>
+      <div class="heart-box">
+        <div class="heart-box-title">Tu lista de inicio — lo esencial</div>
+        <p>✓ El DCL no es Alzheimer automáticamente, pero merece atención<br>
+        ✓ Puedes marcar la diferencia — el entorno importa<br>
+        ✓ La persona conserva su autonomía y su dignidad<br>
+        ✓ Tu propio bienestar es parte del cuidado<br>
+        ✓ El diagnóstico precoz es siempre una ventaja</p>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <span class="section-number">Pour conclure ce module</span>
+      <h2 class="section-title">Ce que vous <em>savez déjà faire</em></h2>
+      <p>Si vous êtes arrivé·e jusqu'ici, vous avez quelque chose de précieux : une compréhension honnête et sans peur de ce qu'est le DCL. C'est déjà plus que ce que la plupart des gens avaient au départ.</p>
+      <div class="pull-quote">« Le soin ne commence pas quand tout va mal. Il commence ici, maintenant, avec ce désir de comprendre. »</div>
+      <p>Dans le prochain module, nous verrons comment communiquer avec une personne atteinte de DCL — quels mots aident, lesquels génèrent de l'anxiété, et comment être présent quand les mots ne suffisent plus.</p>
+      <div class="heart-box">
+        <div class="heart-box-title">Votre liste de départ — l'essentiel</div>
+        <p>✓ Le DCL n'est pas automatiquement Alzheimer, mais mérite attention<br>
+        ✓ Vous pouvez faire la différence — l'environnement compte<br>
+        ✓ La personne conserve son autonomie et sa dignité<br>
+        ✓ Votre propre bien-être fait partie du soin<br>
+        ✓ Le diagnostic précoce est toujours un avantage</p>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <span class="section-number">Per acabar aquest mòdul</span>
+      <h2 class="section-title">El que ja <em>saps fer</em></h2>
+      <p>Si has arribat fins aquí, ja tens quelcom valuós: una comprensió honesta i sense por del que és el DCL. Això ja és més del que tenia la majoria quan va començar.</p>
+      <div class="pull-quote">"La cura no comença quan tot va malament. Comença aquí, en aquest moment, amb aquest desig d'entendre."</div>
+      <p>Al següent mòdul veurem com comunicar-se amb una persona amb DCL — quines paraules ajuden, quines generen ansietat, i com estar present quan les paraules no són suficients.</p>
+      <div class="heart-box">
+        <div class="heart-box-title">La teva llista d'inici — l'essencial</div>
+        <p>✓ El DCL no és Alzheimer automàticament, però mereix atenció<br>
+        ✓ Pots marcar la diferència — l'entorn importa<br>
+        ✓ La persona conserva la seva autonomia i la seva dignitat<br>
+        ✓ El teu propi benestar és part de la cura<br>
+        ✓ El diagnòstic precoç és sempre un avantatge</p>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <span class="section-number">To close this module</span>
+      <h2 class="section-title">What you <em>already know how to do</em></h2>
+      <p>If you have made it this far, you already have something valuable: an honest, fearless understanding of what MCI is. That is already more than most people had when they started.</p>
+      <div class="pull-quote">"Care doesn't begin when everything goes wrong. It begins here, in this moment, with this desire to understand."</div>
+      <p>In the next module we will look at how to communicate with a person with MCI — which words help, which generate anxiety, and how to be present when words are no longer enough.</p>
+      <div class="heart-box">
+        <div class="heart-box-title">Your starting checklist — the essentials</div>
+        <p>✓ MCI is not automatically Alzheimer's, but it deserves attention<br>
+        ✓ You can make a difference — the environment matters<br>
+        ✓ The person retains their autonomy and dignity<br>
+        ✓ Your own wellbeing is part of the care<br>
+        ✓ Early diagnosis is always an advantage</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end content -->
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <strong>CuidarConSentido · PrendreSoin avec Sens · Tenir Cura amb Sentit · CaringWithMeaning</strong><br>
+  Módulo 1 de 5 · Module 1 sur 5 · Mòdul 1 de 5 · Module 1 of 5<br><br>
+  Petersen RC et al. (2018) Archives of Neurology · Livingston G et al. (2020) The Lancet · WHO 2021<br><br>
+  <em>Educational material. Does not replace professional medical diagnosis or advice.</em>
+</div>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.lang-btn').forEach((b,i) => b.classList.toggle('active', ['es','fr','ca','en'][i] === lang));
+    document.querySelectorAll('[data-lang]').forEach(el => el.classList.toggle('active', el.dataset.lang === lang));
+    if(typeof applyTTSLabel==='function') applyTTSLabel();
+  }
+
+  // Scroll progress
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const pct = (scrollTop / docHeight) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  });
+
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  /* ---- Lectura en voz alta (accesibilidad) ---- */
+  var TTS_LBL={listen:{es:"Escuchar",fr:"Écouter",ca:"Escoltar",en:"Listen"},stop:{es:"Parar",fr:"Arrêter",ca:"Aturar",en:"Stop"}};
+  var TTS_LANG={es:"es-ES",fr:"fr-FR",ca:"ca-ES",en:"en-US"};
+  var ttsOn=false;
+  function ttsLang(){var a=document.querySelector('[data-lang].active');return (a&&a.dataset.lang)||'es';}
+  function applyTTSLabel(){var lg=ttsLang();var l=document.getElementById('ttsLbl');var ic=document.getElementById('ttsIco');var b=document.getElementById('ttsBtn');if(l)l.textContent=ttsOn?(TTS_LBL.stop[lg]||TTS_LBL.stop.es):(TTS_LBL.listen[lg]||TTS_LBL.listen.es);if(ic)ic.textContent=ttsOn?'⏹':'🔊';if(b)b.classList.toggle('on',ttsOn);}
+  function ttsGetText(){var parts=[];document.querySelectorAll('[data-lang].active').forEach(function(el){if(el.innerText)parts.push(el.innerText);});return parts.join('. ');}
+  function ttsStop(){try{window.speechSynthesis.cancel();}catch(e){}ttsOn=false;applyTTSLabel();}
+  function toggleTTS(){
+    if(!("speechSynthesis" in window))return;
+    if(ttsOn){ttsStop();return;}
+    var text=(ttsGetText()||"").replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu," ").replace(/\s+/g," ").trim();
+    if(!text)return;
+    try{window.speechSynthesis.cancel();}catch(e){}
+    var u=new SpeechSynthesisUtterance(text);
+    var lg=ttsLang();var lc=TTS_LANG[lg]||"es-ES";
+    u.lang=lc;u.rate=0.95;u.pitch=1;
+    try{var voices=window.speechSynthesis.getVoices()||[];var pref=lc.split("-")[0];var v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(pref)===0;})[0];if(!v&&lg==="ca"){v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf("es")===0;})[0];if(v)u.lang="es-ES";}if(v)u.voice=v;}catch(e){}
+    u.onend=function(){ttsOn=false;applyTTSLabel();};
+    u.onerror=function(){ttsOn=false;applyTTSLabel();};
+    ttsOn=true;applyTTSLabel();
+    window.speechSynthesis.speak(u);
+  }
+  (function(){if(!("speechSynthesis" in window)){var b=document.getElementById("ttsBtn");if(b)b.style.display="none";return;}try{window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=function(){};}catch(e){}applyTTSLabel();})();
+</script>
+<button id="ttsBtn" class="tts-btn" onclick="toggleTTS()" aria-label="Escuchar el texto"><span class="tts-ico" id="ttsIco">🔊</span><span id="ttsLbl">Escuchar</span></button>
+</body>
+</html>

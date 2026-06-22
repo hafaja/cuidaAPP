@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 3 — Activar con alegría</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F6FAF4;
+    --warm-white: #F2F8F0;
+    --forest: #2D5016;
+    --forest-mid: #3D6B20;
+    --green: #5A8A32;
+    --green-light: #8BBD5A;
+    --green-pale: #C8E0A8;
+    --sage: #7A9E6A;
+    --sage-light: #B8D4A8;
+    --gold: #C8A84A;
+    --gold-light: #E8D090;
+    --amber: #D4782A;
+    --amber-light: #EEB87A;
+    --blue-soft: #5B7FA6;
+    --blue-light: #A8C4DC;
+    --purple: #7A60A8;
+    --purple-light: #C0A8D8;
+    --text: #1E3010;
+    --text-mid: #3A5020;
+    --text-light: #6A7A5A;
+    --deep: #1A2E0A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  /* LANG BAR */
+  .lang-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--deep);
+    display: flex; justify-content: center;
+  }
+  .lang-btn {
+    padding: 10px 22px; border: none;
+    background: transparent; color: #8AAA7A;
+    font-family: 'Source Serif 4', serif;
+    font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; cursor: pointer;
+    transition: all 0.3s; border-bottom: 3px solid transparent;
+  }
+  .lang-btn.active { color: var(--green-pale); border-bottom: 3px solid var(--green-light); }
+  .lang-btn:hover { color: white; }
+
+  .progress-bar {
+    position: fixed; top: 44px; left: 0;
+    height: 3px; background: var(--green-light);
+    width: 0%; transition: width 0.1s; z-index: 99;
+  }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(150deg, #1A3008 0%, #0E2004 50%, #1A2808 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 80px 40px 60px;
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; top: -100px; left: -100px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(90,138,50,0.15) 0%, transparent 70%);
+  }
+  .cover::after {
+    content: '';
+    position: absolute; bottom: -80px; right: -80px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,168,74,0.12) 0%, transparent 70%);
+  }
+  /* Decorative leaf shapes */
+  .cover-leaf {
+    position: absolute;
+    opacity: 0.06;
+    font-size: 180px;
+    pointer-events: none;
+  }
+  .cover-leaf:nth-child(1) { top: 5%; right: 8%; transform: rotate(25deg); }
+  .cover-leaf:nth-child(2) { bottom: 10%; left: 5%; transform: rotate(-20deg); font-size: 120px; }
+
+  .cover-module-label {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--green-light); margin-bottom: 24px; position: relative;
+  }
+  .cover-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(36px, 6vw, 64px);
+    color: var(--warm-white); line-height: 1.2;
+    max-width: 700px; margin-bottom: 16px; position: relative;
+  }
+  .cover-title em { color: var(--green-pale); font-style: italic; }
+  .cover-subtitle {
+    font-size: 16px; color: #6A9A5A;
+    max-width: 520px; margin-bottom: 48px;
+    font-style: italic; line-height: 1.7; position: relative;
+  }
+  .cover-langs {
+    display: flex; gap: 10px; margin-bottom: 48px;
+    flex-wrap: wrap; justify-content: center; position: relative;
+  }
+  .cover-lang-pill {
+    padding: 5px 16px;
+    border: 1px solid rgba(90,138,50,0.5);
+    border-radius: 20px; font-size: 11px;
+    letter-spacing: 1.5px; color: var(--green-light); text-transform: uppercase;
+  }
+  .cover-divider {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green-light), transparent);
+    margin: 0 auto 40px; position: relative;
+  }
+  .cover-intro {
+    max-width: 560px; color: #4A7A3A;
+    font-size: 15px; line-height: 1.9; position: relative;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    color: #3A5A2A; font-size: 11px;
+    letter-spacing: 3px; text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* CONTENT */
+  .content { max-width: 780px; margin: 0 auto; padding: 80px 40px; }
+
+  .section {
+    margin-bottom: 80px; opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .section.visible { opacity: 1; transform: translateY(0); }
+
+  .section-number {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--green); margin-bottom: 10px; display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--deep); margin-bottom: 28px; line-height: 1.3;
+  }
+  .section-title em { color: var(--green); font-style: italic; }
+
+  p { margin-bottom: 20px; color: var(--text); }
+
+  .pull-quote {
+    border-left: 4px solid var(--green-light);
+    padding: 20px 28px; margin: 40px 0;
+    background: var(--warm-white);
+    border-radius: 0 8px 8px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 19px; line-height: 1.6;
+    color: var(--forest-mid); font-style: italic;
+  }
+
+  /* BOXES */
+  .science-box {
+    background: linear-gradient(135deg, #EEF4F8, #E8F0EC);
+    border: 1px solid var(--blue-light); border-radius: 12px;
+    padding: 28px 32px; margin: 36px 0; position: relative;
+  }
+  .science-box::before {
+    content: '🔬'; position: absolute; top: -14px; left: 24px;
+    font-size: 22px; background: var(--cream); padding: 0 8px;
+  }
+  .science-box-title {
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--blue-soft); margin-bottom: 12px; font-weight: 600;
+  }
+  .science-box p { font-size: 15px; color: #4A6070; margin-bottom: 10px; }
+  .science-box .source { font-size: 12px; color: var(--blue-soft); font-style: italic; margin-top: 8px; margin-bottom: 0; }
+
+  .heart-box {
+    background: linear-gradient(135deg, #EDF6E8, #E6F2E0);
+    border: 1px solid var(--sage-light); border-radius: 12px;
+    padding: 28px 32px; margin: 36px 0; position: relative;
+  }
+  .heart-box::before {
+    content: '♡'; position: absolute; top: -14px; left: 24px;
+    font-size: 20px; background: var(--cream); padding: 0 8px; color: var(--green);
+  }
+  .heart-box-title {
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--green); margin-bottom: 12px; font-weight: 600;
+  }
+  .heart-box p { font-size: 15px; color: var(--text-mid); margin-bottom: 10px; }
+
+  .residence-box {
+    background: linear-gradient(135deg, #F0EDF8, #EAE6F5);
+    border: 1px solid var(--purple-light); border-radius: 12px;
+    padding: 28px 32px; margin: 36px 0; position: relative;
+  }
+  .residence-box::before {
+    content: '🏠'; position: absolute; top: -14px; left: 24px;
+    font-size: 22px; background: var(--cream); padding: 0 8px;
+  }
+  .residence-box-title {
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--purple); margin-bottom: 12px; font-weight: 600;
+  }
+  .residence-box p { font-size: 15px; color: #4A3A6A; margin-bottom: 10px; }
+  .residence-box ul { margin: 12px 0 12px 20px; }
+  .residence-box ul li { font-size: 15px; color: #4A3A6A; margin-bottom: 8px; }
+
+  /* CHAPTER HEADER */
+  .chapter-header {
+    background: linear-gradient(135deg, #1A3008, #0E2004);
+    color: var(--warm-white);
+    padding: 48px 40px; margin: 60px -40px 60px;
+    position: relative; overflow: hidden;
+  }
+  .chapter-header::after {
+    content: '';
+    position: absolute; right: -40px; top: -40px;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: rgba(90,138,50,0.2);
+  }
+  .chapter-header .section-number { color: var(--green-pale); }
+  .chapter-header .section-title { color: var(--warm-white); margin-bottom: 0; }
+  .chapter-header .ch-icon {
+    font-size: 48px; margin-bottom: 16px; display: block; position: relative;
+  }
+
+  /* ACTIVITY CARDS GRID */
+  .activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px; margin: 36px 0;
+  }
+  .activity-card {
+    background: var(--warm-white);
+    border-radius: 14px; padding: 24px 20px;
+    border: 1px solid rgba(90,138,50,0.15);
+    border-top: 3px solid var(--green-light);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .activity-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(30,48,16,0.08); }
+  .activity-card .ac-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+  .activity-card .ac-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; color: var(--forest); margin-bottom: 8px; font-weight: 700;
+  }
+  .activity-card .ac-desc { font-size: 14px; color: var(--text-light); margin-bottom: 10px; line-height: 1.6; }
+  .activity-card .ac-level {
+    display: inline-block; font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; padding: 3px 10px;
+    border-radius: 10px; font-weight: 600;
+  }
+  .level-easy { background: #D8F0C8; color: #2A5A10; }
+  .level-medium { background: #FFF0D0; color: #7A5010; }
+  .level-adapt { background: #E8E0F8; color: #5A3A90; }
+
+  /* CATEGORY HEADER */
+  .cat-header {
+    display: flex; align-items: center; gap: 16px;
+    margin: 48px 0 24px; padding-bottom: 16px;
+    border-bottom: 2px solid rgba(90,138,50,0.15);
+  }
+  .cat-icon { font-size: 36px; }
+  .cat-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; color: var(--forest); line-height: 1.2;
+  }
+  .cat-title em { color: var(--green); font-style: italic; }
+
+  /* HOW-TO STEPS */
+  .steps { margin: 24px 0; }
+  .step {
+    display: flex; gap: 16px;
+    padding: 16px 0; border-bottom: 1px solid rgba(90,138,50,0.08);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0; width: 32px; height: 32px;
+    background: var(--green); color: white;
+    border-radius: 50%; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; margin-top: 4px;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 600; color: var(--forest); margin-bottom: 4px; }
+  .step-desc { font-size: 15px; color: var(--text-light); margin-bottom: 0; }
+
+  /* LEVEL SCALE */
+  .level-scale {
+    display: flex; gap: 8px; margin: 28px 0; flex-wrap: wrap;
+  }
+  .level-pill {
+    padding: 8px 18px; border-radius: 20px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+  }
+  .lp-green { background: #C8E8A8; color: #1A4A08; }
+  .lp-amber { background: #F8E0B0; color: #7A4A10; }
+  .lp-red { background: #F8D0D0; color: #7A1A1A; }
+
+  /* WEEKLY PLANNER */
+  .planner { margin: 36px 0; }
+  .planner-row {
+    display: grid; grid-template-columns: 120px 1fr;
+    gap: 0; margin-bottom: 2px;
+  }
+  .planner-day {
+    background: var(--forest); color: var(--green-pale);
+    padding: 12px 16px; font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 600; display: flex; align-items: center;
+  }
+  .planner-row:first-child .planner-day { border-radius: 8px 0 0 0; }
+  .planner-row:last-child .planner-day { border-radius: 0 0 0 8px; }
+  .planner-activity {
+    background: var(--warm-white); padding: 12px 20px;
+    font-size: 15px; color: var(--text);
+    border-left: 3px solid var(--green-pale);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .planner-row:first-child .planner-activity { border-radius: 0 8px 0 0; }
+  .planner-row:last-child .planner-activity { border-radius: 0 0 8px 0; }
+  .planner-tag {
+    font-size: 10px; padding: 2px 8px;
+    border-radius: 8px; background: var(--green-pale);
+    color: var(--forest); letter-spacing: 1px;
+    text-transform: uppercase; white-space: nowrap;
+  }
+
+  .checklist { list-style: none; margin: 20px 0; }
+  .checklist li {
+    padding: 10px 0 10px 36px; position: relative;
+    border-bottom: 1px solid rgba(90,138,50,0.1);
+    font-size: 16px; color: var(--text);
+  }
+  .checklist li::before {
+    content: '→'; position: absolute; left: 8px;
+    color: var(--green); font-weight: bold;
+  }
+
+  .sep {
+    text-align: center; margin: 60px 0;
+    color: var(--green-pale); font-size: 20px; letter-spacing: 16px;
+  }
+
+  /* LANG */
+  [data-lang] { display: none; }
+  [data-lang].active { display: block; }
+
+  /* MODULE NAV */
+  .module-nav {
+    background: var(--warm-white);
+    border-top: 1px solid rgba(90,138,50,0.15);
+    padding: 32px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 780px; margin: 0 auto;
+  }
+  .nav-pill {
+    padding: 10px 24px; border-radius: 24px;
+    font-size: 13px; letter-spacing: 1px; text-transform: uppercase;
+    border: 1px solid var(--green); color: var(--green);
+    font-family: 'Source Serif 4', serif;
+  }
+  .nav-pill.current { background: var(--green); color: white; }
+
+  /* FOOTER */
+  .doc-footer {
+    background: linear-gradient(135deg, #1A3008, #0E2004);
+    color: #4A6A3A; text-align: center;
+    padding: 48px 40px; font-size: 13px; line-height: 2;
+  }
+  .doc-footer strong { color: var(--green-pale); }
+
+  @media (max-width: 600px) {
+    .activity-grid { grid-template-columns: 1fr; }
+    .planner-row { grid-template-columns: 80px 1fr; }
+    .content { padding: 60px 24px; }
+    .chapter-header { margin: 40px -24px 40px; padding: 36px 24px; }
+  }
+  /* Botón de lectura en voz alta (accesibilidad) */
+  .tts-btn{position:fixed;right:14px;bottom:18px;z-index:99999;display:inline-flex;align-items:center;gap:7px;background:#2f6045;color:#fff;border:none;border-radius:26px;padding:12px 18px;font-size:15px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.28);cursor:pointer;font-family:inherit}
+  .tts-btn .tts-ico{font-size:18px;line-height:1}
+  .tts-btn.on{background:#b4452f}
+  @media print{.tts-btn{display:none}}
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('es')">🇪🇸 Español</button>
+  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+  <button class="lang-btn" onclick="setLang('ca')">🏴 Català</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+</div>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ══════════ COVER ══════════ -->
+<div class="cover">
+  <span class="cover-leaf">🌿</span>
+  <span class="cover-leaf">🍃</span>
+
+  <div class="cover-module-label">CuidarConSentido · Módulo 3 · Module 3</div>
+
+  <div data-lang="es" class="active">
+    <h1 class="cover-title">Activar con<br><em>alegría</em></h1>
+    <p class="cover-subtitle">Actividades que estimulan el cerebro sin generar frustración — para cada día, para cada momento, para cada persona</p>
+  </div>
+  <div data-lang="fr">
+    <h1 class="cover-title">Stimuler avec<br><em>joie</em></h1>
+    <p class="cover-subtitle">Des activités qui stimulent le cerveau sans générer de frustration — pour chaque jour, chaque moment, chaque personne</p>
+  </div>
+  <div data-lang="ca">
+    <h1 class="cover-title">Activar amb<br><em>alegria</em></h1>
+    <p class="cover-subtitle">Activitats que estimulen el cervell sense generar frustració — per a cada dia, per a cada moment, per a cada persona</p>
+  </div>
+  <div data-lang="en">
+    <h1 class="cover-title">Activating with<br><em>joy</em></h1>
+    <p class="cover-subtitle">Activities that stimulate the brain without generating frustration — for every day, every moment, every person</p>
+  </div>
+
+  <div class="cover-langs">
+    <span class="cover-lang-pill">Español</span>
+    <span class="cover-lang-pill">Français</span>
+    <span class="cover-lang-pill">Català</span>
+    <span class="cover-lang-pill">English</span>
+  </div>
+  <div class="cover-divider"></div>
+
+  <div data-lang="es" class="active"><p class="cover-intro">No hace falta ser terapeuta. No hace falta material especial. Hace falta curiosidad, un poco de tiempo y saber qué funciona — y por qué.</p></div>
+  <div data-lang="fr"><p class="cover-intro">Pas besoin d'être thérapeute. Pas besoin de matériel spécial. Il faut de la curiosité, un peu de temps et savoir ce qui fonctionne — et pourquoi.</p></div>
+  <div data-lang="ca"><p class="cover-intro">No cal ser terapeuta. No cal material especial. Cal curiositat, una mica de temps i saber què funciona — i per què.</p></div>
+  <div data-lang="en"><p class="cover-intro">You don't need to be a therapist. You don't need special materials. You need curiosity, a little time, and to know what works — and why.</p></div>
+
+  <div class="scroll-hint">▼ &nbsp; continúa</div>
+</div>
+
+<!-- ══════════ CONTENT ══════════ -->
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Introducción</span>
+      <h2 class="section-title">Por qué las actividades<br><em>importan tanto</em></h2>
+      <p>El cerebro no es un músculo, pero se parece mucho a uno: si no se usa, pierde capacidad. Y si se usa bien — con actividades que mezclan estimulación, emoción y conexión social — puede mantener su función durante años.</p>
+      <p>Las actividades que vamos a ver en este módulo no son "pasatiempos para mayores". Son <strong>intervenciones con base científica</strong> que activan diferentes redes neuronales, refuerzan la reserva cognitiva y, sobre todo, dan a la persona algo muy importante: <em>la sensación de que sigue siendo capaz</em>.</p>
+      <div class="pull-quote">"La mejor actividad no es la más sofisticada. Es la que provoca una sonrisa genuina y la sensación de haberlo hecho bien."</div>
+    </div>
+    <div data-lang="fr">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">Pourquoi les activités<br><em>comptent autant</em></h2>
+      <p>Le cerveau n'est pas un muscle, mais il y ressemble beaucoup : s'il n'est pas utilisé, il perd de sa capacité. Et s'il est bien utilisé — avec des activités qui mêlent stimulation, émotion et connexion sociale — il peut maintenir sa fonction pendant des années.</p>
+      <p>Les activités que nous allons voir dans ce module ne sont pas des "loisirs pour personnes âgées". Ce sont des <strong>interventions à base scientifique</strong> qui activent différents réseaux neuronaux, renforcent la réserve cognitive et, surtout, donnent à la personne quelque chose de très important : <em>le sentiment qu'elle est encore capable</em>.</p>
+      <div class="pull-quote">« La meilleure activité n'est pas la plus sophistiquée. C'est celle qui provoque un sourire sincère et le sentiment d'avoir bien fait. »</div>
+    </div>
+    <div data-lang="ca">
+      <span class="section-number">Introducció</span>
+      <h2 class="section-title">Per què les activitats<br><em>importen tant</em></h2>
+      <p>El cervell no és un múscul, però s'hi assembla molt: si no s'usa, perd capacitat. I si s'usa bé — amb activitats que barregen estimulació, emoció i connexió social — pot mantenir la seva funció durant anys.</p>
+      <p>Les activitats que veurem en aquest mòdul no són "passatemps per a gent gran". Són <strong>intervencions amb base científica</strong> que activen diferents xarxes neuronals, reforcen la reserva cognitiva i, sobretot, donen a la persona alguna cosa molt important: <em>la sensació que encara és capaç</em>.</p>
+      <div class="pull-quote">"La millor activitat no és la més sofisticada. És la que provoca un somriure genuí i la sensació d'haver-ho fet bé."</div>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">Why activities<br><em>matter so much</em></h2>
+      <p>The brain is not a muscle, but it resembles one closely: if it isn't used, it loses capacity. And if it is used well — with activities that blend stimulation, emotion and social connection — it can maintain its function for years.</p>
+      <p>The activities in this module are not "pastimes for the elderly". They are <strong>evidence-based interventions</strong> that activate different neural networks, strengthen cognitive reserve and, above all, give the person something very important: <em>the feeling that they are still capable</em>.</p>
+      <div class="pull-quote">"The best activity is not the most sophisticated one. It's the one that produces a genuine smile and the feeling of having done it well."</div>
+    </div>
+
+    <div class="science-box">
+      <div class="science-box-title" data-lang="es" style="display:block">Lo que dice la ciencia</div>
+      <div class="science-box-title" data-lang="fr">Ce que dit la science</div>
+      <div class="science-box-title" data-lang="ca">El que diu la ciència</div>
+      <div class="science-box-title" data-lang="en">What the science says</div>
+
+      <div data-lang="es" class="active"><p>La <strong>estimulación cognitiva estructurada</strong> ha demostrado mejorar la memoria, el lenguaje y la orientación en personas con DCL y demencia leve. Una revisión Cochrane de 2023 analizó 37 ensayos clínicos y concluyó que las intervenciones de estimulación cognitiva producen mejoras significativas en calidad de vida, cognición y bienestar, con tamaño de efecto equiparable al de algunos fármacos.</p><p class="source">Fuente: Woods B et al. (2023). "Cognitive stimulation to improve cognitive functioning in people with dementia." <em>Cochrane Database of Systematic Reviews</em>. / Livingston G et al. (2020). <em>The Lancet</em>, 396(10248).</p></div>
+      <div data-lang="fr"><p>La <strong>stimulation cognitive structurée</strong> a démontré une amélioration de la mémoire, du langage et de l'orientation chez les personnes avec DCL et démence légère. Une revue Cochrane de 2023 analysant 37 essais cliniques a conclu que les interventions de stimulation cognitive produisent des améliorations significatives de la qualité de vie, de la cognition et du bien-être, avec une taille d'effet comparable à certains médicaments.</p><p class="source">Source : Woods B et al. (2023). « Cognitive stimulation to improve cognitive functioning in people with dementia. » <em>Cochrane Database of Systematic Reviews</em>.</p></div>
+      <div data-lang="ca"><p>L'<strong>estimulació cognitiva estructurada</strong> ha demostrat millorar la memòria, el llenguatge i l'orientació en persones amb DCL i demència lleu. Una revisió Cochrane de 2023 que analitzava 37 assaigs clínics va concloure que les intervencions d'estimulació cognitiva produeixen millores significatives en qualitat de vida, cognició i benestar, amb una mida d'efecte comparable a alguns fàrmacs.</p><p class="source">Font: Woods B et al. (2023). "Cognitive stimulation to improve cognitive functioning in people with dementia." <em>Cochrane Database of Systematic Reviews</em>.</p></div>
+      <div data-lang="en"><p><strong>Structured cognitive stimulation</strong> has been shown to improve memory, language and orientation in people with MCI and mild dementia. A 2023 Cochrane review analysing 37 clinical trials concluded that cognitive stimulation interventions produce significant improvements in quality of life, cognition and wellbeing, with an effect size comparable to some pharmacological treatments.</p><p class="source">Source: Woods B et al. (2023). "Cognitive stimulation to improve cognitive functioning in people with dementia." <em>Cochrane Database of Systematic Reviews</em>. / Livingston G et al. (2020). <em>The Lancet</em>, 396(10248).</p></div>
+    </div>
+
+    <!-- LEVEL SCALE -->
+    <div data-lang="es" class="active">
+      <p>A lo largo de este módulo verás actividades etiquetadas por nivel de dificultad:</p>
+      <div class="level-scale">
+        <span class="level-pill lp-green">🟢 Fácil — cualquier momento</span>
+        <span class="level-pill lp-amber">🟡 Medio — con un poco de ayuda</span>
+        <span class="level-pill lp-red">🔴 Adaptar — si hay más dificultad</span>
+      </div>
+    </div>
+    <div data-lang="fr">
+      <p>Tout au long de ce module, vous verrez des activités étiquetées par niveau de difficulté :</p>
+      <div class="level-scale">
+        <span class="level-pill lp-green">🟢 Facile — n'importe quand</span>
+        <span class="level-pill lp-amber">🟡 Moyen — avec un peu d'aide</span>
+        <span class="level-pill lp-red">🔴 Adapter — si plus de difficulté</span>
+      </div>
+    </div>
+    <div data-lang="ca">
+      <p>Al llarg d'aquest mòdul veuràs activitats etiquetades per nivell de dificultat:</p>
+      <div class="level-scale">
+        <span class="level-pill lp-green">🟢 Fàcil — qualsevol moment</span>
+        <span class="level-pill lp-amber">🟡 Mitjà — amb una mica d'ajuda</span>
+        <span class="level-pill lp-red">🔴 Adaptar — si hi ha més dificultat</span>
+      </div>
+    </div>
+    <div data-lang="en">
+      <p>Throughout this module you will see activities labelled by difficulty level:</p>
+      <div class="level-scale">
+        <span class="level-pill lp-green">🟢 Easy — any time</span>
+        <span class="level-pill lp-amber">🟡 Medium — with a little help</span>
+        <span class="level-pill lp-red">🔴 Adapt — if there is more difficulty</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sep">· · ·</div>
+
+  <!-- ══ CATEGORÍA 1: MÚSICA ══ -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🎵</span>
+      <div data-lang="es" class="active"><span class="section-number">Categoría 1</span><h2 class="section-title">Música — la puerta que <em>siempre abre</em></h2></div>
+      <div data-lang="fr"><span class="section-number">Catégorie 1</span><h2 class="section-title">Musique — la porte qui <em>s'ouvre toujours</em></h2></div>
+      <div data-lang="ca"><span class="section-number">Categoria 1</span><h2 class="section-title">Música — la porta que <em>sempre s'obre</em></h2></div>
+      <div data-lang="en"><span class="section-number">Category 1</span><h2 class="section-title">Music — the door that <em>always opens</em></h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>La memoria musical es la más resistente al deterioro cognitivo. Una persona que no recuerda el nombre de su hijo puede cantar de memoria una canción de su juventud. Esto no es magia — es neurología: la música activa circuitos cerebrales diferentes a los de la memoria verbal, y estos circuitos son de los últimos en verse afectados.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card">
+          <span class="ac-icon">🎶</span>
+          <div class="ac-title">La playlist personal</div>
+          <p class="ac-desc">Construir juntos una lista de canciones significativas de su vida. Escucharlas con atención, hablar de los recuerdos que evocan.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🎤</span>
+          <div class="ac-title">Cantar juntos</div>
+          <p class="ac-desc">No importa la voz. Lo que importa es la participación activa. Canciones conocidas, cortas, con estribillo repetitivo.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🥁</span>
+          <div class="ac-title">Ritmo corporal</div>
+          <p class="ac-desc">Marcar el ritmo dando palmas, golpeando la mesa o con instrumentos sencillos de percusión. Activa coordinación y atención.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🎹</span>
+          <div class="ac-title">Reconocer melodías</div>
+          <p class="ac-desc">Poner los primeros 10 segundos de una canción conocida y pedirle que adivine cuál es. Divertido y estimulante.</p>
+          <span class="ac-level level-medium">🟡 Medio</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">💃</span>
+          <div class="ac-title">Movimiento con música</div>
+          <p class="ac-desc">Balanceo, pequeños pasos, movimiento de manos al ritmo. Combina estimulación cognitiva y física a la vez.</p>
+          <span class="ac-level level-adapt">🔴 Adaptar</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🗣️</span>
+          <div class="ac-title">Completar letras</div>
+          <p class="ac-desc">Cantar una frase y dejar el final incompleto para que lo complete. Activa memoria semántica y procedimental.</p>
+          <span class="ac-level level-medium">🟡 Medio</span>
+        </div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">Musicoterapia y neurociencia</div>
+        <p>El modelo MTTB (Music-based Therapeutic Training for the Brain) y la revisión de Särkämö et al. (2014) demuestran que escuchar música activa simultáneamente el córtex motor, el sistema límbico y redes de memoria implícita. La memoria musical (memoria procedimental) es gestionada por el cerebelo y los ganglios basales — estructuras menos afectadas en las primeras fases del DCL.</p>
+        <p class="source">Fuente: Särkämö T et al. (2014). "Cognitive, emotional, and social benefits of regular musical activities in early dementia." <em>The Gerontologist</em>, 54(4), 634–650.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Para residencias: programa de musicoterapia grupal</div>
+        <p>La musicoterapia grupal en residencias ha demostrado reducir la agitación, mejorar el estado de ánimo y aumentar la interacción social entre residentes:</p>
+        <ul>
+          <li>Sesiones de 30–45 min, 2–3 veces por semana — la frecuencia importa más que la duración</li>
+          <li>Crear playlists personalizadas para cada residente con ayuda de las familias</li>
+          <li>Usar música antes de actividades difíciles (comidas, higiene) para reducir resistencia</li>
+          <li>El musicoterapeuta certificado aporta estructura, pero el personal puede aplicar técnicas básicas diariamente</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>La mémoire musicale est la plus résistante au déclin cognitif. Une personne qui ne se souvient plus du prénom de son fils peut chanter par cœur une chanson de sa jeunesse. Ce n'est pas de la magie — c'est de la neurologie : la musique active des circuits cérébraux différents de ceux de la mémoire verbale, et ces circuits sont parmi les derniers à être touchés.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card">
+          <span class="ac-icon">🎶</span>
+          <div class="ac-title">La playlist personnelle</div>
+          <p class="ac-desc">Construire ensemble une liste de chansons significatives de sa vie. Les écouter avec attention, parler des souvenirs qu'elles évoquent.</p>
+          <span class="ac-level level-easy">🟢 Facile</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🎤</span>
+          <div class="ac-title">Chanter ensemble</div>
+          <p class="ac-desc">La voix n'a pas d'importance. Ce qui compte, c'est la participation active. Des chansons connues, courtes, avec un refrain répétitif.</p>
+          <span class="ac-level level-easy">🟢 Facile</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🥁</span>
+          <div class="ac-title">Rythme corporel</div>
+          <p class="ac-desc">Marquer le rythme en frappant dans les mains, sur la table ou avec des instruments à percussion simples. Active coordination et attention.</p>
+          <span class="ac-level level-easy">🟢 Facile</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🎹</span>
+          <div class="ac-title">Reconnaître des mélodies</div>
+          <p class="ac-desc">Passer les 10 premières secondes d'une chanson connue et lui demander de deviner laquelle c'est. Amusant et stimulant.</p>
+          <span class="ac-level level-medium">🟡 Moyen</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">💃</span>
+          <div class="ac-title">Mouvement avec musique</div>
+          <p class="ac-desc">Balancement, petits pas, mouvement des mains au rythme. Combine stimulation cognitive et physique en même temps.</p>
+          <span class="ac-level level-adapt">🔴 Adapter</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🗣️</span>
+          <div class="ac-title">Compléter des paroles</div>
+          <p class="ac-desc">Chanter une phrase et laisser la fin incomplète pour qu'elle la complète. Active la mémoire sémantique et procédurale.</p>
+          <span class="ac-level level-medium">🟡 Moyen</span>
+        </div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">Musicothérapie et neurosciences</div>
+        <p>La revue de Särkämö et al. (2014) démontre que l'écoute musicale active simultanément le cortex moteur, le système limbique et les réseaux de mémoire implicite. La mémoire musicale (mémoire procédurale) est gérée par le cervelet et les ganglions de la base — des structures moins affectées dans les premières phases du DCL.</p>
+        <p class="source">Source : Särkämö T et al. (2014). « Cognitive, emotional, and social benefits of regular musical activities in early dementia. » <em>The Gerontologist</em>, 54(4), 634–650.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Pour les établissements : programme de musicothérapie groupale</div>
+        <p>La musicothérapie de groupe en résidence a démontré une réduction de l'agitation, une amélioration de l'humeur et une augmentation des interactions sociales :</p>
+        <ul>
+          <li>Séances de 30–45 min, 2–3 fois par semaine — la fréquence compte plus que la durée</li>
+          <li>Créer des playlists personnalisées pour chaque résident avec l'aide des familles</li>
+          <li>Utiliser la musique avant les activités difficiles (repas, hygiène) pour réduire la résistance</li>
+          <li>Le musicothérapeute certifié apporte de la structure, mais le personnel peut appliquer des techniques de base au quotidien</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>La memòria musical és la més resistent al deteriorament cognitiu. Una persona que no recorda el nom del seu fill pot cantar de memòria una cançó de la seva joventut. Això no és màgia — és neurologia: la música activa circuits cerebrals diferents dels de la memòria verbal, i aquests circuits són dels últims a veure's afectats.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card">
+          <span class="ac-icon">🎶</span>
+          <div class="ac-title">La playlist personal</div>
+          <p class="ac-desc">Construir junts una llista de cançons significatives de la seva vida. Escoltar-les amb atenció, parlar dels records que evoquen.</p>
+          <span class="ac-level level-easy">🟢 Fàcil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🎤</span>
+          <div class="ac-title">Cantar junts</div>
+          <p class="ac-desc">No importa la veu. El que importa és la participació activa. Cançons conegudes, curtes, amb tornada repetitiva.</p>
+          <span class="ac-level level-easy">🟢 Fàcil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🥁</span>
+          <div class="ac-title">Ritme corporal</div>
+          <p class="ac-desc">Marcar el ritme picant de mans, picant a la taula o amb instruments senzills de percussió. Activa coordinació i atenció.</p>
+          <span class="ac-level level-easy">🟢 Fàcil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🎹</span>
+          <div class="ac-title">Reconèixer melodies</div>
+          <p class="ac-desc">Posar els primers 10 segons d'una cançó coneguda i demanar-li que endevini quina és. Divertit i estimulant.</p>
+          <span class="ac-level level-medium">🟡 Mitjà</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">💃</span>
+          <div class="ac-title">Moviment amb música</div>
+          <p class="ac-desc">Bressoleig, petits passos, moviment de mans al ritme. Combina estimulació cognitiva i física alhora.</p>
+          <span class="ac-level level-adapt">🔴 Adaptar</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🗣️</span>
+          <div class="ac-title">Completar lletres</div>
+          <p class="ac-desc">Cantar una frase i deixar el final incomplet perquè el completi. Activa memòria semàntica i procedimental.</p>
+          <span class="ac-level level-medium">🟡 Mitjà</span>
+        </div>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Per a residències: programa de musicoteràpia grupal</div>
+        <p>La musicoteràpia grupal en residències ha demostrat reduir l'agitació, millorar l'estat d'ànim i augmentar la interacció social entre residents:</p>
+        <ul>
+          <li>Sessions de 30–45 min, 2–3 vegades per setmana — la freqüència importa més que la durada</li>
+          <li>Crear playlists personalitzades per a cada resident amb l'ajuda de les famílies</li>
+          <li>Usar música abans d'activitats difícils (menjars, higiene) per reduir resistència</li>
+          <li>El musicoterapeuta certificat aporta estructura, però el personal pot aplicar tècniques bàsiques diàriament</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p>Musical memory is the most resistant to cognitive decline. A person who cannot remember their child's name may sing a song from their youth perfectly from memory. This is not magic — it is neurology: music activates different brain circuits to those of verbal memory, and these circuits are among the last to be affected.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card">
+          <span class="ac-icon">🎶</span>
+          <div class="ac-title">The personal playlist</div>
+          <p class="ac-desc">Build together a list of meaningful songs from their life. Listen attentively and talk about the memories they evoke.</p>
+          <span class="ac-level level-easy">🟢 Easy</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🎤</span>
+          <div class="ac-title">Singing together</div>
+          <p class="ac-desc">The voice doesn't matter. What matters is active participation. Well-known songs, short, with a repetitive chorus.</p>
+          <span class="ac-level level-easy">🟢 Easy</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🥁</span>
+          <div class="ac-title">Body rhythm</div>
+          <p class="ac-desc">Marking the beat by clapping, tapping the table or using simple percussion instruments. Activates coordination and attention.</p>
+          <span class="ac-level level-easy">🟢 Easy</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🎹</span>
+          <div class="ac-title">Recognising melodies</div>
+          <p class="ac-desc">Play the first 10 seconds of a known song and ask them to guess which one it is. Fun and stimulating.</p>
+          <span class="ac-level level-medium">🟡 Medium</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">💃</span>
+          <div class="ac-title">Movement with music</div>
+          <p class="ac-desc">Swaying, small steps, hand movements to the beat. Combines cognitive and physical stimulation at once.</p>
+          <span class="ac-level level-adapt">🔴 Adapt</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🗣️</span>
+          <div class="ac-title">Completing lyrics</div>
+          <p class="ac-desc">Sing a phrase and leave the ending incomplete for them to complete. Activates semantic and procedural memory.</p>
+          <span class="ac-level level-medium">🟡 Medium</span>
+        </div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">Music therapy and neuroscience</div>
+        <p>Särkämö et al. (2014) demonstrated that listening to music simultaneously activates the motor cortex, limbic system and implicit memory networks. Musical memory (procedural memory) is managed by the cerebellum and basal ganglia — structures less affected in the early stages of MCI, which is why it remains accessible even when other memory systems are compromised.</p>
+        <p class="source">Source: Särkämö T et al. (2014). "Cognitive, emotional, and social benefits of regular musical activities in early dementia." <em>The Gerontologist</em>, 54(4), 634–650.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">For care homes: group music therapy programme</div>
+        <p>Group music therapy in care homes has been shown to reduce agitation, improve mood and increase social interaction among residents:</p>
+        <ul>
+          <li>Sessions of 30–45 min, 2–3 times per week — frequency matters more than duration</li>
+          <li>Create personalised playlists for each resident with families' help</li>
+          <li>Use music before difficult activities (meals, personal care) to reduce resistance</li>
+          <li>A certified music therapist provides structure, but staff can apply basic techniques daily</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CATEGORÍA 2: MEMORIA ══ -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🧩</span>
+      <div data-lang="es" class="active"><span class="section-number">Categoría 2</span><h2 class="section-title">Memoria y lenguaje — <em>ejercitar sin presión</em></h2></div>
+      <div data-lang="fr"><span class="section-number">Catégorie 2</span><h2 class="section-title">Mémoire et langage — <em>s'exercer sans pression</em></h2></div>
+      <div data-lang="ca"><span class="section-number">Categoria 2</span><h2 class="section-title">Memòria i llenguatge — <em>exercitar sense pressió</em></h2></div>
+      <div data-lang="en"><span class="section-number">Category 2</span><h2 class="section-title">Memory and language — <em>exercising without pressure</em></h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>La clave aquí es la diferencia entre <strong>ejercitar</strong> y <strong>examinar</strong>. Cuando la persona siente que la están evaluando, la ansiedad bloquea la memoria. Cuando la actividad es un juego compartido sin nota, el cerebro funciona mucho mejor.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card">
+          <span class="ac-icon">📸</span>
+          <div class="ac-title">El álbum de fotos</div>
+          <p class="ac-desc">Mirar fotos antiguas juntos. No importa si no recuerda quiénes son — lo importante es la conversación y la emoción que evocan.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">📰</span>
+          <div class="ac-title">Titulares del día</div>
+          <p class="ac-desc">Leer juntos una noticia breve y comentarla. Activa comprensión lectora, opinión y memoria reciente.</p>
+          <span class="ac-level level-medium">🟡 Medio</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🃏</span>
+          <div class="ac-title">Cartas y dominó</div>
+          <p class="ac-desc">Juegos de cartas sencillos, dominó, parchís. El juego social combina atención, memoria de trabajo y conexión.</p>
+          <span class="ac-level level-medium">🟡 Medio</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🔤</span>
+          <div class="ac-title">Categorías verbales</div>
+          <p class="ac-desc">Nombrar 5 animales, 5 frutas, 5 ciudades. Sin presión de tiempo, como juego. Activa fluencia verbal y memoria semántica.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">📖</span>
+          <div class="ac-title">Lectura en voz alta</div>
+          <p class="ac-desc">Leer un cuento, una poesía, una anécdota. Puede ser el cuidador quien lea — escuchar activa la comprensión y la imaginación.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🗺️</span>
+          <div class="ac-title">Recuerdos de vida</div>
+          <p class="ac-desc">Preguntar sobre su infancia, primer trabajo, viajes. La memoria autobiográfica remota es la más preservada — y la más rica.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">El secreto de los recuerdos de vida</div>
+        <p>Preguntar por el pasado no es entretenimiento — es terapia. La técnica de <strong>reminiscencia</strong> está avalada científicamente como intervención que mejora el bienestar, refuerza la identidad y reduce la depresión en personas con DCL. Y tiene un efecto secundario hermoso: tú aprendes cosas de esa persona que quizá nunca habrías conocido.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Para residencias: grupos de reminiscencia</div>
+        <p>Los grupos de reminiscencia estructurados son una de las intervenciones más sencillas y efectivas en contexto residencial:</p>
+        <ul>
+          <li>Grupos de 4–6 personas con nivel cognitivo similar, 1 vez por semana</li>
+          <li>Usar objetos físicos como anclas: fotos, utensilios de cocina antiguos, telas, música de época</li>
+          <li>El moderador guía sin corregir — todas las memorias son válidas</li>
+          <li>Documentar los relatos de vida: puede convertirse en un legado hermoso para las familias</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>La clé ici est la différence entre <strong>exercer</strong> et <strong>évaluer</strong>. Quand la personne sent qu'on l'évalue, l'anxiété bloque la mémoire. Quand l'activité est un jeu partagé sans note, le cerveau fonctionne bien mieux.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card">
+          <span class="ac-icon">📸</span>
+          <div class="ac-title">L'album photos</div>
+          <p class="ac-desc">Regarder ensemble de vieilles photos. Peu importe si elle ne se souvient pas de qui c'est — l'important est la conversation et l'émotion.</p>
+          <span class="ac-level level-easy">🟢 Facile</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">📰</span>
+          <div class="ac-title">Titres du jour</div>
+          <p class="ac-desc">Lire ensemble une courte actualité et la commenter. Active la compréhension écrite, l'opinion et la mémoire récente.</p>
+          <span class="ac-level level-medium">🟡 Moyen</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🃏</span>
+          <div class="ac-title">Cartes et dominos</div>
+          <p class="ac-desc">Jeux de cartes simples, dominos, jeux de société. Le jeu social combine attention, mémoire de travail et connexion.</p>
+          <span class="ac-level level-medium">🟡 Moyen</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🔤</span>
+          <div class="ac-title">Catégories verbales</div>
+          <p class="ac-desc">Nommer 5 animaux, 5 fruits, 5 villes. Sans pression de temps, comme un jeu. Active la fluence verbale et la mémoire sémantique.</p>
+          <span class="ac-level level-easy">🟢 Facile</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">📖</span>
+          <div class="ac-title">Lecture à voix haute</div>
+          <p class="ac-desc">Lire un conte, un poème, une anecdote. C'est l'aidant qui peut lire — écouter active la compréhension et l'imagination.</p>
+          <span class="ac-level level-easy">🟢 Facile</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🗺️</span>
+          <div class="ac-title">Souvenirs de vie</div>
+          <p class="ac-desc">Interroger sur son enfance, premier emploi, voyages. La mémoire autobiographique ancienne est la plus préservée — et la plus riche.</p>
+          <span class="ac-level level-easy">🟢 Facile</span>
+        </div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Le secret des souvenirs de vie</div>
+        <p>Interroger sur le passé n'est pas du divertissement — c'est de la thérapie. La technique de <strong>réminiscence</strong> est scientifiquement validée comme intervention améliorant le bien-être, renforçant l'identité et réduisant la dépression chez les personnes avec DCL. Et elle a un bel effet secondaire : vous apprenez des choses sur cette personne que vous n'auriez peut-être jamais connues.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Pour les établissements : groupes de réminiscence</div>
+        <p>Les groupes de réminiscence structurés sont l'une des interventions les plus simples et efficaces en contexte résidentiel :</p>
+        <ul>
+          <li>Groupes de 4–6 personnes de niveau cognitif similaire, 1 fois par semaine</li>
+          <li>Utiliser des objets physiques comme ancres : photos, ustensiles anciens, tissus, musique d'époque</li>
+          <li>Le modérateur guide sans corriger — tous les souvenirs sont valides</li>
+          <li>Documenter les récits de vie : cela peut devenir un beau legs pour les familles</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>La clau aquí és la diferència entre <strong>exercitar</strong> i <strong>examinar</strong>. Quan la persona sent que l'estan avaluant, l'ansietat bloqueja la memòria. Quan l'activitat és un joc compartit sense nota, el cervell funciona molt millor.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card">
+          <span class="ac-icon">📸</span>
+          <div class="ac-title">L'àlbum de fotos</div>
+          <p class="ac-desc">Mirar fotos antigues junts. No importa si no recorda qui és — el que importa és la conversa i l'emoció que evoquen.</p>
+          <span class="ac-level level-easy">🟢 Fàcil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">📰</span>
+          <div class="ac-title">Titulars del dia</div>
+          <p class="ac-desc">Llegir junts una notícia breu i comentar-la. Activa comprensió lectora, opinió i memòria recent.</p>
+          <span class="ac-level level-medium">🟡 Mitjà</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🃏</span>
+          <div class="ac-title">Cartes i dòmino</div>
+          <p class="ac-desc">Jocs de cartes senzills, dòmino, parxís. El joc social combina atenció, memòria de treball i connexió.</p>
+          <span class="ac-level level-medium">🟡 Mitjà</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🔤</span>
+          <div class="ac-title">Categories verbals</div>
+          <p class="ac-desc">Anomenar 5 animals, 5 fruites, 5 ciutats. Sense pressió de temps, com a joc. Activa fluència verbal i memòria semàntica.</p>
+          <span class="ac-level level-easy">🟢 Fàcil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">📖</span>
+          <div class="ac-title">Lectura en veu alta</div>
+          <p class="ac-desc">Llegir un conte, una poesia, una anècdota. Pot ser el cuidador qui llegeixi — escoltar activa la comprensió i la imaginació.</p>
+          <span class="ac-level level-easy">🟢 Fàcil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🗺️</span>
+          <div class="ac-title">Records de vida</div>
+          <p class="ac-desc">Preguntar sobre la seva infantesa, primer treball, viatges. La memòria autobiogràfica remota és la més preservada — i la més rica.</p>
+          <span class="ac-level level-easy">🟢 Fàcil</span>
+        </div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">El secret dels records de vida</div>
+        <p>Preguntar pel passat no és entreteniment — és teràpia. La tècnica de <strong>reminiscència</strong> està avalada científicament com a intervenció que millora el benestar, reforça la identitat i redueix la depressió en persones amb DCL. I té un efecte secundari bonic: aprens coses d'aquesta persona que potser mai no hauries conegut.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Per a residències: grups de reminiscència</div>
+        <p>Els grups de reminiscència estructurats són una de les intervencions més senzilles i efectives en context residencial:</p>
+        <ul>
+          <li>Grups de 4–6 persones amb nivell cognitiu similar, 1 vegada per setmana</li>
+          <li>Usar objectes físics com a àncores: fotos, estris de cuina antics, teles, música de l'època</li>
+          <li>El moderador guia sense corregir — tots els records són vàlids</li>
+          <li>Documentar els relats de vida: pot convertir-se en un llegat bonic per a les famílies</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p>The key here is the difference between <strong>exercising</strong> and <strong>examining</strong>. When the person feels they are being tested, anxiety blocks memory. When the activity is a shared game with no score, the brain works much better.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card">
+          <span class="ac-icon">📸</span>
+          <div class="ac-title">The photo album</div>
+          <p class="ac-desc">Look at old photos together. It doesn't matter if they don't remember who's in them — what matters is the conversation and the emotion evoked.</p>
+          <span class="ac-level level-easy">🟢 Easy</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">📰</span>
+          <div class="ac-title">Today's headlines</div>
+          <p class="ac-desc">Read a short piece of news together and discuss it. Activates reading comprehension, opinion and recent memory.</p>
+          <span class="ac-level level-medium">🟡 Medium</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🃏</span>
+          <div class="ac-title">Cards and dominoes</div>
+          <p class="ac-desc">Simple card games, dominoes, board games. Social play combines attention, working memory and connection.</p>
+          <span class="ac-level level-medium">🟡 Medium</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🔤</span>
+          <div class="ac-title">Verbal categories</div>
+          <p class="ac-desc">Name 5 animals, 5 fruits, 5 cities. No time pressure, as a game. Activates verbal fluency and semantic memory.</p>
+          <span class="ac-level level-easy">🟢 Easy</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">📖</span>
+          <div class="ac-title">Reading aloud</div>
+          <p class="ac-desc">Read a story, poem, or anecdote. The caregiver can do the reading — listening activates comprehension and imagination.</p>
+          <span class="ac-level level-easy">🟢 Easy</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🗺️</span>
+          <div class="ac-title">Life memories</div>
+          <p class="ac-desc">Ask about their childhood, first job, travels. Remote autobiographical memory is the most preserved — and the richest.</p>
+          <span class="ac-level level-easy">🟢 Easy</span>
+        </div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">The secret of life memories</div>
+        <p>Asking about the past is not entertainment — it is therapy. The <strong>reminiscence</strong> technique is scientifically validated as an intervention that improves wellbeing, reinforces identity and reduces depression in people with MCI. And it has a beautiful side effect: you learn things about that person you might never have known otherwise.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">For care homes: reminiscence groups</div>
+        <p>Structured reminiscence groups are one of the simplest and most effective interventions in residential settings:</p>
+        <ul>
+          <li>Groups of 4–6 people with similar cognitive level, once a week</li>
+          <li>Use physical objects as anchors: photos, old kitchen utensils, fabrics, period music</li>
+          <li>The facilitator guides without correcting — all memories are valid</li>
+          <li>Document life stories: this can become a beautiful legacy for families</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CATEGORÍA 3: MOVIMIENTO ══ -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🚶</span>
+      <div data-lang="es" class="active"><span class="section-number">Categoría 3</span><h2 class="section-title">Movimiento — el mejor <em>medicamento</em></h2></div>
+      <div data-lang="fr"><span class="section-number">Catégorie 3</span><h2 class="section-title">Mouvement — le meilleur <em>médicament</em></h2></div>
+      <div data-lang="ca"><span class="section-number">Categoria 3</span><h2 class="section-title">Moviment — el millor <em>medicament</em></h2></div>
+      <div data-lang="en"><span class="section-number">Category 3</span><h2 class="section-title">Movement — the best <em>medicine</em></h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>El ejercicio físico no es complementario al cuidado cognitivo — es central. Es el único factor de estilo de vida con evidencia suficiente para considerarse <strong>neuroprotector</strong>: aumenta el volumen del hipocampo, mejora el flujo sanguíneo cerebral y estimula la producción de BDNF (factor neurotrófico derivado del cerebro), una proteína que favorece la supervivencia y el crecimiento neuronal.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card">
+          <span class="ac-icon">🚶</span>
+          <div class="ac-title">El paseo diario</div>
+          <p class="ac-desc">20–30 minutos caminando al aire libre. Si es posible, en entorno natural. Si no puede salir, caminar por casa tiene también efecto.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🧘</span>
+          <div class="ac-title">Ejercicios de silla</div>
+          <p class="ac-desc">Movimiento de brazos, piernas y cuello sentado. Videos guiados disponibles en YouTube. 10 minutos son suficientes.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🌱</span>
+          <div class="ac-title">Jardinería</div>
+          <p class="ac-desc">Regar plantas, trasplantar, cuidar un huerto pequeño. Combina movimiento, sensaciones táctiles y propósito.</p>
+          <span class="ac-level level-medium">🟡 Medio</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🎾</span>
+          <div class="ac-title">Lanzar y recibir</div>
+          <p class="ac-desc">Pasar una pelota de tela, globos. Activa coordinación ojo-mano, atención y reflejos. Muy adaptable.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🤸</span>
+          <div class="ac-title">Tai chi adaptado</div>
+          <p class="ac-desc">Movimientos lentos y suaves con beneficios documentados en equilibrio, caídas y bienestar cognitivo.</p>
+          <span class="ac-level level-medium">🟡 Medio</span>
+        </div>
+        <div class="activity-card">
+          <span class="ac-icon">🏠</span>
+          <div class="ac-title">Tareas del hogar</div>
+          <p class="ac-desc">Doblar ropa, poner la mesa, barrer. No subestimes su valor — son actividades con propósito real que mantienen la autonomía.</p>
+          <span class="ac-level level-easy">🟢 Fácil</span>
+        </div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">BDNF y ejercicio — la evidencia más sólida</div>
+        <p>El factor neurotrófico derivado del cerebro (BDNF) aumenta con el ejercicio aeróbico y actúa como "fertilizante" para las neuronas, mejorando la plasticidad sináptica. Estudios de neuroimagen muestran que 6 meses de ejercicio aeróbico regular aumentan el volumen del hipocampo en un 2%, revertiendo parcialmente la pérdida asociada al envejecimiento.</p>
+        <p class="source">Fuente: Erickson KI et al. (2011). "Exercise training increases size of hippocampus and improves memory." <em>PNAS</em>, 108(7), 3017–3022. / Livingston G et al. (2020). <em>The Lancet</em>.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Para residencias: movimiento integrado en el día</div>
+        <p>El error más común en residencias es limitar el ejercicio a las sesiones formales de fisioterapia. La evidencia sugiere que el movimiento frecuente y distribuido a lo largo del día es más beneficioso que sesiones largas e infrecuentes:</p>
+        <ul>
+          <li>Implementar "momentos de movimiento" de 5–10 min en cada turno</li>
+          <li>Gamificar el movimiento: circuitos sencillos, bolos adaptados, globos</li>
+          <li>Paseos en grupo al exterior como actividad social y física combinada</li>
+          <li>Formar al personal auxiliar en ejercicios de silla básicos para aplicarlos durante las rutinas de cuidado</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>L'exercice physique n'est pas complémentaire au soin cognitif — il en est central. C'est le seul facteur de style de vie avec suffisamment de preuves pour être considéré comme <strong>neuroprotecteur</strong> : il augmente le volume de l'hippocampe, améliore le flux sanguin cérébral et stimule la production de BDNF, une protéine favorisant la survie et la croissance neuronale.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card"><span class="ac-icon">🚶</span><div class="ac-title">La promenade quotidienne</div><p class="ac-desc">20–30 minutes de marche en plein air. Si possible, en milieu naturel. Si elle ne peut pas sortir, marcher dans la maison a aussi un effet.</p><span class="ac-level level-easy">🟢 Facile</span></div>
+        <div class="activity-card"><span class="ac-icon">🧘</span><div class="ac-title">Exercices en chaise</div><p class="ac-desc">Mouvement des bras, jambes et cou assis. Vidéos guidées disponibles sur YouTube. 10 minutes suffisent.</p><span class="ac-level level-easy">🟢 Facile</span></div>
+        <div class="activity-card"><span class="ac-icon">🌱</span><div class="ac-title">Jardinage</div><p class="ac-desc">Arroser les plantes, rempoter, entretenir un petit potager. Combine mouvement, sensations tactiles et sentiment d'utilité.</p><span class="ac-level level-medium">🟡 Moyen</span></div>
+        <div class="activity-card"><span class="ac-icon">🎾</span><div class="ac-title">Lancer et recevoir</div><p class="ac-desc">Passer une balle en tissu, des ballons. Active coordination œil-main, attention et réflexes. Très adaptable.</p><span class="ac-level level-easy">🟢 Facile</span></div>
+        <div class="activity-card"><span class="ac-icon">🤸</span><div class="ac-title">Tai chi adapté</div><p class="ac-desc">Mouvements lents et doux avec des bénéfices documentés sur l'équilibre, les chutes et le bien-être cognitif.</p><span class="ac-level level-medium">🟡 Moyen</span></div>
+        <div class="activity-card"><span class="ac-icon">🏠</span><div class="ac-title">Tâches ménagères</div><p class="ac-desc">Plier le linge, mettre la table, balayer. Ne sous-estimez pas leur valeur — ce sont des activités avec un vrai but qui maintiennent l'autonomie.</p><span class="ac-level level-easy">🟢 Facile</span></div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">BDNF et exercice — la preuve la plus solide</div>
+        <p>Le facteur neurotrophique dérivé du cerveau (BDNF) augmente avec l'exercice aérobique et agit comme un "engrais" pour les neurones. Des études de neuroimagerie montrent que 6 mois d'exercice aérobique régulier augmentent le volume de l'hippocampe de 2%, inversant partiellement la perte liée au vieillissement.</p>
+        <p class="source">Source : Erickson KI et al. (2011). « Exercise training increases size of hippocampus and improves memory. » <em>PNAS</em>, 108(7), 3017–3022.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Pour les établissements : mouvement intégré dans la journée</div>
+        <p>L'erreur la plus courante en résidence est de limiter l'exercice aux séances formelles de kinésithérapie. Les données suggèrent qu'un mouvement fréquent distribué tout au long de la journée est plus bénéfique :</p>
+        <ul>
+          <li>Mettre en place des "moments de mouvement" de 5–10 min à chaque quart de travail</li>
+          <li>Ludifier le mouvement : circuits simples, quilles adaptées, ballons</li>
+          <li>Promenades en groupe à l'extérieur comme activité sociale et physique combinée</li>
+          <li>Former le personnel auxiliaire aux exercices en chaise de base</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>L'exercici físic no és complementari a la cura cognitiva — n'és central. És l'únic factor d'estil de vida amb evidència suficient per considerar-se <strong>neuroprotector</strong>: augmenta el volum de l'hipocamp, millora el flux sanguini cerebral i estimula la producció de BDNF, una proteïna que afavoreix la supervivència i el creixement neuronal.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card"><span class="ac-icon">🚶</span><div class="ac-title">El passeig diari</div><p class="ac-desc">20–30 minuts caminant a l'aire lliure. Si és possible, en entorn natural. Si no pot sortir, caminar per casa també té efecte.</p><span class="ac-level level-easy">🟢 Fàcil</span></div>
+        <div class="activity-card"><span class="ac-icon">🧘</span><div class="ac-title">Exercicis de cadira</div><p class="ac-desc">Moviment de braços, cames i coll assegut. Vídeos guiats disponibles a YouTube. 10 minuts en són suficients.</p><span class="ac-level level-easy">🟢 Fàcil</span></div>
+        <div class="activity-card"><span class="ac-icon">🌱</span><div class="ac-title">Jardineria</div><p class="ac-desc">Regar plantes, trasplantar, cuidar un hort petit. Combina moviment, sensacions tàctils i propòsit.</p><span class="ac-level level-medium">🟡 Mitjà</span></div>
+        <div class="activity-card"><span class="ac-icon">🎾</span><div class="ac-title">Llançar i rebre</div><p class="ac-desc">Passar una pilota de tela, globus. Activa coordinació ull-mà, atenció i reflexos. Molt adaptable.</p><span class="ac-level level-easy">🟢 Fàcil</span></div>
+        <div class="activity-card"><span class="ac-icon">🤸</span><div class="ac-title">Tai-txi adaptat</div><p class="ac-desc">Moviments lents i suaus amb beneficis documentats en equilibri, caigudes i benestar cognitiu.</p><span class="ac-level level-medium">🟡 Mitjà</span></div>
+        <div class="activity-card"><span class="ac-icon">🏠</span><div class="ac-title">Tasques de la llar</div><p class="ac-desc">Doblegar roba, posar la taula, escombrar. No subestimis el seu valor — són activitats amb propòsit real que mantenen l'autonomia.</p><span class="ac-level level-easy">🟢 Fàcil</span></div>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Per a residències: moviment integrat al dia</div>
+        <p>L'error més comú en residències és limitar l'exercici a les sessions formals de fisioteràpia. L'evidència suggereix que el moviment freqüent i distribuït al llarg del dia és més beneficiós:</p>
+        <ul>
+          <li>Implementar "moments de moviment" de 5–10 min en cada torn</li>
+          <li>Gamificar el moviment: circuits senzills, bitlles adaptades, globus</li>
+          <li>Passejos en grup a l'exterior com a activitat social i física combinada</li>
+          <li>Formar el personal auxiliar en exercicis de cadira bàsics</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p>Physical exercise is not complementary to cognitive care — it is central to it. It is the only lifestyle factor with sufficient evidence to be considered <strong>neuroprotective</strong>: it increases hippocampal volume, improves cerebral blood flow and stimulates the production of BDNF (brain-derived neurotrophic factor), a protein that supports neuronal survival and growth.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card"><span class="ac-icon">🚶</span><div class="ac-title">The daily walk</div><p class="ac-desc">20–30 minutes walking outdoors. In a natural setting if possible. If they cannot go out, walking around the house also has an effect.</p><span class="ac-level level-easy">🟢 Easy</span></div>
+        <div class="activity-card"><span class="ac-icon">🧘</span><div class="ac-title">Chair exercises</div><p class="ac-desc">Movement of arms, legs and neck while seated. Guided videos available on YouTube. 10 minutes is enough.</p><span class="ac-level level-easy">🟢 Easy</span></div>
+        <div class="activity-card"><span class="ac-icon">🌱</span><div class="ac-title">Gardening</div><p class="ac-desc">Watering plants, repotting, tending a small vegetable patch. Combines movement, tactile sensations and a sense of purpose.</p><span class="ac-level level-medium">🟡 Medium</span></div>
+        <div class="activity-card"><span class="ac-icon">🎾</span><div class="ac-title">Throwing and catching</div><p class="ac-desc">Passing a soft ball, balloons. Activates eye-hand coordination, attention and reflexes. Highly adaptable.</p><span class="ac-level level-easy">🟢 Easy</span></div>
+        <div class="activity-card"><span class="ac-icon">🤸</span><div class="ac-title">Adapted tai chi</div><p class="ac-desc">Slow, gentle movements with documented benefits for balance, fall prevention and cognitive wellbeing.</p><span class="ac-level level-medium">🟡 Medium</span></div>
+        <div class="activity-card"><span class="ac-icon">🏠</span><div class="ac-title">Household tasks</div><p class="ac-desc">Folding laundry, setting the table, sweeping. Don't underestimate their value — these are purposeful activities that maintain autonomy.</p><span class="ac-level level-easy">🟢 Easy</span></div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">BDNF and exercise — the strongest evidence</div>
+        <p>Brain-derived neurotrophic factor (BDNF) increases with aerobic exercise and acts as "fertiliser" for neurons, improving synaptic plasticity. Neuroimaging studies show that 6 months of regular aerobic exercise increases hippocampal volume by 2%, partially reversing age-related loss — a remarkable finding given that most interventions only slow decline.</p>
+        <p class="source">Source: Erickson KI et al. (2011). "Exercise training increases size of hippocampus and improves memory." <em>PNAS</em>, 108(7), 3017–3022. / Livingston G et al. (2020). <em>The Lancet</em>.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">For care homes: movement integrated throughout the day</div>
+        <p>The most common error in care homes is limiting exercise to formal physiotherapy sessions. Evidence suggests that frequent movement distributed throughout the day is more beneficial than long, infrequent sessions:</p>
+        <ul>
+          <li>Implement 5–10 min "movement moments" at each shift</li>
+          <li>Gamify movement: simple circuits, adapted skittles, balloons</li>
+          <li>Outdoor group walks as a combined social and physical activity</li>
+          <li>Train auxiliary staff in basic chair exercises to apply during care routines</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CATEGORÍA 4: CREATIVIDAD ══ -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🎨</span>
+      <div data-lang="es" class="active"><span class="section-number">Categoría 4</span><h2 class="section-title">Creatividad — expresar lo que <em>las palabras no alcanzan</em></h2></div>
+      <div data-lang="fr"><span class="section-number">Catégorie 4</span><h2 class="section-title">Créativité — exprimer ce que <em>les mots n'atteignent pas</em></h2></div>
+      <div data-lang="ca"><span class="section-number">Categoria 4</span><h2 class="section-title">Creativitat — expressar el que <em>les paraules no arriben</em></h2></div>
+      <div data-lang="en"><span class="section-number">Category 4</span><h2 class="section-title">Creativity — expressing what <em>words cannot reach</em></h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>La expresión creativa no requiere talento. Requiere un espacio seguro donde no hay errores — solo expresión. Para muchas personas con DCL, la creatividad abre canales de comunicación que el lenguaje verbal ya no puede sostener.</p>
+
+      <div class="activity-grid">
+        <div class="activity-card"><span class="ac-icon">🖌️</span><div class="ac-title">Pintura libre</div><p class="ac-desc">Acuarelas, temperas, rotuladores. Sin instrucciones sobre qué pintar. El proceso importa, no el resultado.</p><span class="ac-level level-easy">🟢 Fácil</span></div>
+        <div class="activity-card"><span class="ac-icon">✂️</span><div class="ac-title">Collage temático</div><p class="ac-desc">Recortar y pegar imágenes de revistas sobre un tema que le guste: naturaleza, comida, viajes. Activa atención y decisión.</p><span class="ac-level level-easy">🟢 Fácil</span></div>
+        <div class="activity-card"><span class="ac-icon">🧶</span><div class="ac-title">Manualidades táctiles</div><p class="ac-desc">Amasar arcilla, tejido simple, enhebrar. La estimulación táctil activa áreas sensoriales y tiene efecto calmante.</p><span class="ac-level level-medium">🟡 Medio</span></div>
+        <div class="activity-card"><span class="ac-icon">📝</span><div class="ac-title">Escribir recuerdos</div><p class="ac-desc">Dictar o escribir una historia de su vida, una carta a alguien querido. No importa la ortografía — importa la expresión.</p><span class="ac-level level-medium">🟡 Medio</span></div>
+        <div class="activity-card"><span class="ac-icon">🍪</span><div class="ac-title">Cocinar juntos</div><p class="ac-desc">Recetas sencillas que recuerda de memoria. La cocina activa múltiples sentidos, secuenciación y memoria procedimental.</p><span class="ac-level level-medium">🟡 Medio</span></div>
+        <div class="activity-card"><span class="ac-icon">📷</span><div class="ac-title">Fotografía sencilla</div><p class="ac-desc">Darle una cámara o móvil para fotografiar lo que le llama la atención. Activa observación y decisión estética.</p><span class="ac-level level-easy">🟢 Fácil</span></div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">La creatividad no tiene errores</div>
+        <p>El mayor regalo que puedes hacer en una actividad creativa es no corregir ni orientar el resultado. "Qué bonito" o "cuéntame qué es esto" abre — "eso no parece una casa" cierra. La persona que tiene DCL a veces accede a través de la creatividad a emociones y recuerdos que de otro modo no pueden expresar. Es un canal precioso — cuídalo.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Para residencias: arteterapia y talleres creativos</div>
+        <p>Los talleres de arteterapia en contexto residencial tienen evidencia creciente sobre sus efectos en bienestar, reducción de apatía y expresión emocional:</p>
+        <ul>
+          <li>No es necesario un arcoterapeuta certificado para actividades creativas básicas — cualquier persona formada puede facilitar</li>
+          <li>Exponer los trabajos en el espacio común — el orgullo y el reconocimiento son terapéuticos</li>
+          <li>Adaptar los materiales: pinceles gruesos, arcilla blanda, tijeras de seguridad</li>
+          <li>Vincular las creaciones a la historia de vida: "¿Por qué elegiste estos colores?"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>L'expression créative ne nécessite pas de talent. Elle nécessite un espace sûr où il n'y a pas d'erreurs — seulement de l'expression. Pour beaucoup de personnes avec DCL, la créativité ouvre des canaux de communication que le langage verbal ne peut plus soutenir.</p>
+      <div class="activity-grid">
+        <div class="activity-card"><span class="ac-icon">🖌️</span><div class="ac-title">Peinture libre</div><p class="ac-desc">Aquarelles, gouaches, feutres. Pas d'instructions sur quoi peindre. Le processus compte, pas le résultat.</p><span class="ac-level level-easy">🟢 Facile</span></div>
+        <div class="activity-card"><span class="ac-icon">✂️</span><div class="ac-title">Collage thématique</div><p class="ac-desc">Découper et coller des images de magazines sur un thème qu'elle aime : nature, cuisine, voyages. Active l'attention et la décision.</p><span class="ac-level level-easy">🟢 Facile</span></div>
+        <div class="activity-card"><span class="ac-icon">🧶</span><div class="ac-title">Activités tactiles</div><p class="ac-desc">Pétrir de l'argile, tricot simple, enfiler des perles. La stimulation tactile active des zones sensorielles et a un effet calmant.</p><span class="ac-level level-medium">🟡 Moyen</span></div>
+        <div class="activity-card"><span class="ac-icon">📝</span><div class="ac-title">Écrire des souvenirs</div><p class="ac-desc">Dicter ou écrire une histoire de vie, une lettre à quelqu'un de cher. L'orthographe n'a pas d'importance — l'expression si.</p><span class="ac-level level-medium">🟡 Moyen</span></div>
+        <div class="activity-card"><span class="ac-icon">🍪</span><div class="ac-title">Cuisiner ensemble</div><p class="ac-desc">Recettes simples dont elle se souvient par cœur. La cuisine active plusieurs sens, le séquençage et la mémoire procédurale.</p><span class="ac-level level-medium">🟡 Moyen</span></div>
+        <div class="activity-card"><span class="ac-icon">📷</span><div class="ac-title">Photographie simple</div><p class="ac-desc">Lui donner un appareil ou un téléphone pour photographier ce qui l'attire. Active l'observation et la décision esthétique.</p><span class="ac-level level-easy">🟢 Facile</span></div>
+      </div>
+      <div class="heart-box">
+        <div class="heart-box-title">La créativité n'a pas d'erreurs</div>
+        <p>Le plus grand cadeau que vous puissiez faire lors d'une activité créative est de ne pas corriger ni orienter le résultat. "C'est beau" ou "raconte-moi ce que c'est" ouvre — "ça ne ressemble pas à une maison" ferme. La personne avec DCL accède parfois, par la créativité, à des émotions et des souvenirs qu'elle ne peut autrement pas exprimer. C'est un canal précieux — prenez-en soin.</p>
+      </div>
+      <div class="residence-box">
+        <div class="residence-box-title">Pour les établissements : art-thérapie et ateliers créatifs</div>
+        <ul>
+          <li>Il n'est pas nécessaire d'avoir un art-thérapeute certifié pour des activités créatives de base</li>
+          <li>Exposer les œuvres dans l'espace commun — la fierté et la reconnaissance sont thérapeutiques</li>
+          <li>Adapter les matériaux : pinceaux épais, argile souple, ciseaux de sécurité</li>
+          <li>Relier les créations à l'histoire de vie : "Pourquoi as-tu choisi ces couleurs ?"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>L'expressió creativa no requereix talent. Requereix un espai segur on no hi ha errors — només expressió. Per a moltes persones amb DCL, la creativitat obre canals de comunicació que el llenguatge verbal ja no pot sostenir.</p>
+      <div class="activity-grid">
+        <div class="activity-card"><span class="ac-icon">🖌️</span><div class="ac-title">Pintura lliure</div><p class="ac-desc">Aquarel·les, temperes, retoladors. Sense instruccions sobre què pintar. El procés importa, no el resultat.</p><span class="ac-level level-easy">🟢 Fàcil</span></div>
+        <div class="activity-card"><span class="ac-icon">✂️</span><div class="ac-title">Col·lage temàtic</div><p class="ac-desc">Retallar i enganxar imatges de revistes sobre un tema que li agradi: natura, menjar, viatges. Activa atenció i decisió.</p><span class="ac-level level-easy">🟢 Fàcil</span></div>
+        <div class="activity-card"><span class="ac-icon">🧶</span><div class="ac-title">Manualitats tàctils</div><p class="ac-desc">Pastar argila, teixit simple, enfilar. L'estimulació tàctil activa àrees sensorials i té efecte calmant.</p><span class="ac-level level-medium">🟡 Mitjà</span></div>
+        <div class="activity-card"><span class="ac-icon">📝</span><div class="ac-title">Escriure records</div><p class="ac-desc">Dictar o escriure una història de vida, una carta a algú estimat. No importa l'ortografia — importa l'expressió.</p><span class="ac-level level-medium">🟡 Mitjà</span></div>
+        <div class="activity-card"><span class="ac-icon">🍪</span><div class="ac-title">Cuinar junts</div><p class="ac-desc">Receptes senzilles que recorda de memòria. La cuina activa múltiples sentits, seqüenciació i memòria procedimental.</p><span class="ac-level level-medium">🟡 Mitjà</span></div>
+        <div class="activity-card"><span class="ac-icon">📷</span><div class="ac-title">Fotografia senzilla</div><p class="ac-desc">Donar-li una càmera o mòbil per fotografiar el que li crida l'atenció. Activa observació i decisió estètica.</p><span class="ac-level level-easy">🟢 Fàcil</span></div>
+      </div>
+      <div class="heart-box">
+        <div class="heart-box-title">La creativitat no té errors</div>
+        <p>El major regal que pots fer en una activitat creativa és no corregir ni orientar el resultat. "Quin bonic" o "explica'm què és això" obre — "això no sembla una casa" tanca. La persona amb DCL de vegades accedeix, a través de la creativitat, a emocions i records que d'altra manera no pot expressar. És un canal preciós — cuida'l.</p>
+      </div>
+      <div class="residence-box">
+        <div class="residence-box-title">Per a residències: artteràpia i tallers creatius</div>
+        <ul>
+          <li>No cal un artterapeuta certificat per a activitats creatives bàsiques</li>
+          <li>Exposar els treballs a l'espai comú — l'orgull i el reconeixement són terapèutics</li>
+          <li>Adaptar els materials: pinzells gruixuts, argila tova, tisores de seguretat</li>
+          <li>Vincular les creacions a la història de vida: "Per què has triat aquests colors?"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p>Creative expression doesn't require talent. It requires a safe space where there are no mistakes — only expression. For many people with MCI, creativity opens channels of communication that verbal language can no longer sustain.</p>
+      <div class="activity-grid">
+        <div class="activity-card"><span class="ac-icon">🖌️</span><div class="ac-title">Free painting</div><p class="ac-desc">Watercolours, tempera, felt-tip pens. No instructions about what to paint. The process matters, not the result.</p><span class="ac-level level-easy">🟢 Easy</span></div>
+        <div class="activity-card"><span class="ac-icon">✂️</span><div class="ac-title">Themed collage</div><p class="ac-desc">Cutting and sticking images from magazines on a topic they enjoy: nature, food, travel. Activates attention and decision-making.</p><span class="ac-level level-easy">🟢 Easy</span></div>
+        <div class="activity-card"><span class="ac-icon">🧶</span><div class="ac-title">Tactile crafts</div><p class="ac-desc">Kneading clay, simple knitting, threading beads. Tactile stimulation activates sensory areas and has a calming effect.</p><span class="ac-level level-medium">🟡 Medium</span></div>
+        <div class="activity-card"><span class="ac-icon">📝</span><div class="ac-title">Writing memories</div><p class="ac-desc">Dictating or writing a life story, a letter to someone dear. Spelling doesn't matter — expression does.</p><span class="ac-level level-medium">🟡 Medium</span></div>
+        <div class="activity-card"><span class="ac-icon">🍪</span><div class="ac-title">Cooking together</div><p class="ac-desc">Simple recipes they remember by heart. Cooking activates multiple senses, sequencing and procedural memory.</p><span class="ac-level level-medium">🟡 Medium</span></div>
+        <div class="activity-card"><span class="ac-icon">📷</span><div class="ac-title">Simple photography</div><p class="ac-desc">Give them a camera or phone to photograph what catches their attention. Activates observation and aesthetic decision-making.</p><span class="ac-level level-easy">🟢 Easy</span></div>
+      </div>
+      <div class="heart-box">
+        <div class="heart-box-title">Creativity has no mistakes</div>
+        <p>The greatest gift you can give during a creative activity is to not correct or direct the outcome. "How beautiful" or "tell me what this is" opens — "that doesn't look like a house" closes. People with MCI sometimes access, through creativity, emotions and memories they cannot otherwise express. It is a precious channel — protect it.</p>
+      </div>
+      <div class="residence-box">
+        <div class="residence-box-title">For care homes: art therapy and creative workshops</div>
+        <ul>
+          <li>A certified art therapist is not needed for basic creative activities — any trained person can facilitate</li>
+          <li>Display work in common areas — pride and recognition are therapeutic</li>
+          <li>Adapt materials: thick brushes, soft clay, safety scissors</li>
+          <li>Connect creations to life history: "Why did you choose these colours?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEKLY PLANNER -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Herramienta práctica</span>
+      <h2 class="section-title">Un ejemplo de <em>semana tipo</em></h2>
+      <p>No hace falta hacer todo. Hace falta hacer algo cada día. Aquí tienes un ejemplo de semana equilibrada — adaptalo según el estado de ánimo, el nivel y los gustos de la persona.</p>
+      <div class="planner">
+        <div class="planner-row"><div class="planner-day">Lunes</div><div class="planner-activity">🎵 Playlist personal — 20 min <span class="planner-tag">Música</span></div></div>
+        <div class="planner-row"><div class="planner-day">Martes</div><div class="planner-activity">🚶 Paseo al exterior — 25 min <span class="planner-tag">Movimiento</span></div></div>
+        <div class="planner-row"><div class="planner-day">Miércoles</div><div class="planner-activity">📸 Álbum de fotos y recuerdos — 30 min <span class="planner-tag">Memoria</span></div></div>
+        <div class="planner-row"><div class="planner-day">Jueves</div><div class="planner-activity">🖌️ Pintura libre o collage — 20 min <span class="planner-tag">Creatividad</span></div></div>
+        <div class="planner-row"><div class="planner-day">Viernes</div><div class="planner-activity">🎤 Cantar y ritmo corporal — 15 min <span class="planner-tag">Música</span></div></div>
+        <div class="planner-row"><div class="planner-day">Sábado</div><div class="planner-activity">🍪 Cocinar una receta juntos <span class="planner-tag">Creatividad + Movimiento</span></div></div>
+        <div class="planner-row"><div class="planner-day">Domingo</div><div class="planner-activity">🗺️ Conversación de recuerdos de vida — descanso activo <span class="planner-tag">Memoria</span></div></div>
+      </div>
+    </div>
+    <div data-lang="fr">
+      <span class="section-number">Outil pratique</span>
+      <h2 class="section-title">Un exemple de <em>semaine type</em></h2>
+      <p>Pas besoin de tout faire. Il faut faire quelque chose chaque jour. Voici un exemple de semaine équilibrée — adaptez-le selon l'humeur, le niveau et les goûts de la personne.</p>
+      <div class="planner">
+        <div class="planner-row"><div class="planner-day">Lundi</div><div class="planner-activity">🎵 Playlist personnelle — 20 min <span class="planner-tag">Musique</span></div></div>
+        <div class="planner-row"><div class="planner-day">Mardi</div><div class="planner-activity">🚶 Promenade extérieure — 25 min <span class="planner-tag">Mouvement</span></div></div>
+        <div class="planner-row"><div class="planner-day">Mercredi</div><div class="planner-activity">📸 Album photos et souvenirs — 30 min <span class="planner-tag">Mémoire</span></div></div>
+        <div class="planner-row"><div class="planner-day">Jeudi</div><div class="planner-activity">🖌️ Peinture libre ou collage — 20 min <span class="planner-tag">Créativité</span></div></div>
+        <div class="planner-row"><div class="planner-day">Vendredi</div><div class="planner-activity">🎤 Chanter et rythme corporel — 15 min <span class="planner-tag">Musique</span></div></div>
+        <div class="planner-row"><div class="planner-day">Samedi</div><div class="planner-activity">🍪 Cuisiner une recette ensemble <span class="planner-tag">Créativité + Mouvement</span></div></div>
+        <div class="planner-row"><div class="planner-day">Dimanche</div><div class="planner-activity">🗺️ Conversation de souvenirs de vie — repos actif <span class="planner-tag">Mémoire</span></div></div>
+      </div>
+    </div>
+    <div data-lang="ca">
+      <span class="section-number">Eina pràctica</span>
+      <h2 class="section-title">Un exemple de <em>setmana tipus</em></h2>
+      <p>No cal fer-ho tot. Cal fer alguna cosa cada dia. Aquí tens un exemple de setmana equilibrada — adapta'l segons l'estat d'ànim, el nivell i els gustos de la persona.</p>
+      <div class="planner">
+        <div class="planner-row"><div class="planner-day">Dilluns</div><div class="planner-activity">🎵 Playlist personal — 20 min <span class="planner-tag">Música</span></div></div>
+        <div class="planner-row"><div class="planner-day">Dimarts</div><div class="planner-activity">🚶 Passeig a l'exterior — 25 min <span class="planner-tag">Moviment</span></div></div>
+        <div class="planner-row"><div class="planner-day">Dimecres</div><div class="planner-activity">📸 Àlbum de fotos i records — 30 min <span class="planner-tag">Memòria</span></div></div>
+        <div class="planner-row"><div class="planner-day">Dijous</div><div class="planner-activity">🖌️ Pintura lliure o col·lage — 20 min <span class="planner-tag">Creativitat</span></div></div>
+        <div class="planner-row"><div class="planner-day">Divendres</div><div class="planner-activity">🎤 Cantar i ritme corporal — 15 min <span class="planner-tag">Música</span></div></div>
+        <div class="planner-row"><div class="planner-day">Dissabte</div><div class="planner-activity">🍪 Cuinar una recepta junts <span class="planner-tag">Creativitat + Moviment</span></div></div>
+        <div class="planner-row"><div class="planner-day">Diumenge</div><div class="planner-activity">🗺️ Conversa de records de vida — descans actiu <span class="planner-tag">Memòria</span></div></div>
+      </div>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">Practical tool</span>
+      <h2 class="section-title">An example <em>weekly plan</em></h2>
+      <p>You don't need to do everything. You need to do something every day. Here is an example of a balanced week — adapt it according to the person's mood, level and preferences.</p>
+      <div class="planner">
+        <div class="planner-row"><div class="planner-day">Monday</div><div class="planner-activity">🎵 Personal playlist — 20 min <span class="planner-tag">Music</span></div></div>
+        <div class="planner-row"><div class="planner-day">Tuesday</div><div class="planner-activity">🚶 Outdoor walk — 25 min <span class="planner-tag">Movement</span></div></div>
+        <div class="planner-row"><div class="planner-day">Wednesday</div><div class="planner-activity">📸 Photo album and memories — 30 min <span class="planner-tag">Memory</span></div></div>
+        <div class="planner-row"><div class="planner-day">Thursday</div><div class="planner-activity">🖌️ Free painting or collage — 20 min <span class="planner-tag">Creativity</span></div></div>
+        <div class="planner-row"><div class="planner-day">Friday</div><div class="planner-activity">🎤 Singing and body rhythm — 15 min <span class="planner-tag">Music</span></div></div>
+        <div class="planner-row"><div class="planner-day">Saturday</div><div class="planner-activity">🍪 Cook a recipe together <span class="planner-tag">Creativity + Movement</span></div></div>
+        <div class="planner-row"><div class="planner-day">Sunday</div><div class="planner-activity">🗺️ Life memories conversation — active rest <span class="planner-tag">Memory</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CIERRE -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Para terminar este módulo</span>
+      <h2 class="section-title">Lo que ya tienes <em>en tus manos</em></h2>
+      <p>24 actividades concretas, organizadas en 4 categorías, con niveles, fundamento científico y guía para residencias. Eso es ya un programa real.</p>
+      <div class="pull-quote">"No necesitas hacerlo todo. Necesitas encontrar las dos o tres cosas que a ella le iluminan los ojos — y hacerlas con presencia."</div>
+      <ul class="checklist">
+        <li>La música es la puerta más accesible — empieza siempre por ahí</li>
+        <li>Ejercitar no es examinar — el juego sin nota funciona mejor</li>
+        <li>El movimiento diario es tan importante como cualquier medicamento</li>
+        <li>La creatividad no tiene errores — solo expresión</li>
+        <li>La consistencia importa más que la duración — poco cada día supera mucho una vez</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">El siguiente módulo</div>
+        <p>En el Módulo 4 hablaremos de <strong>ti</strong> — del cuidador. De cómo reconocer el agotamiento antes de caer, de cómo pedir ayuda sin sentirse culpable, y de las pequeñas cosas que hacen que este camino sea sostenible.</p>
+      </div>
+    </div>
+    <div data-lang="fr">
+      <span class="section-number">Pour conclure ce module</span>
+      <h2 class="section-title">Ce que vous avez <em>entre les mains</em></h2>
+      <p>24 activités concrètes, organisées en 4 catégories, avec des niveaux, une base scientifique et un guide pour les établissements. C'est déjà un vrai programme.</p>
+      <div class="pull-quote">« Vous n'avez pas besoin de tout faire. Vous avez besoin de trouver les deux ou trois choses qui font briller ses yeux — et de les faire avec présence. »</div>
+      <ul class="checklist">
+        <li>La musique est la porte la plus accessible — commencez toujours par là</li>
+        <li>Exercer n'est pas évaluer — le jeu sans note fonctionne mieux</li>
+        <li>Le mouvement quotidien est aussi important que n'importe quel médicament</li>
+        <li>La créativité n'a pas d'erreurs — seulement de l'expression</li>
+        <li>La régularité compte plus que la durée — un peu chaque jour vaut mieux que beaucoup une fois</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">Le prochain module</div>
+        <p>Dans le Module 4, nous parlerons de <strong>vous</strong> — de l'aidant. Comment reconnaître l'épuisement avant de tomber, comment demander de l'aide sans se sentir coupable, et les petites choses qui rendent ce chemin durable.</p>
+      </div>
+    </div>
+    <div data-lang="ca">
+      <span class="section-number">Per acabar aquest mòdul</span>
+      <h2 class="section-title">El que tens <em>a les mans</em></h2>
+      <p>24 activitats concretes, organitzades en 4 categories, amb nivells, fonament científic i guia per a residències. Això ja és un programa real.</p>
+      <div class="pull-quote">"No necessites fer-ho tot. Necessites trobar les dues o tres coses que li il·luminen els ulls — i fer-les amb presència."</div>
+      <ul class="checklist">
+        <li>La música és la porta més accessible — comença sempre per aquí</li>
+        <li>Exercitar no és examinar — el joc sense nota funciona millor</li>
+        <li>El moviment diari és tan important com qualsevol medicament</li>
+        <li>La creativitat no té errors — només expressió</li>
+        <li>La consistència importa més que la durada — poc cada dia supera molt una vegada</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">El proper mòdul</div>
+        <p>Al Mòdul 4 parlarem de <strong>tu</strong> — del cuidador. Com reconèixer l'esgotament abans de caure, com demanar ajuda sense sentir-se culpable, i les petites coses que fan que aquest camí sigui sostenible.</p>
+      </div>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">To close this module</span>
+      <h2 class="section-title">What you now have <em>in your hands</em></h2>
+      <p>24 concrete activities, organised in 4 categories, with levels, scientific grounding and guidance for care homes. That is already a real programme.</p>
+      <div class="pull-quote">"You don't need to do everything. You need to find the two or three things that light up their eyes — and do them with presence."</div>
+      <ul class="checklist">
+        <li>Music is the most accessible door — always start there</li>
+        <li>Exercising is not examining — games without scores work better</li>
+        <li>Daily movement is as important as any medication</li>
+        <li>Creativity has no mistakes — only expression</li>
+        <li>Consistency matters more than duration — a little every day beats a lot once in a while</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">The next module</div>
+        <p>In Module 4 we will talk about <strong>you</strong> — the caregiver. How to recognise exhaustion before you fall, how to ask for help without feeling guilty, and the small things that make this journey sustainable.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end content -->
+
+<div class="module-nav">
+  <div class="nav-pill">← Módulo 2</div>
+  <div class="nav-pill current">Módulo 3</div>
+  <div class="nav-pill">Módulo 4 →</div>
+</div>
+
+<div class="doc-footer">
+  <strong>CuidarConSentido · PrendreSoin avec Sens · Tenir Cura amb Sentit · CaringWithMeaning</strong><br>
+  Módulo 3 de 5 · Module 3 sur 5 · Mòdul 3 de 5 · Module 3 of 5<br><br>
+  Woods B et al. (2023) Cochrane Database · Särkämö T et al. (2014) The Gerontologist<br>
+  Erickson KI et al. (2011) PNAS · Livingston G et al. (2020) The Lancet<br><br>
+  <em>Material educativo. No reemplaza el diagnóstico ni el consejo médico profesional.</em>
+</div>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.lang-btn').forEach((b,i) => b.classList.toggle('active', ['es','fr','ca','en'][i] === lang));
+    document.querySelectorAll('[data-lang]').forEach(el => el.classList.toggle('active', el.dataset.lang === lang));
+    if(typeof applyTTSLabel==='function') applyTTSLabel();
+  }
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  /* ---- Lectura en voz alta (accesibilidad) ---- */
+  var TTS_LBL={listen:{es:"Escuchar",fr:"Écouter",ca:"Escoltar",en:"Listen"},stop:{es:"Parar",fr:"Arrêter",ca:"Aturar",en:"Stop"}};
+  var TTS_LANG={es:"es-ES",fr:"fr-FR",ca:"ca-ES",en:"en-US"};
+  var ttsOn=false;
+  function ttsLang(){var a=document.querySelector('[data-lang].active');return (a&&a.dataset.lang)||'es';}
+  function applyTTSLabel(){var lg=ttsLang();var l=document.getElementById('ttsLbl');var ic=document.getElementById('ttsIco');var b=document.getElementById('ttsBtn');if(l)l.textContent=ttsOn?(TTS_LBL.stop[lg]||TTS_LBL.stop.es):(TTS_LBL.listen[lg]||TTS_LBL.listen.es);if(ic)ic.textContent=ttsOn?'⏹':'🔊';if(b)b.classList.toggle('on',ttsOn);}
+  function ttsGetText(){var parts=[];document.querySelectorAll('[data-lang].active').forEach(function(el){if(el.innerText)parts.push(el.innerText);});return parts.join('. ');}
+  function ttsStop(){try{window.speechSynthesis.cancel();}catch(e){}ttsOn=false;applyTTSLabel();}
+  function toggleTTS(){
+    if(!("speechSynthesis" in window))return;
+    if(ttsOn){ttsStop();return;}
+    var text=(ttsGetText()||"").replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu," ").replace(/\s+/g," ").trim();
+    if(!text)return;
+    try{window.speechSynthesis.cancel();}catch(e){}
+    var u=new SpeechSynthesisUtterance(text);
+    var lg=ttsLang();var lc=TTS_LANG[lg]||"es-ES";
+    u.lang=lc;u.rate=0.95;u.pitch=1;
+    try{var voices=window.speechSynthesis.getVoices()||[];var pref=lc.split("-")[0];var v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(pref)===0;})[0];if(!v&&lg==="ca"){v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf("es")===0;})[0];if(v)u.lang="es-ES";}if(v)u.voice=v;}catch(e){}
+    u.onend=function(){ttsOn=false;applyTTSLabel();};
+    u.onerror=function(){ttsOn=false;applyTTSLabel();};
+    ttsOn=true;applyTTSLabel();
+    window.speechSynthesis.speak(u);
+  }
+  (function(){if(!("speechSynthesis" in window)){var b=document.getElementById("ttsBtn");if(b)b.style.display="none";return;}try{window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=function(){};}catch(e){}applyTTSLabel();})();
+</script>
+<button id="ttsBtn" class="tts-btn" onclick="toggleTTS()" aria-label="Escuchar el texto"><span class="tts-ico" id="ttsIco">🔊</span><span id="ttsLbl">Escuchar</span></button>
+</body>
+</html>

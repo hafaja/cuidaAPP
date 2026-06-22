@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 4 — Cuidarse para poder cuidar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F4F6FA;
+    --warm-white: #F0F3F8;
+    --indigo-deep: #1A1E3A;
+    --indigo: #2E3A6A;
+    --indigo-mid: #4A5A9A;
+    --indigo-light: #7A8AC8;
+    --indigo-pale: #C0C8E8;
+    --rose: #C85A6A;
+    --rose-light: #E8A0AA;
+    --rose-pale: #F8DDE0;
+    --gold: #C8A84A;
+    --gold-light: #E8D090;
+    --sage: #7A9E7E;
+    --sage-light: #B5CEB8;
+    --blue-soft: #5B7FA6;
+    --blue-light: #A8C4DC;
+    --purple: #7A60A8;
+    --purple-light: #C0A8D8;
+    --text: #1A1E2E;
+    --text-mid: #3A4060;
+    --text-light: #6A7090;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Source Serif 4',Georgia,serif; background:var(--cream); color:var(--text); font-size:17px; line-height:1.8; }
+
+  .lang-bar { position:fixed; top:0; left:0; right:0; z-index:100; background:var(--indigo-deep); display:flex; justify-content:center; }
+  .lang-btn { padding:10px 22px; border:none; background:transparent; color:#8A90B8; font-family:'Source Serif 4',serif; font-size:12px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all 0.3s; border-bottom:3px solid transparent; }
+  .lang-btn.active { color:var(--indigo-pale); border-bottom:3px solid var(--rose-light); }
+  .lang-btn:hover { color:white; }
+
+  .progress-bar { position:fixed; top:44px; left:0; height:3px; background:var(--rose); width:0%; transition:width 0.1s; z-index:99; }
+
+  .cover {
+    min-height:100vh;
+    background:linear-gradient(150deg, #0E1228 0%, #1A1E3A 50%, #2A1428 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:80px 40px 60px; position:relative; overflow:hidden; text-align:center;
+  }
+  .cover::before { content:''; position:absolute; top:-100px; right:-100px; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(200,90,106,0.12) 0%, transparent 70%); }
+  .cover::after { content:''; position:absolute; bottom:-80px; left:-80px; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle, rgba(46,58,106,0.3) 0%, transparent 70%); }
+
+  .cover-module-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--rose-light); margin-bottom:24px; position:relative; }
+  .cover-title { font-family:'Playfair Display',Georgia,serif; font-size:clamp(36px,6vw,64px); color:#F0F3F8; line-height:1.2; max-width:700px; margin-bottom:16px; position:relative; }
+  .cover-title em { color:var(--rose-light); font-style:italic; }
+  .cover-subtitle { font-size:16px; color:#5A6090; max-width:520px; margin-bottom:48px; font-style:italic; line-height:1.7; position:relative; }
+  .cover-langs { display:flex; gap:10px; margin-bottom:48px; flex-wrap:wrap; justify-content:center; position:relative; }
+  .cover-lang-pill { padding:5px 16px; border:1px solid rgba(200,90,106,0.4); border-radius:20px; font-size:11px; letter-spacing:1.5px; color:var(--rose-light); text-transform:uppercase; }
+  .cover-divider { width:60px; height:2px; background:linear-gradient(90deg,transparent,var(--rose),transparent); margin:0 auto 40px; position:relative; }
+  .cover-intro { max-width:560px; color:#4A5070; font-size:15px; line-height:1.9; position:relative; }
+  .scroll-hint { position:absolute; bottom:30px; left:50%; transform:translateX(-50%); color:#3A4060; font-size:11px; letter-spacing:3px; text-transform:uppercase; animation:bounce 2s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(6px);} }
+
+  .content { max-width:780px; margin:0 auto; padding:80px 40px; }
+  .section { margin-bottom:80px; opacity:0; transform:translateY(30px); transition:opacity 0.7s ease,transform 0.7s ease; }
+  .section.visible { opacity:1; transform:translateY(0); }
+
+  .section-number { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--indigo-mid); margin-bottom:10px; display:block; }
+  .section-title { font-family:'Playfair Display',Georgia,serif; font-size:clamp(24px,4vw,36px); color:var(--indigo-deep); margin-bottom:28px; line-height:1.3; }
+  .section-title em { color:var(--rose); font-style:italic; }
+  p { margin-bottom:20px; color:var(--text); }
+
+  .pull-quote { border-left:4px solid var(--rose-light); padding:20px 28px; margin:40px 0; background:var(--warm-white); border-radius:0 8px 8px 0; font-family:'Playfair Display',serif; font-size:19px; line-height:1.6; color:var(--indigo); font-style:italic; }
+
+  .science-box { background:linear-gradient(135deg,#EEF4F8,#E8F0EC); border:1px solid var(--blue-light); border-radius:12px; padding:28px 32px; margin:36px 0; position:relative; }
+  .science-box::before { content:'🔬'; position:absolute; top:-14px; left:24px; font-size:22px; background:var(--cream); padding:0 8px; }
+  .science-box-title { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--blue-soft); margin-bottom:12px; font-weight:600; }
+  .science-box p { font-size:15px; color:#4A6070; margin-bottom:10px; }
+  .science-box .source { font-size:12px; color:var(--blue-soft); font-style:italic; margin-top:8px; margin-bottom:0; }
+
+  .heart-box { background:linear-gradient(135deg,#FDF0F2,#F8E8EA); border:1px solid var(--rose-light); border-radius:12px; padding:28px 32px; margin:36px 0; position:relative; }
+  .heart-box::before { content:'♡'; position:absolute; top:-14px; left:24px; font-size:20px; background:var(--cream); padding:0 8px; color:var(--rose); }
+  .heart-box-title { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--rose); margin-bottom:12px; font-weight:600; }
+  .heart-box p { font-size:15px; color:#5A2030; margin-bottom:10px; }
+
+  .residence-box { background:linear-gradient(135deg,#F0EDF8,#EAE6F5); border:1px solid var(--purple-light); border-radius:12px; padding:28px 32px; margin:36px 0; position:relative; }
+  .residence-box::before { content:'🏠'; position:absolute; top:-14px; left:24px; font-size:22px; background:var(--cream); padding:0 8px; }
+  .residence-box-title { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--purple); margin-bottom:12px; font-weight:600; }
+  .residence-box p { font-size:15px; color:#4A3A6A; margin-bottom:10px; }
+  .residence-box ul { margin:12px 0 12px 20px; }
+  .residence-box ul li { font-size:15px; color:#4A3A6A; margin-bottom:8px; }
+
+  .chapter-header { background:linear-gradient(135deg,#1A1E3A,#0E1228); color:var(--warm-white); padding:48px 40px; margin:60px -40px 60px; position:relative; overflow:hidden; }
+  .chapter-header::after { content:''; position:absolute; right:-40px; top:-40px; width:180px; height:180px; border-radius:50%; background:rgba(200,90,106,0.15); }
+  .chapter-header .section-number { color:var(--rose-light); }
+  .chapter-header .section-title { color:var(--warm-white); margin-bottom:0; }
+  .chapter-header .ch-icon { font-size:48px; margin-bottom:16px; display:block; position:relative; }
+
+  /* BURNOUT METER */
+  .burnout-scale { margin:36px 0; }
+  .burnout-item { display:flex; gap:16px; align-items:flex-start; padding:14px 0; border-bottom:1px solid rgba(46,58,106,0.08); }
+  .burnout-dot { flex-shrink:0; width:14px; height:14px; border-radius:50%; margin-top:6px; }
+  .bd-green { background:#5A9A5A; }
+  .bd-amber { background:#C8A040; }
+  .bd-red { background:#C84040; }
+  .burnout-text strong { display:block; color:var(--indigo-deep); margin-bottom:2px; }
+  .burnout-text span { font-size:14px; color:var(--text-light); }
+
+  /* STRATEGY CARDS */
+  .strategy-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:36px 0; }
+  @media(max-width:600px){.strategy-grid{grid-template-columns:1fr;}}
+  .strategy-card { background:var(--warm-white); border-radius:14px; padding:24px; border-top:3px solid var(--indigo-light); }
+  .strategy-card .sc-icon { font-size:28px; margin-bottom:10px; display:block; }
+  .strategy-card .sc-title { font-family:'Playfair Display',serif; font-size:17px; color:var(--indigo-deep); margin-bottom:8px; }
+  .strategy-card .sc-desc { font-size:14px; color:var(--text-light); margin-bottom:0; line-height:1.6; }
+
+  /* EMOTION CARDS */
+  .emotion-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin:36px 0; }
+  .emotion-card { border-radius:12px; padding:20px; text-align:center; }
+  .emotion-card .em-emoji { font-size:36px; margin-bottom:10px; display:block; }
+  .emotion-card .em-name { font-family:'Playfair Display',serif; font-size:16px; margin-bottom:6px; }
+  .emotion-card .em-msg { font-size:13px; line-height:1.5; }
+  .ec-fear { background:#E8EEF8; }
+  .ec-fear .em-name { color:#2A3A6A; }
+  .ec-fear .em-msg { color:#4A5A8A; }
+  .ec-guilt { background:#F8EEE8; }
+  .ec-guilt .em-name { color:#6A3A1A; }
+  .ec-guilt .em-msg { color:#8A5A3A; }
+  .ec-anger { background:#F8E8E8; }
+  .ec-anger .em-name { color:#6A1A1A; }
+  .ec-anger .em-msg { color:#8A4A4A; }
+  .ec-grief { background:#EEE8F8; }
+  .ec-grief .em-name { color:#3A1A6A; }
+  .ec-grief .em-msg { color:#5A4A8A; }
+  .ec-love { background:#F8E8F0; }
+  .ec-love .em-name { color:#6A1A3A; }
+  .ec-love .em-msg { color:#8A4A6A; }
+  .ec-relief { background:#E8F8EE; }
+  .ec-relief .em-name { color:#1A4A2A; }
+  .ec-relief .em-msg { color:#3A6A4A; }
+
+  .checklist { list-style:none; margin:20px 0; }
+  .checklist li { padding:10px 0 10px 36px; position:relative; border-bottom:1px solid rgba(46,58,106,0.08); font-size:16px; color:var(--text); }
+  .checklist li::before { content:'→'; position:absolute; left:8px; color:var(--indigo-mid); font-weight:bold; }
+
+  .sep { text-align:center; margin:60px 0; color:var(--indigo-pale); font-size:20px; letter-spacing:16px; }
+
+  /* DAILY MOMENTS */
+  .daily-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:28px 0; }
+  .daily-card { background:var(--warm-white); border-radius:10px; padding:18px; border-left:3px solid var(--rose-light); }
+  .daily-card .dc-time { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--rose); font-weight:600; margin-bottom:6px; }
+  .daily-card .dc-act { font-size:14px; color:var(--text-mid); line-height:1.5; }
+
+  [data-lang]{display:none;} [data-lang].active{display:block;}
+
+  .module-nav { background:var(--warm-white); border-top:1px solid rgba(46,58,106,0.1); padding:32px 40px; display:flex; justify-content:space-between; align-items:center; max-width:780px; margin:0 auto; }
+  .nav-pill { padding:10px 24px; border-radius:24px; font-size:13px; letter-spacing:1px; text-transform:uppercase; border:1px solid var(--indigo-mid); color:var(--indigo-mid); font-family:'Source Serif 4',serif; }
+  .nav-pill.current { background:var(--indigo-mid); color:white; }
+
+  .doc-footer { background:linear-gradient(135deg,#1A1E3A,#0E1228); color:#4A5070; text-align:center; padding:48px 40px; font-size:13px; line-height:2; }
+  .doc-footer strong { color:var(--indigo-pale); }
+
+  @media(max-width:600px){ .content{padding:60px 24px;} .chapter-header{margin:40px -24px 40px; padding:36px 24px;} }
+  /* Botón de lectura en voz alta (accesibilidad) */
+  .tts-btn{position:fixed;right:14px;bottom:18px;z-index:99999;display:inline-flex;align-items:center;gap:7px;background:#2f6045;color:#fff;border:none;border-radius:26px;padding:12px 18px;font-size:15px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.28);cursor:pointer;font-family:inherit}
+  .tts-btn .tts-ico{font-size:18px;line-height:1}
+  .tts-btn.on{background:#b4452f}
+  @media print{.tts-btn{display:none}}
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('es')">🇪🇸 Español</button>
+  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+  <button class="lang-btn" onclick="setLang('ca')">🏴 Català</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+</div>
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="cover">
+  <div class="cover-module-label">CuidarConSentido · Módulo 4 · Module 4</div>
+  <div data-lang="es" class="active"><h1 class="cover-title">Cuidarse para<br><em>poder cuidar</em></h1><p class="cover-subtitle">El bienestar del cuidador no es un lujo — es la base sobre la que todo lo demás se sostiene</p></div>
+  <div data-lang="fr"><h1 class="cover-title">Prendre soin de soi<br><em>pour mieux prendre soin</em></h1><p class="cover-subtitle">Le bien-être de l'aidant n'est pas un luxe — c'est la base sur laquelle tout le reste repose</p></div>
+  <div data-lang="ca"><h1 class="cover-title">Cuidar-se per<br><em>poder cuidar</em></h1><p class="cover-subtitle">El benestar del cuidador no és un luxe — és la base sobre la qual tot la resta se sosté</p></div>
+  <div data-lang="en"><h1 class="cover-title">Taking care of yourself<br><em>to care for others</em></h1><p class="cover-subtitle">The caregiver's wellbeing is not a luxury — it is the foundation on which everything else rests</p></div>
+  <div class="cover-langs">
+    <span class="cover-lang-pill">Español</span><span class="cover-lang-pill">Français</span><span class="cover-lang-pill">Català</span><span class="cover-lang-pill">English</span>
+  </div>
+  <div class="cover-divider"></div>
+  <div data-lang="es" class="active"><p class="cover-intro">Este módulo es para ti. No para la persona que cuidas. Para ti.</p></div>
+  <div data-lang="fr"><p class="cover-intro">Ce module est pour vous. Pas pour la personne dont vous prenez soin. Pour vous.</p></div>
+  <div data-lang="ca"><p class="cover-intro">Aquest mòdul és per a tu. No per a la persona que cuides. Per a tu.</p></div>
+  <div data-lang="en"><p class="cover-intro">This module is for you. Not for the person you care for. For you.</p></div>
+  <div class="scroll-hint">▼ &nbsp; continúa</div>
+</div>
+
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Introducción</span>
+      <h2 class="section-title">Lo que nadie te dijo<br><em>cuando empezaste</em></h2>
+      <p>Cuando alguien enferma, la atención se concentra naturalmente en quien enferma. Pero hay otra persona cuya salud también está en juego: la tuya. El cuidador informal es, estadísticamente, la persona con más riesgo de desarrollar depresión, ansiedad, problemas cardiovasculares y deterioro de su propia cognición.</p>
+      <p>Esto no es inevitable. Pero sí es ignorado con demasiada frecuencia — por el sistema sanitario, por el entorno familiar, y también por el propio cuidador, que siente que hablar de sí mismo es quitarle espacio a quien realmente lo necesita.</p>
+      <div class="pull-quote">"No puedes dar desde el vacío. Cuidarte no es egoísmo — es el acto más responsable que puedes hacer por la persona que cuidas."</div>
+    </div>
+    <div data-lang="fr">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">Ce que personne ne vous a dit<br><em>quand vous avez commencé</em></h2>
+      <p>Quand quelqu'un tombe malade, l'attention se concentre naturellement sur celui qui est malade. Mais il y a une autre personne dont la santé est aussi en jeu : la vôtre. L'aidant informel est, statistiquement, la personne avec le plus grand risque de développer dépression, anxiété, problèmes cardiovasculaires et déclin de sa propre cognition.</p>
+      <p>Ce n'est pas inévitable. Mais c'est trop souvent ignoré — par le système de santé, par l'entourage familial, et aussi par l'aidant lui-même, qui sent que parler de soi c'est prendre la place de celui qui en a vraiment besoin.</p>
+      <div class="pull-quote">« Vous ne pouvez pas donner depuis le vide. Prendre soin de vous n'est pas de l'égoïsme — c'est l'acte le plus responsable que vous puissiez faire pour la personne dont vous prenez soin. »</div>
+    </div>
+    <div data-lang="ca">
+      <span class="section-number">Introducció</span>
+      <h2 class="section-title">El que ningú et va dir<br><em>quan vas començar</em></h2>
+      <p>Quan algú emmalalteix, l'atenció es concentra naturalment en qui emmalalteix. Però hi ha una altra persona la salut de la qual també està en joc: la teva. El cuidador informal és, estadísticament, la persona amb més risc de desenvolupar depressió, ansietat, problemes cardiovasculars i deteriorament de la seva pròpia cognició.</p>
+      <p>Això no és inevitable. Però sí que és ignorat amb massa freqüència — pel sistema sanitari, per l'entorn familiar, i també pel propi cuidador, que sent que parlar de si mateix és llevar-li espai a qui realment ho necessita.</p>
+      <div class="pull-quote">"No pots donar des del buit. Cuidar-te no és egoisme — és l'acte més responsable que pots fer per la persona que cuides."</div>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">What nobody told you<br><em>when you started</em></h2>
+      <p>When someone falls ill, attention naturally concentrates on the person who is ill. But there is another person whose health is also at stake: yours. The informal caregiver is, statistically, the person at highest risk of developing depression, anxiety, cardiovascular problems and decline in their own cognition.</p>
+      <p>This is not inevitable. But it is too often ignored — by the healthcare system, by the family, and also by the caregiver themselves, who feels that speaking about themselves takes space away from the person who really needs it.</p>
+      <div class="pull-quote">"You cannot give from emptiness. Taking care of yourself is not selfishness — it is the most responsible act you can do for the person you care for."</div>
+    </div>
+
+    <div class="science-box">
+      <div class="science-box-title" data-lang="es" style="display:block">Lo que dice la ciencia</div>
+      <div class="science-box-title" data-lang="fr">Ce que dit la science</div>
+      <div class="science-box-title" data-lang="ca">El que diu la ciència</div>
+      <div class="science-box-title" data-lang="en">What the science says</div>
+      <div data-lang="es" class="active"><p>Entre el <strong>40 y el 70% de los cuidadores informales</strong> presenta síntomas clínicamente significativos de depresión. El riesgo de mortalidad del cuidador es un 63% mayor cuando experimenta estrés elevado. Y el cuidador agotado proporciona, objetivamente, peor calidad de cuidado — no por mala voluntad, sino por agotamiento de recursos cognitivos y emocionales.</p><p class="source">Fuente: Pinquart M & Sörensen S (2003). "Differences between caregivers and noncaregivers in psychological health and physical health." <em>Psychology and Aging</em>, 18(2). / Schulz R & Beach S (1999). "Caregiving as a risk factor for mortality." <em>JAMA</em>, 282(23).</p></div>
+      <div data-lang="fr"><p>Entre <strong>40 et 70% des aidants informels</strong> présentent des symptômes cliniquement significatifs de dépression. Le risque de mortalité de l'aidant est 63% plus élevé en cas de stress élevé. Et l'aidant épuisé fournit, objectivement, une moins bonne qualité de soin — non par mauvaise volonté, mais par épuisement des ressources cognitives et émotionnelles.</p><p class="source">Source : Pinquart M & Sörensen S (2003). <em>Psychology and Aging</em>, 18(2). / Schulz R & Beach S (1999). <em>JAMA</em>, 282(23).</p></div>
+      <div data-lang="ca"><p>Entre el <strong>40 i el 70% dels cuidadors informals</strong> presenta símptomes clínicament significatius de depressió. El risc de mortalitat del cuidador és un 63% major quan experimenta estrès elevat. I el cuidador esgotat proporciona, objectivament, pitjor qualitat de cura — no per mala voluntat, sinó per esgotament de recursos cognitius i emocionals.</p><p class="source">Font: Pinquart M & Sörensen S (2003). <em>Psychology and Aging</em>, 18(2). / Schulz R & Beach S (1999). <em>JAMA</em>, 282(23).</p></div>
+      <div data-lang="en"><p>Between <strong>40 and 70% of informal caregivers</strong> present clinically significant symptoms of depression. The caregiver's mortality risk is 63% higher when experiencing elevated stress. And the exhausted caregiver objectively provides lower quality care — not through lack of goodwill, but through depletion of cognitive and emotional resources.</p><p class="source">Source: Pinquart M & Sörensen S (2003). "Differences between caregivers and noncaregivers in psychological health and physical health." <em>Psychology and Aging</em>, 18(2). / Schulz R & Beach S (1999). "Caregiving as a risk factor for mortality." <em>JAMA</em>, 282(23).</p></div>
+    </div>
+  </div>
+
+  <div class="sep">· · ·</div>
+
+  <!-- CAP 1: RECONOCER -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🔍</span>
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 1</span><h2 class="section-title">Reconocer el agotamiento antes de caer</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 1</span><h2 class="section-title">Reconnaître l'épuisement avant de tomber</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 1</span><h2 class="section-title">Reconèixer l'esgotament abans de caure</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 1</span><h2 class="section-title">Recognising exhaustion before you fall</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>El agotamiento del cuidador no llega de golpe. Se instala lentamente, disfrazado de normalidad. Reconocer sus señales a tiempo es el primer paso para no llegar al punto de quiebre.</p>
+      <p>Hay tres niveles de alerta que vale la pena conocer:</p>
+      <div class="burnout-scale">
+        <div class="burnout-item"><div class="burnout-dot bd-green"></div><div class="burnout-text"><strong>Nivel 1 — Cansancio normal</strong><span>Te sientes cansado pero te recuperas con descanso. Tienes momentos de alivio y disfrute. Tu vida personal sigue existiendo, aunque reducida.</span></div></div>
+        <div class="burnout-item"><div class="burnout-dot bd-amber"></div><div class="burnout-text"><strong>Nivel 2 — Señales de alerta</strong><span>El cansancio no desaparece con el descanso. Sientes irritabilidad frecuente, dificultad para concentrarte, distanciamiento emocional de la persona que cuidas. Empiezas a descuidar tu salud, tus amistades, tus aficiones.</span></div></div>
+        <div class="burnout-item"><div class="burnout-dot bd-red"></div><div class="burnout-text"><strong>Nivel 3 — Burnout del cuidador</strong><span>Agotamiento físico y emocional profundo. Sentimientos de desesperanza, indiferencia o resentimiento. Incapacidad de disfrutar nada. Síntomas físicos (dolores, insomnio, bajada de defensas). En este punto, el apoyo profesional es necesario — no opcional.</span></div></div>
+      </div>
+      <div class="heart-box">
+        <div class="heart-box-title">Las emociones que no se hablan</div>
+        <p>Los cuidadores sienten cosas que les da vergüenza reconocer. Pero todas son normales, todas son humanas y todas merecen espacio.</p>
+      </div>
+      <div class="emotion-grid">
+        <div class="emotion-card ec-fear"><span class="em-emoji">😨</span><div class="em-name">Miedo</div><p class="em-msg">Al futuro, a perderle, a no poder más. Es la emoción más honesta que existe.</p></div>
+        <div class="emotion-card ec-guilt"><span class="em-emoji">😔</span><div class="em-name">Culpa</div><p class="em-msg">Por no hacer suficiente. Por enfadarte. Por tener tu propia vida. La culpa no es la realidad.</p></div>
+        <div class="emotion-card ec-anger"><span class="em-emoji">😤</span><div class="em-name">Rabia</div><p class="em-msg">Por la injusticia de la situación. Es válida. No la dirijas hacia ti ni hacia quien cuidas.</p></div>
+        <div class="emotion-card ec-grief"><span class="em-emoji">😢</span><div class="em-name">Duelo</div><p class="em-msg">Por la persona que era antes. Por la relación que tenías. El duelo anticipado es real.</p></div>
+        <div class="emotion-card ec-love"><span class="em-emoji">❤️</span><div class="em-name">Amor</div><p class="em-msg">Que convive con todo lo anterior. No lo olvides — es la razón por la que sigues aquí.</p></div>
+        <div class="emotion-card ec-relief"><span class="em-emoji">😮‍💨</span><div class="em-name">Alivio</div><p class="em-msg">En los días difíciles, a veces surge. No te hace mala persona — te hace humano.</p></div>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>L'épuisement de l'aidant n'arrive pas d'un coup. Il s'installe lentement, déguisé en normalité. Reconnaître ses signes à temps est la première étape pour ne pas atteindre le point de rupture.</p>
+      <div class="burnout-scale">
+        <div class="burnout-item"><div class="burnout-dot bd-green"></div><div class="burnout-text"><strong>Niveau 1 — Fatigue normale</strong><span>Vous vous sentez fatigué·e mais vous récupérez avec le repos. Vous avez des moments de soulagement et de plaisir. Votre vie personnelle existe encore, même si elle est réduite.</span></div></div>
+        <div class="burnout-item"><div class="burnout-dot bd-amber"></div><div class="burnout-text"><strong>Niveau 2 — Signaux d'alerte</strong><span>La fatigue ne disparaît pas avec le repos. Vous ressentez une irritabilité fréquente, une difficulté à vous concentrer, un détachement émotionnel de la personne dont vous prenez soin. Vous commencez à négliger votre santé, vos amis, vos loisirs.</span></div></div>
+        <div class="burnout-item"><div class="burnout-dot bd-red"></div><div class="burnout-text"><strong>Niveau 3 — Burnout de l'aidant</strong><span>Épuisement physique et émotionnel profond. Sentiments de désespoir, d'indifférence ou de ressentiment. Incapacité à profiter de quoi que ce soit. Symptômes physiques (douleurs, insomnie). À ce stade, un soutien professionnel est nécessaire — pas optionnel.</span></div></div>
+      </div>
+      <div class="heart-box"><div class="heart-box-title">Les émotions qu'on ne dit pas</div><p>Les aidants ressentent des choses qu'ils ont honte d'admettre. Mais toutes sont normales, toutes sont humaines et toutes méritent de l'espace.</p></div>
+      <div class="emotion-grid">
+        <div class="emotion-card ec-fear"><span class="em-emoji">😨</span><div class="em-name">Peur</div><p class="em-msg">De l'avenir, de le perdre, de ne plus pouvoir. C'est l'émotion la plus honnête qui soit.</p></div>
+        <div class="emotion-card ec-guilt"><span class="em-emoji">😔</span><div class="em-name">Culpabilité</div><p class="em-msg">De ne pas faire assez. De vous mettre en colère. D'avoir votre propre vie. La culpabilité n'est pas la réalité.</p></div>
+        <div class="emotion-card ec-anger"><span class="em-emoji">😤</span><div class="em-name">Colère</div><p class="em-msg">Face à l'injustice de la situation. Elle est valide. Ne la dirigez pas contre vous ni contre celui dont vous prenez soin.</p></div>
+        <div class="emotion-card ec-grief"><span class="em-emoji">😢</span><div class="em-name">Deuil</div><p class="em-msg">Pour la personne qu'elle était avant. Pour la relation que vous aviez. Le deuil anticipé est réel.</p></div>
+        <div class="emotion-card ec-love"><span class="em-emoji">❤️</span><div class="em-name">Amour</div><p class="em-msg">Qui coexiste avec tout le reste. Ne l'oubliez pas — c'est la raison pour laquelle vous êtes encore là.</p></div>
+        <div class="emotion-card ec-relief"><span class="em-emoji">😮‍💨</span><div class="em-name">Soulagement</div><p class="em-msg">Les jours difficiles, il surgit parfois. Ça ne fait pas de vous une mauvaise personne — ça vous rend humain·e.</p></div>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>L'esgotament del cuidador no arriba de cop. S'instal·la lentament, disfressat de normalitat. Reconèixer els seus senyals a temps és el primer pas per no arribar al punt de trencament.</p>
+      <div class="burnout-scale">
+        <div class="burnout-item"><div class="burnout-dot bd-green"></div><div class="burnout-text"><strong>Nivell 1 — Cansament normal</strong><span>Et sents cansat però et recuperes amb el descans. Tens moments d'alleujament i gaudi. La teva vida personal continua existint, tot i que reduïda.</span></div></div>
+        <div class="burnout-item"><div class="burnout-dot bd-amber"></div><div class="burnout-text"><strong>Nivell 2 — Senyals d'alerta</strong><span>El cansament no desapareix amb el descans. Sents irritabilitat freqüent, dificultat per concentrar-te, distanciament emocional de la persona que cuides. Comences a descuidar la teva salut, les teves amistats, les teves aficions.</span></div></div>
+        <div class="burnout-item"><div class="burnout-dot bd-red"></div><div class="burnout-text"><strong>Nivell 3 — Burnout del cuidador</strong><span>Esgotament físic i emocional profund. Sentiments de desesperança, indiferència o ressentiment. Incapacitat de gaudir de res. Símptomes físics. En aquest punt, el suport professional és necessari — no opcional.</span></div></div>
+      </div>
+      <div class="heart-box"><div class="heart-box-title">Les emocions que no es diuen</div><p>Els cuidadors senten coses que els fa vergonya reconèixer. Però totes són normals, totes són humanes i totes mereixen espai.</p></div>
+      <div class="emotion-grid">
+        <div class="emotion-card ec-fear"><span class="em-emoji">😨</span><div class="em-name">Por</div><p class="em-msg">Al futur, a perdre'l, a no poder més. És l'emoció més honesta que existeix.</p></div>
+        <div class="emotion-card ec-guilt"><span class="em-emoji">😔</span><div class="em-name">Culpa</div><p class="em-msg">Per no fer prou. Per enfadar-te. Per tenir la teva pròpia vida. La culpa no és la realitat.</p></div>
+        <div class="emotion-card ec-anger"><span class="em-emoji">😤</span><div class="em-name">Ràbia</div><p class="em-msg">Per la injustícia de la situació. És vàlida. No la dirigeixis cap a tu ni cap a qui cuides.</p></div>
+        <div class="emotion-card ec-grief"><span class="em-emoji">😢</span><div class="em-name">Dol</div><p class="em-msg">Per la persona que era abans. Per la relació que tenies. El dol anticipat és real.</p></div>
+        <div class="emotion-card ec-love"><span class="em-emoji">❤️</span><div class="em-name">Amor</div><p class="em-msg">Que conviu amb tot l'anterior. No l'oblidis — és la raó per la qual segueixes aquí.</p></div>
+        <div class="emotion-card ec-relief"><span class="em-emoji">😮‍💨</span><div class="em-name">Alleujament</div><p class="em-msg">Els dies difícils, de vegades sorgeix. No et fa mala persona — et fa humà.</p></div>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p>Caregiver exhaustion doesn't arrive all at once. It installs itself slowly, disguised as normality. Recognising its signs in time is the first step to not reaching breaking point.</p>
+      <div class="burnout-scale">
+        <div class="burnout-item"><div class="burnout-dot bd-green"></div><div class="burnout-text"><strong>Level 1 — Normal tiredness</strong><span>You feel tired but recover with rest. You have moments of relief and enjoyment. Your personal life still exists, even if reduced.</span></div></div>
+        <div class="burnout-item"><div class="burnout-dot bd-amber"></div><div class="burnout-text"><strong>Level 2 — Warning signs</strong><span>Tiredness doesn't disappear with rest. You feel frequent irritability, difficulty concentrating, emotional detachment from the person you care for. You start neglecting your health, friendships and hobbies.</span></div></div>
+        <div class="burnout-item"><div class="burnout-dot bd-red"></div><div class="burnout-text"><strong>Level 3 — Caregiver burnout</strong><span>Deep physical and emotional exhaustion. Feelings of hopelessness, indifference or resentment. Inability to enjoy anything. Physical symptoms (pain, insomnia). At this point, professional support is necessary — not optional.</span></div></div>
+      </div>
+      <div class="heart-box"><div class="heart-box-title">The emotions nobody talks about</div><p>Caregivers feel things they are ashamed to admit. But all of them are normal, all of them are human, and all of them deserve space.</p></div>
+      <div class="emotion-grid">
+        <div class="emotion-card ec-fear"><span class="em-emoji">😨</span><div class="em-name">Fear</div><p class="em-msg">Of the future, of losing them, of not being able to cope. It's the most honest emotion there is.</p></div>
+        <div class="emotion-card ec-guilt"><span class="em-emoji">😔</span><div class="em-name">Guilt</div><p class="em-msg">For not doing enough. For getting angry. For having your own life. Guilt is not reality.</p></div>
+        <div class="emotion-card ec-anger"><span class="em-emoji">😤</span><div class="em-name">Anger</div><p class="em-msg">At the injustice of the situation. It's valid. Don't direct it at yourself or at the person you care for.</p></div>
+        <div class="emotion-card ec-grief"><span class="em-emoji">😢</span><div class="em-name">Grief</div><p class="em-msg">For the person they were before. For the relationship you had. Anticipatory grief is real.</p></div>
+        <div class="emotion-card ec-love"><span class="em-emoji">❤️</span><div class="em-name">Love</div><p class="em-msg">That coexists with all of the above. Don't forget it — it's the reason you are still here.</p></div>
+        <div class="emotion-card ec-relief"><span class="em-emoji">😮‍💨</span><div class="em-name">Relief</div><p class="em-msg">On hard days, it sometimes surfaces. It doesn't make you a bad person — it makes you human.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAP 2: ESTRATEGIAS -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🛡️</span>
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 2</span><h2 class="section-title">Estrategias que funcionan — pequeñas y reales</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 2</span><h2 class="section-title">Des stratégies qui fonctionnent — petites et concrètes</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 2</span><h2 class="section-title">Estratègies que funcionen — petites i reals</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 2</span><h2 class="section-title">Strategies that work — small and real</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>No hablamos de retiros de bienestar ni de horas de meditación. Hablamos de cosas que pueden hacerse en la realidad de quien cuida — con poco tiempo, poca energía y muchas responsabilidades.</p>
+      <div class="strategy-grid">
+        <div class="strategy-card"><span class="sc-icon">⏸️</span><div class="sc-title">El micro-descanso</div><p class="sc-desc">5 minutos sin hacer nada relacionado con el cuidado. Una taza de té, mirar por la ventana, respirar. La recuperación también ocurre en pequeños intervalos.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🗣️</span><div class="sc-title">Hablar con alguien</div><p class="sc-desc">Un amigo, un familiar, un grupo de cuidadores. Verbalizar lo que se vive reduce la carga emocional — incluso si la otra persona no tiene soluciones.</p></div>
+        <div class="strategy-card"><span class="sc-icon">✍️</span><div class="sc-title">Escribir sin filtros</div><p class="sc-desc">Un diario de cuidador — no para recordar, sino para soltar. Escribir lo que no puedes decir en voz alta.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🚶</span><div class="sc-title">Salir solo</div><p class="sc-desc">Aunque sea 20 minutos. El movimiento físico sin la responsabilidad del cuidado tiene un efecto restaurador documentado.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🙅</span><div class="sc-title">Aprender a decir no</div><p class="sc-desc">A pedidos adicionales, a visitas que agotan, a la presión de hacerlo todo perfecto. Los límites no son muros — son supervivencia.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🌙</span><div class="sc-title">Proteger el sueño</div><p class="sc-desc">El sueño fragmentado crónico deteriora la cognición y la regulación emocional. Si el cuidado nocturno es intenso, planificar relevos o ayuda puntual es prioritario.</p></div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Los momentos pequeños del día</div>
+        <p>No siempre es posible salir o descansar. Pero hay pequeños anclajes que puedes insertar en tu día — momentos que te devuelven a ti mismo aunque sean breves.</p>
+      </div>
+      <div class="daily-grid">
+        <div class="daily-card"><div class="dc-time">Al despertar</div><div class="dc-act">Antes de empezar: 3 respiraciones profundas. Solo eso.</div></div>
+        <div class="daily-card"><div class="dc-time">A mediodía</div><div class="dc-act">Come sentado, sin pantallas, aunque sea 10 minutos.</div></div>
+        <div class="daily-card"><div class="dc-time">Por la tarde</div><div class="dc-act">Un mensaje a alguien que no sea sobre el cuidado.</div></div>
+        <div class="daily-card"><div class="dc-time">Al anochecer</div><div class="dc-act">Escribe una cosa que hoy fue bien — por pequeña que sea.</div></div>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Para residencias: el bienestar del equipo profesional</div>
+        <p>El burnout no es exclusivo del cuidador familiar. Los profesionales de residencias son el colectivo laboral con mayor prevalencia de burnout en Europa. Las organizaciones que invierten en bienestar del personal obtienen mejores resultados de cuidado, menor rotación y menos bajas:</p>
+        <ul>
+          <li>Supervisión clínica regular — no solo administrativa</li>
+          <li>Espacios de descarga emocional estructurados (reuniones de equipo con espacio para lo difícil)</li>
+          <li>Formación en autocuidado y regulación emocional para el personal</li>
+          <li>Políticas de reconocimiento y valoración del trabajo bien hecho</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>Nous ne parlons pas de retraites de bien-être ni d'heures de méditation. Nous parlons de choses qui peuvent se faire dans la réalité de celui qui prend soin — avec peu de temps, peu d'énergie et beaucoup de responsabilités.</p>
+      <div class="strategy-grid">
+        <div class="strategy-card"><span class="sc-icon">⏸️</span><div class="sc-title">La micro-pause</div><p class="sc-desc">5 minutes sans rien faire en lien avec le soin. Une tasse de thé, regarder par la fenêtre, respirer. La récupération se produit aussi en petits intervalles.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🗣️</span><div class="sc-title">Parler à quelqu'un</div><p class="sc-desc">Un ami, un membre de la famille, un groupe d'aidants. Verbaliser ce qu'on vit réduit la charge émotionnelle — même si l'autre n'a pas de solutions.</p></div>
+        <div class="strategy-card"><span class="sc-icon">✍️</span><div class="sc-title">Écrire sans filtre</div><p class="sc-desc">Un journal d'aidant — pas pour se souvenir, mais pour lâcher prise. Écrire ce qu'on ne peut pas dire à voix haute.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🚶</span><div class="sc-title">Sortir seul·e</div><p class="sc-desc">Même 20 minutes. Le mouvement physique sans la responsabilité du soin a un effet restaurateur documenté.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🙅</span><div class="sc-title">Apprendre à dire non</div><p class="sc-desc">Aux demandes supplémentaires, aux visites épuisantes, à la pression de tout faire parfaitement. Les limites ne sont pas des murs — elles sont survie.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🌙</span><div class="sc-title">Protéger le sommeil</div><p class="sc-desc">Un sommeil fragmenté chronique détériore la cognition et la régulation émotionnelle. Si le soin nocturne est intense, planifier des relais est prioritaire.</p></div>
+      </div>
+      <div class="daily-grid">
+        <div class="daily-card"><div class="dc-time">Au réveil</div><div class="dc-act">Avant de commencer : 3 respirations profondes. Juste ça.</div></div>
+        <div class="daily-card"><div class="dc-time">À midi</div><div class="dc-act">Mangez assis, sans écrans, même 10 minutes.</div></div>
+        <div class="daily-card"><div class="dc-time">L'après-midi</div><div class="dc-act">Un message à quelqu'un qui ne concerne pas le soin.</div></div>
+        <div class="daily-card"><div class="dc-time">Le soir</div><div class="dc-act">Écrivez une chose qui s'est bien passée aujourd'hui — aussi petite soit-elle.</div></div>
+      </div>
+      <div class="residence-box">
+        <div class="residence-box-title">Pour les établissements : le bien-être de l'équipe professionnelle</div>
+        <p>Le burnout n'est pas exclusif à l'aidant familial. Les professionnels des résidences sont le groupe professionnel avec la plus grande prévalence de burnout en Europe :</p>
+        <ul>
+          <li>Supervision clinique régulière — pas seulement administrative</li>
+          <li>Espaces de décharge émotionnelle structurés (réunions d'équipe avec espace pour les difficultés)</li>
+          <li>Formation en autosoins et régulation émotionnelle pour le personnel</li>
+          <li>Politiques de reconnaissance et valorisation du travail bien fait</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>No parlem de retirs de benestar ni d'hores de meditació. Parlem de coses que poden fer-se en la realitat de qui cuida — amb poc temps, poca energia i moltes responsabilitats.</p>
+      <div class="strategy-grid">
+        <div class="strategy-card"><span class="sc-icon">⏸️</span><div class="sc-title">El micro-descans</div><p class="sc-desc">5 minuts sense fer res relacionat amb la cura. Una tassa de te, mirar per la finestra, respirar. La recuperació també ocorre en petits intervals.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🗣️</span><div class="sc-title">Parlar amb algú</div><p class="sc-desc">Un amic, un familiar, un grup de cuidadors. Verbalitzar el que es viu redueix la càrrega emocional — fins i tot si l'altra persona no té solucions.</p></div>
+        <div class="strategy-card"><span class="sc-icon">✍️</span><div class="sc-title">Escriure sense filtres</div><p class="sc-desc">Un diari de cuidador — no per recordar, sinó per alliberar. Escriure el que no pots dir en veu alta.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🚶</span><div class="sc-title">Sortir sol</div><p class="sc-desc">Encara que siguin 20 minuts. El moviment físic sense la responsabilitat de la cura té un efecte restaurador documentat.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🙅</span><div class="sc-title">Aprendre a dir no</div><p class="sc-desc">A peticions addicionals, a visites que esgoten, a la pressió de fer-ho tot perfecte. Els límits no són murs — són supervivència.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🌙</span><div class="sc-title">Protegir el son</div><p class="sc-desc">El son fragmentat crònic deteriora la cognició i la regulació emocional. Si la cura nocturna és intensa, planificar relleus és prioritari.</p></div>
+      </div>
+      <div class="daily-grid">
+        <div class="daily-card"><div class="dc-time">En despertar</div><div class="dc-act">Abans de començar: 3 respiracions profundes. Només això.</div></div>
+        <div class="daily-card"><div class="dc-time">Al migdia</div><div class="dc-act">Menja assegut, sense pantalles, encara que siguin 10 minuts.</div></div>
+        <div class="daily-card"><div class="dc-time">A la tarda</div><div class="dc-act">Un missatge a algú que no sigui sobre la cura.</div></div>
+        <div class="daily-card"><div class="dc-time">Al vespre</div><div class="dc-act">Escriu una cosa que avui ha anat bé — per petita que sigui.</div></div>
+      </div>
+      <div class="residence-box">
+        <div class="residence-box-title">Per a residències: el benestar de l'equip professional</div>
+        <ul>
+          <li>Supervisió clínica regular — no només administrativa</li>
+          <li>Espais de descàrrega emocional estructurats</li>
+          <li>Formació en autocura i regulació emocional per al personal</li>
+          <li>Polítiques de reconeixement i valoració del treball ben fet</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p>We are not talking about wellness retreats or hours of meditation. We are talking about things that can be done in the reality of someone who cares — with little time, little energy and many responsibilities.</p>
+      <div class="strategy-grid">
+        <div class="strategy-card"><span class="sc-icon">⏸️</span><div class="sc-title">The micro-rest</div><p class="sc-desc">5 minutes doing nothing related to care. A cup of tea, looking out the window, breathing. Recovery also happens in small intervals.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🗣️</span><div class="sc-title">Talk to someone</div><p class="sc-desc">A friend, family member, caregiver group. Verbalising what you are living through reduces emotional load — even if the other person has no solutions.</p></div>
+        <div class="strategy-card"><span class="sc-icon">✍️</span><div class="sc-title">Write without filters</div><p class="sc-desc">A caregiver journal — not to remember, but to release. Write what you cannot say aloud.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🚶</span><div class="sc-title">Go out alone</div><p class="sc-desc">Even 20 minutes. Physical movement without the responsibility of care has a documented restorative effect.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🙅</span><div class="sc-title">Learn to say no</div><p class="sc-desc">To additional requests, exhausting visits, the pressure to do everything perfectly. Boundaries are not walls — they are survival.</p></div>
+        <div class="strategy-card"><span class="sc-icon">🌙</span><div class="sc-title">Protect your sleep</div><p class="sc-desc">Chronic fragmented sleep deteriorates cognition and emotional regulation. If night care is intense, planning relief or occasional help is a priority.</p></div>
+      </div>
+      <div class="daily-grid">
+        <div class="daily-card"><div class="dc-time">On waking</div><div class="dc-act">Before starting: 3 deep breaths. Just that.</div></div>
+        <div class="daily-card"><div class="dc-time">At midday</div><div class="dc-act">Eat sitting down, without screens, even if just 10 minutes.</div></div>
+        <div class="daily-card"><div class="dc-time">Afternoon</div><div class="dc-act">A message to someone that is not about care.</div></div>
+        <div class="daily-card"><div class="dc-time">Evening</div><div class="dc-act">Write one thing that went well today — however small.</div></div>
+      </div>
+      <div class="residence-box">
+        <div class="residence-box-title">For care homes: the professional team's wellbeing</div>
+        <ul>
+          <li>Regular clinical supervision — not just administrative</li>
+          <li>Structured emotional debriefing spaces (team meetings with room for what is difficult)</li>
+          <li>Training in self-care and emotional regulation for staff</li>
+          <li>Policies of recognition and valuing work well done</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAP 3: PEDIR AYUDA -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🤲</span>
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 3</span><h2 class="section-title">Pedir ayuda sin sentirse culpable</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 3</span><h2 class="section-title">Demander de l'aide sans se sentir coupable</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 3</span><h2 class="section-title">Demanar ajuda sense sentir-se culpable</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 3</span><h2 class="section-title">Asking for help without feeling guilty</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>Pedir ayuda es una de las cosas más difíciles para el cuidador. Hay miedo a molestar, a que no lo hagan tan bien, a reconocer que no puedes con todo. Pero la ayuda no debilita el cuidado — lo sostiene.</p>
+      <ul class="checklist">
+        <li><strong>Red familiar:</strong> distribuye las tareas de forma concreta — "¿Puedes venir el martes de 17 a 19h?" funciona mejor que "necesito ayuda"</li>
+        <li><strong>Servicios de respiro:</strong> centros de día, cuidadores profesionales puntuales, voluntariado de acompañamiento</li>
+        <li><strong>Grupos de apoyo:</strong> Alzheimer España, France Alzheimer, asociaciones locales — el contacto con quien vive lo mismo es insustituible</li>
+        <li><strong>Ayuda profesional:</strong> psicólogo, trabajador social, médico de cabecera — no esperes al límite para acudir</li>
+        <li><strong>Ayudas económicas:</strong> Ley de Dependencia (España), APA (Francia) — infórmate de lo que te corresponde</li>
+      </ul>
+      <div class="pull-quote">"Pedir ayuda no significa que fallaste. Significa que eres lo suficientemente valiente para reconocer que este camino se anda mejor acompañado."</div>
+      <div class="science-box">
+        <div class="science-box-title">El efecto del apoyo social en el cuidador</div>
+        <p>Los estudios de intervención muestran que los cuidadores que participan en grupos de apoyo presentan niveles significativamente menores de depresión y ansiedad, mayor sensación de competencia y mayor calidad de vida — sin que cambie nada en la situación objetiva de la persona cuidada. El apoyo social no cambia la situación externa; cambia la capacidad de sostenerse dentro de ella.</p>
+        <p class="source">Fuente: Brodaty H & Donkin M (2009). "Family caregivers of people with dementia." <em>Dialogues in Clinical Neuroscience</em>, 11(2), 217–228.</p>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>Demander de l'aide est l'une des choses les plus difficiles pour l'aidant. Il y a la peur de déranger, que les autres ne le feront pas aussi bien, de reconnaître qu'on ne peut pas tout faire. Mais l'aide n'affaiblit pas le soin — elle le soutient.</p>
+      <ul class="checklist">
+        <li><strong>Réseau familial :</strong> répartissez les tâches concrètement — "Tu peux venir mardi de 17h à 19h ?" fonctionne mieux que "j'ai besoin d'aide"</li>
+        <li><strong>Services de répit :</strong> accueil de jour, aidants professionnels ponctuels, bénévolat d'accompagnement</li>
+        <li><strong>Groupes de soutien :</strong> France Alzheimer, associations locales — le contact avec ceux qui vivent la même chose est irremplaçable</li>
+        <li><strong>Aide professionnelle :</strong> psychologue, assistant social, médecin traitant — n'attendez pas la limite pour consulter</li>
+        <li><strong>Aides financières :</strong> APA, PCH, CESU — renseignez-vous sur ce à quoi vous avez droit</li>
+      </ul>
+      <div class="pull-quote">« Demander de l'aide ne signifie pas que vous avez échoué. Cela signifie que vous êtes assez courageux·se pour reconnaître que ce chemin se fait mieux accompagné. »</div>
+      <div class="science-box">
+        <div class="science-box-title">L'effet du soutien social sur l'aidant</div>
+        <p>Les études d'intervention montrent que les aidants qui participent à des groupes de soutien présentent des niveaux significativement inférieurs de dépression et d'anxiété, une plus grande sensation de compétence et une meilleure qualité de vie — sans que rien ne change dans la situation objective de la personne aidée.</p>
+        <p class="source">Source : Brodaty H & Donkin M (2009). « Family caregivers of people with dementia. » <em>Dialogues in Clinical Neuroscience</em>, 11(2), 217–228.</p>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>Demanar ajuda és una de les coses més difícils per al cuidador. Hi ha por a molestar, que no ho facin tan bé, a reconèixer que no pots amb tot. Però l'ajuda no debilita la cura — la sosté.</p>
+      <ul class="checklist">
+        <li><strong>Xarxa familiar:</strong> distribueix les tasques de forma concreta — "Pots venir el dimarts de 17 a 19h?" funciona millor que "necessito ajuda"</li>
+        <li><strong>Serveis de respir:</strong> centres de dia, cuidadors professionals puntuals, voluntariat d'acompanyament</li>
+        <li><strong>Grups de suport:</strong> Alzheimer Catalunya, associacions locals — el contacte amb qui viu el mateix és insostituïble</li>
+        <li><strong>Ajuda professional:</strong> psicòleg, treballador social, metge de capçalera — no esperis al límit per acudir</li>
+        <li><strong>Ajudes econòmiques:</strong> Llei de Dependència (Espanya), APA (França) — informa't del que et correspon</li>
+      </ul>
+      <div class="pull-quote">"Demanar ajuda no significa que has fallat. Significa que ets prou valent per reconèixer que aquest camí es camina millor acompanyat."</div>
+    </div>
+
+    <div data-lang="en">
+      <p>Asking for help is one of the hardest things for a caregiver. There is fear of being a burden, that others won't do it as well, of admitting you can't do everything. But help doesn't weaken care — it sustains it.</p>
+      <ul class="checklist">
+        <li><strong>Family network:</strong> distribute tasks concretely — "Can you come Tuesday from 5 to 7pm?" works better than "I need help"</li>
+        <li><strong>Respite services:</strong> day centres, occasional professional carers, befriending volunteers</li>
+        <li><strong>Support groups:</strong> Alzheimer's Society, local associations — contact with those who live the same thing is irreplaceable</li>
+        <li><strong>Professional help:</strong> psychologist, social worker, GP — don't wait until you hit the limit</li>
+        <li><strong>Financial support:</strong> Attendance Allowance, Carer's Allowance (UK), APA (France), Ley de Dependencia (Spain) — find out what you are entitled to</li>
+      </ul>
+      <div class="pull-quote">"Asking for help doesn't mean you failed. It means you are brave enough to recognise that this road is walked better with company."</div>
+      <div class="science-box">
+        <div class="science-box-title">The effect of social support on caregivers</div>
+        <p>Intervention studies show that caregivers who participate in support groups present significantly lower levels of depression and anxiety, greater sense of competence and higher quality of life — without anything changing in the objective situation of the person being cared for. Social support doesn't change the external situation; it changes the capacity to sustain oneself within it.</p>
+        <p class="source">Source: Brodaty H & Donkin M (2009). "Family caregivers of people with dementia." <em>Dialogues in Clinical Neuroscience</em>, 11(2), 217–228.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CIERRE -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Para terminar este módulo</span>
+      <h2 class="section-title">Lo que mereces <em>recordar</em></h2>
+      <p>Este módulo existe porque tú importas. No solo como cuidador — como persona. Lo que sientes es válido. Lo que necesitas es legítimo. Y cuidarte no traiciona a nadie.</p>
+      <div class="pull-quote">"Ser cuidador es uno de los actos de amor más exigentes que existen. Y los actos de amor exigentes requieren personas que también se cuidan a sí mismas."</div>
+      <ul class="checklist">
+        <li>Reconoce en qué nivel de alerta estás hoy — sin juzgarte</li>
+        <li>Elige una estrategia pequeña y ponla en práctica esta semana</li>
+        <li>Identifica a una persona a quien puedas pedir ayuda concreta</li>
+        <li>Si estás en nivel 3, busca apoyo profesional — es el momento</li>
+        <li>Recuerda: cuidarte es también cuidarle</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">El último módulo</div>
+        <p>En el Módulo 5 cerraremos el programa con <strong>orientación práctica</strong> — recursos reales por país y región, ayudas económicas, cómo hablar con el médico, y cómo saber cuándo es el momento de buscar más ayuda. Todo lo que necesitas para no estar solo en esto.</p>
+      </div>
+    </div>
+    <div data-lang="fr">
+      <span class="section-number">Pour conclure ce module</span>
+      <h2 class="section-title">Ce que vous méritez <em>de vous rappeler</em></h2>
+      <p>Ce module existe parce que vous comptez. Pas seulement en tant qu'aidant — en tant que personne. Ce que vous ressentez est valide. Ce dont vous avez besoin est légitime. Et prendre soin de vous ne trahit personne.</p>
+      <div class="pull-quote">« Être aidant est l'un des actes d'amour les plus exigeants qui soient. Et les actes d'amour exigeants demandent des personnes qui prennent aussi soin d'elles-mêmes. »</div>
+      <ul class="checklist">
+        <li>Identifiez à quel niveau d'alerte vous êtes aujourd'hui — sans vous juger</li>
+        <li>Choisissez une petite stratégie et mettez-la en pratique cette semaine</li>
+        <li>Identifiez une personne à qui vous pouvez demander une aide concrète</li>
+        <li>Si vous êtes au niveau 3, cherchez un soutien professionnel — c'est le moment</li>
+        <li>Rappel : prendre soin de vous, c'est aussi prendre soin de lui/elle</li>
+      </ul>
+    </div>
+    <div data-lang="ca">
+      <span class="section-number">Per acabar aquest mòdul</span>
+      <h2 class="section-title">El que mereixes <em>recordar</em></h2>
+      <p>Aquest mòdul existeix perquè tu importes. No només com a cuidador — com a persona. El que sents és vàlid. El que necessites és legítim. I cuidar-te no traeix ningú.</p>
+      <div class="pull-quote">"Ser cuidador és un dels actes d'amor més exigents que existeixen. I els actes d'amor exigents requereixen persones que també es cuiden a si mateixes."</div>
+      <ul class="checklist">
+        <li>Reconeix en quin nivell d'alerta estàs avui — sense jutjar-te</li>
+        <li>Tria una estratègia petita i posa-la en pràctica aquesta setmana</li>
+        <li>Identifica una persona a qui puguis demanar ajuda concreta</li>
+        <li>Si estàs en nivell 3, busca suport professional — és el moment</li>
+        <li>Recorda: cuidar-te és també cuidar-lo/la</li>
+      </ul>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">To close this module</span>
+      <h2 class="section-title">What you deserve <em>to remember</em></h2>
+      <p>This module exists because you matter. Not just as a caregiver — as a person. What you feel is valid. What you need is legitimate. And taking care of yourself betrays no one.</p>
+      <div class="pull-quote">"Being a caregiver is one of the most demanding acts of love there is. And demanding acts of love require people who also take care of themselves."</div>
+      <ul class="checklist">
+        <li>Recognise which alert level you are at today — without judging yourself</li>
+        <li>Choose one small strategy and put it into practice this week</li>
+        <li>Identify one person from whom you can ask for concrete help</li>
+        <li>If you are at level 3, seek professional support — this is the moment</li>
+        <li>Remember: taking care of yourself is also taking care of them</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">The final module</div>
+        <p>In Module 5 we will close the programme with <strong>practical guidance</strong> — real resources by country and region, financial support, how to talk with the doctor, and how to know when it is time to seek more help. Everything you need to not be alone in this.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="module-nav">
+  <div class="nav-pill">← Módulo 3</div>
+  <div class="nav-pill current">Módulo 4</div>
+  <div class="nav-pill">Módulo 5 →</div>
+</div>
+
+<div class="doc-footer">
+  <strong>CuidarConSentido · PrendreSoin avec Sens · Tenir Cura amb Sentit · CaringWithMeaning</strong><br>
+  Módulo 4 de 5 · Module 4 sur 5 · Mòdul 4 de 5 · Module 4 of 5<br><br>
+  Pinquart M & Sörensen S (2003) Psychology and Aging · Schulz R & Beach S (1999) JAMA · Brodaty H & Donkin M (2009) Dialogues in Clinical Neuroscience<br><br>
+  <em>Material educativo. No reemplaza el diagnóstico ni el consejo médico profesional.</em>
+</div>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.lang-btn').forEach((b,i) => b.classList.toggle('active', ['es','fr','ca','en'][i] === lang));
+    document.querySelectorAll('[data-lang]').forEach(el => el.classList.toggle('active', el.dataset.lang === lang));
+    if(typeof applyTTSLabel==='function') applyTTSLabel();
+  }
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold:0.1 });
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  /* ---- Lectura en voz alta (accesibilidad) ---- */
+  var TTS_LBL={listen:{es:"Escuchar",fr:"Écouter",ca:"Escoltar",en:"Listen"},stop:{es:"Parar",fr:"Arrêter",ca:"Aturar",en:"Stop"}};
+  var TTS_LANG={es:"es-ES",fr:"fr-FR",ca:"ca-ES",en:"en-US"};
+  var ttsOn=false;
+  function ttsLang(){var a=document.querySelector('[data-lang].active');return (a&&a.dataset.lang)||'es';}
+  function applyTTSLabel(){var lg=ttsLang();var l=document.getElementById('ttsLbl');var ic=document.getElementById('ttsIco');var b=document.getElementById('ttsBtn');if(l)l.textContent=ttsOn?(TTS_LBL.stop[lg]||TTS_LBL.stop.es):(TTS_LBL.listen[lg]||TTS_LBL.listen.es);if(ic)ic.textContent=ttsOn?'⏹':'🔊';if(b)b.classList.toggle('on',ttsOn);}
+  function ttsGetText(){var parts=[];document.querySelectorAll('[data-lang].active').forEach(function(el){if(el.innerText)parts.push(el.innerText);});return parts.join('. ');}
+  function ttsStop(){try{window.speechSynthesis.cancel();}catch(e){}ttsOn=false;applyTTSLabel();}
+  function toggleTTS(){
+    if(!("speechSynthesis" in window))return;
+    if(ttsOn){ttsStop();return;}
+    var text=(ttsGetText()||"").replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu," ").replace(/\s+/g," ").trim();
+    if(!text)return;
+    try{window.speechSynthesis.cancel();}catch(e){}
+    var u=new SpeechSynthesisUtterance(text);
+    var lg=ttsLang();var lc=TTS_LANG[lg]||"es-ES";
+    u.lang=lc;u.rate=0.95;u.pitch=1;
+    try{var voices=window.speechSynthesis.getVoices()||[];var pref=lc.split("-")[0];var v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(pref)===0;})[0];if(!v&&lg==="ca"){v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf("es")===0;})[0];if(v)u.lang="es-ES";}if(v)u.voice=v;}catch(e){}
+    u.onend=function(){ttsOn=false;applyTTSLabel();};
+    u.onerror=function(){ttsOn=false;applyTTSLabel();};
+    ttsOn=true;applyTTSLabel();
+    window.speechSynthesis.speak(u);
+  }
+  (function(){if(!("speechSynthesis" in window)){var b=document.getElementById("ttsBtn");if(b)b.style.display="none";return;}try{window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=function(){};}catch(e){}applyTTSLabel();})();
+</script>
+<button id="ttsBtn" class="tts-btn" onclick="toggleTTS()" aria-label="Escuchar el texto"><span class="tts-ico" id="ttsIco">🔊</span><span id="ttsLbl">Escuchar</span></button>
+</body>
+</html>

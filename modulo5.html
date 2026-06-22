@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 5 — Orientarse y no perderse</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F0;
+    --warm-white: #F8F4EC;
+    --deep: #2A1E08;
+    --amber: #B87820;
+    --amber-mid: #D4982A;
+    --amber-light: #E8C06A;
+    --amber-pale: #F4DFA8;
+    --amber-ultra: #FBF0D0;
+    --sage: #6A8A5A;
+    --sage-light: #B0C8A0;
+    --blue-soft: #5B7FA6;
+    --blue-light: #A8C4DC;
+    --purple: #7A60A8;
+    --purple-light: #C0A8D8;
+    --rose: #B85A6A;
+    --rose-light: #E0A0AA;
+    --text: #2A1E08;
+    --text-mid: #5A4020;
+    --text-light: #8A7050;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Source Serif 4',Georgia,serif;background:var(--cream);color:var(--text);font-size:17px;line-height:1.8;}
+
+  .lang-bar{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--deep);display:flex;justify-content:center;}
+  .lang-btn{padding:10px 22px;border:none;background:transparent;color:#8A7850;font-family:'Source Serif 4',serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;border-bottom:3px solid transparent;}
+  .lang-btn.active{color:var(--amber-pale);border-bottom:3px solid var(--amber-mid);}
+  .lang-btn:hover{color:white;}
+  .progress-bar{position:fixed;top:44px;left:0;height:3px;background:var(--amber-mid);width:0%;transition:width 0.1s;z-index:99;}
+
+  .cover{min-height:100vh;background:linear-gradient(150deg,#1E1408 0%,#2A1E08 50%,#1E1000 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 40px 60px;position:relative;overflow:hidden;text-align:center;}
+  .cover::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(212,152,42,0.15) 0%,transparent 70%);}
+  .cover::after{content:'';position:absolute;bottom:-80px;left:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(184,120,32,0.1) 0%,transparent 70%);}
+  .cover-module-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--amber-light);margin-bottom:24px;position:relative;}
+  .cover-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(36px,6vw,64px);color:#FAF7F0;line-height:1.2;max-width:700px;margin-bottom:16px;position:relative;}
+  .cover-title em{color:var(--amber-pale);font-style:italic;}
+  .cover-subtitle{font-size:16px;color:#6A5A30;max-width:520px;margin-bottom:48px;font-style:italic;line-height:1.7;position:relative;}
+  .cover-langs{display:flex;gap:10px;margin-bottom:48px;flex-wrap:wrap;justify-content:center;position:relative;}
+  .cover-lang-pill{padding:5px 16px;border:1px solid rgba(212,152,42,0.4);border-radius:20px;font-size:11px;letter-spacing:1.5px;color:var(--amber-light);text-transform:uppercase;}
+  .cover-divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--amber-mid),transparent);margin:0 auto 40px;position:relative;}
+  .cover-intro{max-width:560px;color:#5A4A28;font-size:15px;line-height:1.9;position:relative;}
+  .scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:#4A3A18;font-size:11px;letter-spacing:3px;text-transform:uppercase;animation:bounce 2s infinite;}
+  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
+
+  .content{max-width:780px;margin:0 auto;padding:80px 40px;}
+  .section{margin-bottom:80px;opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+  .section.visible{opacity:1;transform:translateY(0);}
+  .section-number{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-bottom:10px;display:block;}
+  .section-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(24px,4vw,36px);color:var(--deep);margin-bottom:28px;line-height:1.3;}
+  .section-title em{color:var(--amber);font-style:italic;}
+  p{margin-bottom:20px;color:var(--text);}
+
+  .pull-quote{border-left:4px solid var(--amber-light);padding:20px 28px;margin:40px 0;background:var(--warm-white);border-radius:0 8px 8px 0;font-family:'Playfair Display',serif;font-size:19px;line-height:1.6;color:var(--amber);font-style:italic;}
+
+  .science-box{background:linear-gradient(135deg,#EEF4F8,#E8F0EC);border:1px solid var(--blue-light);border-radius:12px;padding:28px 32px;margin:36px 0;position:relative;}
+  .science-box::before{content:'🔬';position:absolute;top:-14px;left:24px;font-size:22px;background:var(--cream);padding:0 8px;}
+  .science-box-title{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--blue-soft);margin-bottom:12px;font-weight:600;}
+  .science-box p{font-size:15px;color:#4A6070;margin-bottom:10px;}
+  .science-box .source{font-size:12px;color:var(--blue-soft);font-style:italic;margin-top:8px;margin-bottom:0;}
+
+  .heart-box{background:linear-gradient(135deg,#FDF6E8,#FAF0D8);border:1px solid var(--amber-light);border-radius:12px;padding:28px 32px;margin:36px 0;position:relative;}
+  .heart-box::before{content:'♡';position:absolute;top:-14px;left:24px;font-size:20px;background:var(--cream);padding:0 8px;color:var(--amber);}
+  .heart-box-title{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:12px;font-weight:600;}
+  .heart-box p{font-size:15px;color:var(--text-mid);margin-bottom:10px;}
+
+  .residence-box{background:linear-gradient(135deg,#F0EDF8,#EAE6F5);border:1px solid var(--purple-light);border-radius:12px;padding:28px 32px;margin:36px 0;position:relative;}
+  .residence-box::before{content:'🏠';position:absolute;top:-14px;left:24px;font-size:22px;background:var(--cream);padding:0 8px;}
+  .residence-box-title{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--purple);margin-bottom:12px;font-weight:600;}
+  .residence-box p{font-size:15px;color:#4A3A6A;margin-bottom:10px;}
+  .residence-box ul{margin:12px 0 12px 20px;}
+  .residence-box ul li{font-size:15px;color:#4A3A6A;margin-bottom:8px;}
+
+  .chapter-header{background:linear-gradient(135deg,#2A1E08,#1E1000);color:var(--warm-white);padding:48px 40px;margin:60px -40px 60px;position:relative;overflow:hidden;}
+  .chapter-header::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(212,152,42,0.2);}
+  .chapter-header .section-number{color:var(--amber-pale);}
+  .chapter-header .section-title{color:var(--warm-white);margin-bottom:0;}
+  .chapter-header .ch-icon{font-size:48px;margin-bottom:16px;display:block;position:relative;}
+
+  /* COUNTRY TABS */
+  .country-tabs{display:flex;gap:0;margin:28px 0 0;border-bottom:2px solid var(--amber-pale);}
+  .ctab{padding:10px 24px;border:none;background:transparent;font-family:'Source Serif 4',serif;font-size:14px;color:var(--text-light);cursor:pointer;transition:all 0.2s;border-bottom:3px solid transparent;margin-bottom:-2px;}
+  .ctab.active{color:var(--amber);border-bottom:3px solid var(--amber);font-weight:600;}
+  .country-content{display:none;padding:24px 0;}
+  .country-content.active{display:block;}
+
+  /* RESOURCE CARDS */
+  .resource-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0;}
+  @media(max-width:600px){.resource-grid{grid-template-columns:1fr;}}
+  .resource-card{background:var(--warm-white);border-radius:12px;padding:20px;border-left:4px solid var(--amber-mid);}
+  .resource-card .rc-type{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:6px;}
+  .resource-card .rc-name{font-family:'Playfair Display',serif;font-size:16px;color:var(--deep);margin-bottom:6px;}
+  .resource-card .rc-desc{font-size:13px;color:var(--text-light);line-height:1.5;margin-bottom:8px;}
+  .resource-card .rc-contact{font-size:13px;color:var(--amber);font-weight:600;}
+
+  /* DOCTOR DIALOGUE */
+  .doctor-card{background:var(--warm-white);border-radius:14px;padding:24px 28px;margin:20px 0;border:1px solid var(--amber-pale);}
+  .doctor-card .dc-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:10px;}
+  .doctor-card .dc-phrase{font-size:16px;color:var(--deep);font-style:italic;margin-bottom:8px;}
+  .doctor-card .dc-why{font-size:13px;color:var(--text-light);margin-bottom:0;}
+
+  /* SIGNAL CARDS */
+  .signal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0;}
+  @media(max-width:600px){.signal-grid{grid-template-columns:1fr;}}
+  .signal-card{border-radius:12px;padding:20px;}
+  .signal-card.ok{background:#EAF4E8;border:1px solid #A8CCA0;}
+  .signal-card.warn{background:#FFF4E0;border:1px solid #E8C878;}
+  .signal-card.alert{background:#FAE8E8;border:1px solid #E0A0A0;}
+  .signal-card .sig-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px;}
+  .signal-card.ok .sig-label{color:#2A6020;}
+  .signal-card.warn .sig-label{color:#7A5010;}
+  .signal-card.alert .sig-label{color:#7A1010;}
+  .signal-card p{font-size:14px;margin-bottom:0;line-height:1.6;}
+  .signal-card.ok p{color:#1A4010;}
+  .signal-card.warn p{color:#5A3808;}
+  .signal-card.alert p{color:#5A1010;}
+
+  /* FINALE */
+  .finale{background:linear-gradient(135deg,#2A1E08,#1E1000);border-radius:16px;padding:48px 40px;margin:60px 0;text-align:center;position:relative;overflow:hidden;}
+  .finale::before{content:'';position:absolute;top:-60px;right:-60px;width:250px;height:250px;border-radius:50%;background:rgba(212,152,42,0.12);}
+  .finale-icon{font-size:48px;margin-bottom:20px;display:block;}
+  .finale-title{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,36px);color:var(--amber-pale);margin-bottom:20px;line-height:1.3;}
+  .finale-title em{color:var(--amber-light);font-style:italic;}
+  .finale p{color:#8A7850;font-size:16px;line-height:1.8;max-width:540px;margin:0 auto 20px;}
+  .finale .finale-quote{font-family:'Playfair Display',serif;font-size:20px;color:var(--amber-pale);font-style:italic;border-top:1px solid rgba(212,152,42,0.3);padding-top:28px;margin-top:28px;}
+
+  /* MODULE BADGES */
+  .module-badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:32px 0;}
+  .badge{padding:8px 20px;border-radius:20px;font-size:12px;letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+  .badge.done{background:var(--amber-pale);color:var(--amber);}
+  .badge.current{background:var(--amber-mid);color:white;}
+
+  .checklist{list-style:none;margin:20px 0;}
+  .checklist li{padding:10px 0 10px 36px;position:relative;border-bottom:1px solid rgba(184,120,32,0.1);font-size:16px;color:var(--text);}
+  .checklist li::before{content:'→';position:absolute;left:8px;color:var(--amber);font-weight:bold;}
+
+  .sep{text-align:center;margin:60px 0;color:var(--amber-pale);font-size:20px;letter-spacing:16px;}
+
+  [data-lang]{display:none;} [data-lang].active{display:block;}
+
+  .module-nav{background:var(--warm-white);border-top:1px solid rgba(184,120,32,0.15);padding:32px 40px;display:flex;justify-content:space-between;align-items:center;max-width:780px;margin:0 auto;}
+  .nav-pill{padding:10px 24px;border-radius:24px;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--amber);color:var(--amber);font-family:'Source Serif 4',serif;}
+  .nav-pill.current{background:var(--amber);color:white;}
+  .nav-pill.done{background:var(--amber-pale);border-color:var(--amber-pale);color:var(--amber);}
+
+  .doc-footer{background:linear-gradient(135deg,#2A1E08,#1E1000);color:#5A4828;text-align:center;padding:48px 40px;font-size:13px;line-height:2;}
+  .doc-footer strong{color:var(--amber-pale);}
+
+  @media(max-width:600px){.content{padding:60px 24px;}.chapter-header{margin:40px -24px 40px;padding:36px 24px;}.finale{padding:36px 24px;}}
+  /* Botón de lectura en voz alta (accesibilidad) */
+  .tts-btn{position:fixed;right:14px;bottom:18px;z-index:99999;display:inline-flex;align-items:center;gap:7px;background:#2f6045;color:#fff;border:none;border-radius:26px;padding:12px 18px;font-size:15px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.28);cursor:pointer;font-family:inherit}
+  .tts-btn .tts-ico{font-size:18px;line-height:1}
+  .tts-btn.on{background:#b4452f}
+  @media print{.tts-btn{display:none}}
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('es')">🇪🇸 Español</button>
+  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+  <button class="lang-btn" onclick="setLang('ca')">🏴 Català</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+</div>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-module-label">CuidarConSentido · Módulo 5 · Module 5</div>
+  <div data-lang="es" class="active"><h1 class="cover-title">Orientarse y<br><em>no perderse</em></h1><p class="cover-subtitle">Recursos reales, ayudas económicas y cómo hablar con el médico — todo lo que nadie te explica pero necesitas saber</p></div>
+  <div data-lang="fr"><h1 class="cover-title">S'orienter et<br><em>ne pas se perdre</em></h1><p class="cover-subtitle">Ressources réelles, aides financières et comment parler au médecin — tout ce que personne ne vous explique mais que vous devez savoir</p></div>
+  <div data-lang="ca"><h1 class="cover-title">Orientar-se i<br><em>no perdre's</em></h1><p class="cover-subtitle">Recursos reals, ajudes econòmiques i com parlar amb el metge — tot el que ningú t'explica però necessites saber</p></div>
+  <div data-lang="en"><h1 class="cover-title">Finding your way<br><em>without getting lost</em></h1><p class="cover-subtitle">Real resources, financial support and how to talk to the doctor — everything nobody explains but you need to know</p></div>
+  <div class="cover-langs">
+    <span class="cover-lang-pill">Español</span><span class="cover-lang-pill">Français</span><span class="cover-lang-pill">Català</span><span class="cover-lang-pill">English</span>
+  </div>
+  <div class="cover-divider"></div>
+  <div data-lang="es" class="active"><p class="cover-intro">El sistema de recursos existe. El problema es que nadie te lo presenta en un solo lugar. Aquí lo tienes.</p></div>
+  <div data-lang="fr"><p class="cover-intro">Le système de ressources existe. Le problème, c'est que personne ne vous le présente en un seul endroit. Le voici.</p></div>
+  <div data-lang="ca"><p class="cover-intro">El sistema de recursos existeix. El problema és que ningú te'l presenta en un sol lloc. Aquí el tens.</p></div>
+  <div data-lang="en"><p class="cover-intro">The resource system exists. The problem is that nobody presents it all in one place. Here it is.</p></div>
+  <div class="scroll-hint">▼ &nbsp; continúa</div>
+</div>
+
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Introducción</span>
+      <h2 class="section-title">El laberinto de los recursos<br><em>tiene salida</em></h2>
+      <p>Uno de los grandes problemas del cuidador informal es que no sabe lo que no sabe. Nadie le explica que existen ayudas económicas, que hay asociaciones que ofrecen acompañamiento gratuito, que el médico de cabecera puede derivar a un especialista si se le pide correctamente, o que hay derechos legales que protegen tanto a la persona con DCL como a quien la cuida.</p>
+      <p>Este módulo es una guía práctica de navegación — por país, por tipo de recurso y por momento del proceso. No es exhaustiva, pero cubre lo esencial y te da las palabras para buscar más.</p>
+      <div class="pull-quote">"No estás solo. El sistema no siempre es visible, pero está ahí. Este módulo te ayuda a encontrarlo."</div>
+    </div>
+    <div data-lang="fr">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">Le labyrinthe des ressources<br><em>a une sortie</em></h2>
+      <p>L'un des grands problèmes de l'aidant informel est qu'il ne sait pas ce qu'il ne sait pas. Personne ne lui explique qu'il existe des aides financières, des associations offrant un accompagnement gratuit, que le médecin traitant peut orienter vers un spécialiste si on le demande correctement, ou qu'il existe des droits légaux protégeant à la fois la personne avec DCL et celui qui en prend soin.</p>
+      <p>Ce module est un guide pratique de navigation — par pays, par type de ressource et par moment du parcours.</p>
+      <div class="pull-quote">« Vous n'êtes pas seul·e. Le système n'est pas toujours visible, mais il est là. Ce module vous aide à le trouver. »</div>
+    </div>
+    <div data-lang="ca">
+      <span class="section-number">Introducció</span>
+      <h2 class="section-title">El laberint dels recursos<br><em>té sortida</em></h2>
+      <p>Un dels grans problemes del cuidador informal és que no sap el que no sap. Ningú li explica que existeixen ajudes econòmiques, que hi ha associacions que ofereixen acompanyament gratuït, que el metge de capçalera pot derivar a un especialista si se li demana correctament, o que hi ha drets legals que protegeixen tant la persona amb DCL com qui la cuida.</p>
+      <div class="pull-quote">"No estàs sol. El sistema no sempre és visible, però hi és. Aquest mòdul t'ajuda a trobar-lo."</div>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">The resource labyrinth<br><em>has an exit</em></h2>
+      <p>One of the great problems for informal caregivers is that they don't know what they don't know. Nobody explains that financial support exists, that there are associations offering free accompaniment, that the GP can refer to a specialist if asked correctly, or that there are legal rights protecting both the person with MCI and the person who cares for them.</p>
+      <p>This module is a practical navigation guide — by country, by type of resource and by stage of the journey.</p>
+      <div class="pull-quote">"You are not alone. The system isn't always visible, but it is there. This module helps you find it."</div>
+    </div>
+  </div>
+
+  <div class="sep">· · ·</div>
+
+  <!-- CAP 1: RECURSOS POR PAÍS -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🗺️</span>
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 1</span><h2 class="section-title">Recursos por país y región</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 1</span><h2 class="section-title">Ressources par pays et région</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 1</span><h2 class="section-title">Recursos per país i regió</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 1</span><h2 class="section-title">Resources by country and region</h2></div>
+    </div>
+
+    <!-- COUNTRY TABS — shared across all langs via JS -->
+    <div class="country-tabs">
+      <button class="ctab active" onclick="setCountry('es')">🇪🇸 España</button>
+      <button class="ctab" onclick="setCountry('cat')">🏴 Catalunya</button>
+      <button class="ctab" onclick="setCountry('fr')">🇫🇷 France</button>
+      <button class="ctab" onclick="setCountry('uk')">🇬🇧 UK</button>
+    </div>
+
+    <!-- ESPAÑA -->
+    <div class="country-content active" id="country-es">
+      <div data-lang="es" class="active">
+        <p>España cuenta con un sistema de protección social para personas en situación de dependencia. El acceso no es siempre fácil, pero los derechos existen.</p>
+        <div class="resource-grid">
+          <div class="resource-card"><div class="rc-type">Económico</div><div class="rc-name">Ley de Dependencia (SAAD)</div><div class="rc-desc">Prestaciones económicas y servicios para personas con limitación de autonomía. Solicitud en los Servicios Sociales municipales.</div><div class="rc-contact">imserso.es</div></div>
+          <div class="resource-card"><div class="rc-type">Apoyo emocional</div><div class="rc-name">Alzheimer España</div><div class="rc-desc">Red de asociaciones locales, grupos de apoyo para familiares, línea de información y orientación gratuita.</div><div class="rc-contact">alzheimer-spain.org / Tel: 900 210 212</div></div>
+          <div class="resource-card"><div class="rc-type">Respiro</div><div class="rc-name">Centros de Día</div><div class="rc-desc">Atención diurna especializada para personas con deterioro cognitivo. Gestionados por municipios y comunidades autónomas.</div><div class="rc-contact">Servicios Sociales de tu municipio</div></div>
+          <div class="resource-card"><div class="rc-type">Evaluación</div><div class="rc-name">Unidades de Memoria</div><div class="rc-desc">Evaluación neuropsicológica especializada. Solicitar derivación al médico de cabecera con informe de síntomas observados.</div><div class="rc-contact">A través del médico de cabecera</div></div>
+          <div class="resource-card"><div class="rc-type">Legal</div><div class="rc-name">Tutela y Curatela</div><div class="rc-desc">Figuras legales de protección cuando la persona pierde capacidad de decisión. Asesoramiento gratuito en Colegios de Abogados.</div><div class="rc-contact">Colegio de Abogados local</div></div>
+          <div class="resource-card"><div class="rc-type">Formación</div><div class="rc-name">Programas de Respiro Familiar</div><div class="rc-desc">Programas de descanso para cuidadores — estancias temporales para la persona cuidada en centros especializados.</div><div class="rc-contact">Cruz Roja / IMSERSO</div></div>
+        </div>
+      </div>
+      <div data-lang="fr"><p>En Espagne, le système de protection sociale pour les personnes dépendantes est géré par le SAAD (Sistema para la Autonomía y Atención a la Dependencia). Les ressources principales incluent les prestations de la Ley de Dependencia, le réseau Alzheimer España (900 210 212), les centres d'accueil de jour et les Unités de Mémoire accessibles via le médecin traitant.</p></div>
+      <div data-lang="ca"><p>Espanya disposa d'un sistema de protecció social per a persones en situació de dependència. Recursos principals: Ley de Dependencia (SAAD), Alzheimer España (900 210 212), Centres de Dia municipals, Unitats de Memòria (per derivació mèdica), programes de respir familiar de la Creu Roja i l'IMSERSO.</p></div>
+      <div data-lang="en"><p>Spain has a social protection system for dependent persons managed by the SAAD. Key resources include the Ley de Dependencia benefits, Alzheimer España network (900 210 212), day centres, Memory Units (via GP referral) and family respite programmes through Cruz Roja and IMSERSO.</p></div>
+    </div>
+
+    <!-- CATALUNYA -->
+    <div class="country-content" id="country-cat">
+      <div data-lang="es" class="active">
+        <p>Cataluña tiene recursos específicos adicionales al sistema estatal, gestionados por la Generalitat y los municipios.</p>
+        <div class="resource-grid">
+          <div class="resource-card"><div class="rc-type">Coordinación</div><div class="rc-name">Programa Òmnia / PADES</div><div class="rc-desc">Equipos de atención domiciliaria especializados en personas mayores con dependencia. Solicitud a través del CAP.</div><div class="rc-contact">A través del CAP (médico de familia)</div></div>
+          <div class="resource-card"><div class="rc-type">Apoyo emocional</div><div class="rc-name">Alzheimer Catalunya</div><div class="rc-desc">Formación, grupos de apoyo, atención psicológica para cuidadores. Red de delegaciones en toda Cataluña.</div><div class="rc-contact">alzheimercatalunya.cat / 93 430 49 93</div></div>
+          <div class="resource-card"><div class="rc-type">Económico</div><div class="rc-name">Prestació per Dependència</div><div class="rc-desc">Tramitación a través de los Serveis Socials del municipio. Incluye prestación económica para cuidador no profesional.</div><div class="rc-contact">Serveis Socials municipals</div></div>
+          <div class="resource-card"><div class="rc-type">Respiro</div><div class="rc-name">Servei d'Atenció a Domicili (SAD)</div><div class="rc-desc">Cuidadores profesionales en el hogar por horas. Cofinanciado según renta. Solicitud en Serveis Socials.</div><div class="rc-contact">Serveis Socials municipals</div></div>
+        </div>
+      </div>
+      <div data-lang="fr"><p>La Catalogne dispose de ressources spécifiques : Alzheimer Catalunya (93 430 49 93), les équipes PADES d'aide à domicile, le SAD (service d'aide à domicile cofinancé), et la prestation de dépendance via les services sociaux municipaux.</p></div>
+      <div data-lang="ca">
+        <p>Catalunya té recursos específics addicionals al sistema estatal, gestionats per la Generalitat i els municipis.</p>
+        <div class="resource-grid">
+          <div class="resource-card"><div class="rc-type">Coordinació</div><div class="rc-name">Programa PADES</div><div class="rc-desc">Equips d'atenció domiciliària especialitzats en persones grans amb dependència. Sol·licitud a través del CAP.</div><div class="rc-contact">A través del CAP (metge de família)</div></div>
+          <div class="resource-card"><div class="rc-type">Suport emocional</div><div class="rc-name">Alzheimer Catalunya</div><div class="rc-desc">Formació, grups de suport, atenció psicològica per a cuidadors. Xarxa de delegacions a tota Catalunya.</div><div class="rc-contact">alzheimercatalunya.cat / 93 430 49 93</div></div>
+          <div class="resource-card"><div class="rc-type">Econòmic</div><div class="rc-name">Prestació per Dependència</div><div class="rc-desc">Tramitació a través dels Serveis Socials del municipi. Inclou prestació econòmica per cuidador no professional.</div><div class="rc-contact">Serveis Socials municipals</div></div>
+          <div class="resource-card"><div class="rc-type">Respir</div><div class="rc-name">Servei d'Atenció a Domicili (SAD)</div><div class="rc-desc">Cuidadors professionals a la llar per hores. Cofinançat segons renda. Sol·licitud als Serveis Socials.</div><div class="rc-contact">Serveis Socials municipals</div></div>
+        </div>
+      </div>
+      <div data-lang="en"><p>Catalonia has specific resources in addition to the national system: Alzheimer Catalunya (93 430 49 93), PADES home care teams, the SAD home help service (co-funded by income), and dependency benefits via municipal social services.</p></div>
+    </div>
+
+    <!-- FRANCE -->
+    <div class="country-content" id="country-fr">
+      <div data-lang="es" class="active">
+        <p>Francia dispone de un sistema de apoyo a personas mayores dependientes estructurado principalmente en torno al APA y los CLIC/MAIA.</p>
+        <div class="resource-grid">
+          <div class="resource-card"><div class="rc-type">Económico</div><div class="rc-name">APA — Allocation Personnalisée d'Autonomie</div><div class="rc-desc">Prestación para personas mayores de 60 años con pérdida de autonomía. Solicitud en el Conseil Départemental.</div><div class="rc-contact">service-public.fr</div></div>
+          <div class="resource-card"><div class="rc-type">Apoyo emocional</div><div class="rc-name">France Alzheimer</div><div class="rc-desc">Red nacional de asociaciones departamentales, grupos Café Alzheimer, formación para cuidadores (Pixel), línea telefónica.</div><div class="rc-contact">francealzheimer.org / 0 811 112 112</div></div>
+          <div class="resource-card"><div class="rc-type">Coordinación</div><div class="rc-name">MAIA / CLIC</div><div class="rc-desc">Puntos de coordinación local para personas mayores — orientan y coordinan todos los servicios del territorio.</div><div class="rc-contact">monparcourshandicap.gouv.fr</div></div>
+          <div class="resource-card"><div class="rc-type">Respiro</div><div class="rc-name">Accueil de Jour / Hébergement Temporaire</div><div class="rc-desc">Acogida diurna o temporal en establecimiento especializado. Financiable con APA.</div><div class="rc-contact">Médecin traitant o CLIC local</div></div>
+          <div class="resource-card"><div class="rc-type">Económico</div><div class="rc-name">CESU / Aide à Domicile</div><div class="rc-desc">Cheque empleo para pagar ayuda a domicilio, con ventajas fiscales. Financiable parcialmente con APA.</div><div class="rc-contact">cesu.urssaf.fr</div></div>
+          <div class="resource-card"><div class="rc-type">Legal</div><div class="rc-name">Mandat de Protection Future</div><div class="rc-desc">Permite designar anticipadamente a la persona que tomará decisiones cuando no se pueda. Notario o formulario administrativo.</div><div class="rc-contact">Notaire local</div></div>
+        </div>
+      </div>
+      <div data-lang="fr">
+        <p>La France dispose d'un système d'aide aux personnes âgées dépendantes structuré principalement autour de l'APA et des MAIA/CLIC.</p>
+        <div class="resource-grid">
+          <div class="resource-card"><div class="rc-type">Financier</div><div class="rc-name">APA — Allocation Personnalisée d'Autonomie</div><div class="rc-desc">Prestation pour les personnes de plus de 60 ans en perte d'autonomie. Demande au Conseil Départemental.</div><div class="rc-contact">service-public.fr</div></div>
+          <div class="resource-card"><div class="rc-type">Soutien émotionnel</div><div class="rc-name">France Alzheimer</div><div class="rc-desc">Réseau national, groupes Café Alzheimer, formation aidants (Pixel), ligne téléphonique gratuite.</div><div class="rc-contact">francealzheimer.org / 0 811 112 112</div></div>
+          <div class="resource-card"><div class="rc-type">Coordination</div><div class="rc-name">MAIA / CLIC</div><div class="rc-desc">Points de coordination locaux pour personnes âgées — orientent et coordonnent tous les services du territoire.</div><div class="rc-contact">monparcourshandicap.gouv.fr</div></div>
+          <div class="resource-card"><div class="rc-type">Répit</div><div class="rc-name">Accueil de Jour / Hébergement Temporaire</div><div class="rc-desc">Accueil de jour ou temporaire en établissement spécialisé. Finançable avec l'APA.</div><div class="rc-contact">Médecin traitant ou CLIC local</div></div>
+          <div class="resource-card"><div class="rc-type">Financier</div><div class="rc-name">CESU / Aide à Domicile</div><div class="rc-desc">Chèque emploi pour payer l'aide à domicile, avec avantages fiscaux. Partiellement finançable avec l'APA.</div><div class="rc-contact">cesu.urssaf.fr</div></div>
+          <div class="resource-card"><div class="rc-type">Juridique</div><div class="rc-name">Mandat de Protection Future</div><div class="rc-desc">Permet de désigner à l'avance la personne qui prendra des décisions en cas d'incapacité. Notaire ou formulaire administratif.</div><div class="rc-contact">Notaire local</div></div>
+        </div>
+      </div>
+      <div data-lang="ca"><p>França disposa d'un sistema d'ajuda a persones grans dependents estructurat principalment al voltant de l'APA i els MAIA/CLIC. Recursos principals: APA (Conseil Départemental), France Alzheimer (0 811 112 112), MAIA/CLIC de coordinació local, Accueil de Jour i CESU per a ajuda a domicili.</p></div>
+      <div data-lang="en"><p>France has a support system for dependent elderly people structured mainly around the APA and MAIA/CLIC coordination points. Key resources: APA benefits (Conseil Départemental), France Alzheimer (0 811 112 112), local MAIA/CLIC coordination, day care centres, and CESU for home help with tax benefits.</p></div>
+    </div>
+
+    <!-- UK -->
+    <div class="country-content" id="country-uk">
+      <div data-lang="es" class="active">
+        <p>El Reino Unido cuenta con un sistema de apoyo coordinado principalmente por el NHS y los Local Authorities.</p>
+        <div class="resource-grid">
+          <div class="resource-card"><div class="rc-type">Económico</div><div class="rc-name">Carer's Allowance</div><div class="rc-desc">Prestación económica semanal para cuidadores que dedican al menos 35h/semana. Solicitud online en gov.uk.</div><div class="rc-contact">gov.uk/carers-allowance</div></div>
+          <div class="resource-card"><div class="rc-type">Apoyo emocional</div><div class="rc-name">Alzheimer's Society</div><div class="rc-desc">Línea de apoyo, grupos locales, recursos online, servicio de Dementia Connect para orientación personalizada.</div><div class="rc-contact">alzheimers.org.uk / 0333 150 3456</div></div>
+          <div class="resource-card"><div class="rc-type">Evaluación</div><div class="rc-name">Carer's Assessment</div><div class="rc-desc">Evaluación gratuita de las necesidades del cuidador por parte del Local Authority. Solicitar al GP o directamente al council.</div><div class="rc-contact">Local Authority / NHS</div></div>
+          <div class="resource-card"><div class="rc-type">Respiro</div><div class="rc-name">Respite Care / Day Centres</div><div class="rc-desc">Centros de día y cuidado temporal. Financiable a través del Local Authority según evaluación de necesidades.</div><div class="rc-contact">Local Authority Social Services</div></div>
+          <div class="resource-card"><div class="rc-type">Económico</div><div class="rc-name">Attendance Allowance</div><div class="rc-desc">Para la persona con deterioro cognitivo mayor de 65 años que necesita ayuda con el cuidado personal.</div><div class="rc-contact">gov.uk/attendance-allowance</div></div>
+          <div class="resource-card"><div class="rc-type">Legal</div><div class="rc-name">Lasting Power of Attorney</div><div class="rc-desc">Figura legal que permite actuar en nombre de la persona cuando pierde capacidad de decisión. Registrar cuanto antes.</div><div class="rc-contact">gov.uk/power-of-attorney</div></div>
+        </div>
+      </div>
+      <div data-lang="fr"><p>Le Royaume-Uni dispose d'un système de soutien coordonné par le NHS et les Local Authorities. Ressources clés : Carer's Allowance (prestations hebdomadaires), Alzheimer's Society (0333 150 3456), évaluation gratuite des besoins de l'aidant, Attendance Allowance pour la personne aidée, et Lasting Power of Attorney à enregistrer rapidement.</p></div>
+      <div data-lang="ca"><p>El Regne Unit disposa d'un sistema de suport coordinat principalment pel NHS i els Local Authorities. Recursos principals: Carer's Allowance (gov.uk), Alzheimer's Society (0333 150 3456), avaluació gratuïta del cuidador, Attendance Allowance per a la persona cuidada, i Lasting Power of Attorney.</p></div>
+      <div data-lang="en">
+        <p>The UK has a support system coordinated mainly by the NHS and Local Authorities.</p>
+        <div class="resource-grid">
+          <div class="resource-card"><div class="rc-type">Financial</div><div class="rc-name">Carer's Allowance</div><div class="rc-desc">Weekly benefit for carers providing at least 35h/week of care. Apply online at gov.uk.</div><div class="rc-contact">gov.uk/carers-allowance</div></div>
+          <div class="resource-card"><div class="rc-type">Emotional support</div><div class="rc-name">Alzheimer's Society</div><div class="rc-desc">Support line, local groups, online resources, personalised Dementia Connect guidance service.</div><div class="rc-contact">alzheimers.org.uk / 0333 150 3456</div></div>
+          <div class="resource-card"><div class="rc-type">Assessment</div><div class="rc-name">Carer's Assessment</div><div class="rc-desc">Free assessment of carer's needs by Local Authority. Request via GP or directly from your council.</div><div class="rc-contact">Local Authority / NHS</div></div>
+          <div class="resource-card"><div class="rc-type">Respite</div><div class="rc-name">Respite Care / Day Centres</div><div class="rc-desc">Day care and temporary residential care. Fundable through Local Authority following needs assessment.</div><div class="rc-contact">Local Authority Social Services</div></div>
+          <div class="resource-card"><div class="rc-type">Financial</div><div class="rc-name">Attendance Allowance</div><div class="rc-desc">For the person with cognitive decline aged 65+ who needs help with personal care.</div><div class="rc-contact">gov.uk/attendance-allowance</div></div>
+          <div class="resource-card"><div class="rc-type">Legal</div><div class="rc-name">Lasting Power of Attorney</div><div class="rc-desc">Legal instrument allowing you to act on behalf of the person when they lose decision-making capacity. Register as early as possible.</div><div class="rc-contact">gov.uk/power-of-attorney</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="residence-box" style="margin-top:36px;">
+      <div class="residence-box-title">Para residencias: conexión con recursos externos</div>
+      <div data-lang="es" class="active"><p>Las residencias que construyen puentes con el ecosistema de recursos externo ofrecen un valor añadido enorme a las familias. Esto incluye informar sobre ayudas económicas aplicables, conectar con asociaciones locales y facilitar la transición desde el domicilio con acompañamiento.</p></div>
+      <div data-lang="fr"><p>Les établissements qui construisent des ponts avec l'écosystème de ressources externe offrent une valeur ajoutée énorme aux familles : informer sur les aides financières applicables, connecter avec les associations locales, faciliter la transition depuis le domicile.</p></div>
+      <div data-lang="ca"><p>Les residències que construeixen ponts amb l'ecosistema de recursos extern ofereixen un valor afegit enorme a les famílies: informar sobre ajudes econòmiques aplicables, connectar amb associacions locals i facilitar la transició des del domicili.</p></div>
+      <div data-lang="en"><p>Care homes that build bridges with the external resource ecosystem offer enormous added value to families: informing about applicable financial support, connecting with local associations, and facilitating the transition from home with accompaniment.</p></div>
+    </div>
+  </div>
+
+  <!-- CAP 2: HABLAR CON EL MÉDICO -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🩺</span>
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 2</span><h2 class="section-title">Cómo hablar con el médico — y que te escuchen</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 2</span><h2 class="section-title">Comment parler au médecin — et être écouté·e</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 2</span><h2 class="section-title">Com parlar amb el metge — i que t'escoltin</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 2</span><h2 class="section-title">How to talk to the doctor — and be heard</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>Una de las quejas más frecuentes del cuidador es salir de la consulta médica sintiéndose igual de perdido que al entrar. La cita dura 10 minutos, el médico va rápido y tú no has dicho lo que más te preocupa. Esto tiene solución — con preparación.</p>
+
+      <div class="doctor-card">
+        <div class="dc-label">✓ Di esto en lugar de "está un poco despistado"</div>
+        <div class="dc-phrase">"En las últimas 6 semanas, he observado que repite la misma pregunta 3 o 4 veces en menos de una hora, y ayer se perdió en una calle que conoce de toda la vida."</div>
+        <div class="dc-why">Por qué funciona: concreto, observable, con tiempo y frecuencia. El médico puede actuar sobre datos, no sobre impresiones.</div>
+      </div>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Pide esto explícitamente</div>
+        <div class="dc-phrase">"Me gustaría que valorara si necesita una derivación a la Unidad de Memoria o un estudio neuropsicológico."</div>
+        <div class="dc-why">Por qué funciona: el médico a veces no deriva porque no sabe que tú lo quieres. Pedirlo explícitamente cambia la consulta.</div>
+      </div>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Infórmale sobre ti también</div>
+        <div class="dc-phrase">"Yo también me encuentro muy agotado. ¿Existe algún recurso de apoyo para cuidadores en este centro de salud?"</div>
+        <div class="dc-why">Por qué funciona: el cuidador también es paciente. Tu salud también es responsabilidad del médico de familia.</div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Lleva siempre una nota escrita</div>
+        <p>Antes de la consulta, escribe: 3 cambios concretos que has observado + 2 preguntas que quieres hacer + 1 cosa que tú necesitas. Con 10 minutos de cita, lo escrito garantiza que no se te olvida nada bajo la presión del momento.</p>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>L'une des plaintes les plus fréquentes de l'aidant est de sortir du cabinet médical aussi perdu qu'en entrant. La consultation dure 10 minutes, le médecin va vite et vous n'avez pas dit ce qui vous préoccupe le plus. Il y a une solution — la préparation.</p>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Dites ceci plutôt que "il est un peu distrait"</div>
+        <div class="dc-phrase">« Ces 6 dernières semaines, j'ai observé qu'il répète la même question 3 ou 4 fois en moins d'une heure, et hier il s'est perdu dans une rue qu'il connaît depuis toujours. »</div>
+        <div class="dc-why">Pourquoi ça fonctionne : concret, observable, avec durée et fréquence. Le médecin peut agir sur des données, pas sur des impressions.</div>
+      </div>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Demandez ceci explicitement</div>
+        <div class="dc-phrase">« J'aimerais que vous évaluiez s'il a besoin d'une orientation vers une consultation mémoire ou un bilan neuropsychologique. »</div>
+        <div class="dc-why">Pourquoi ça fonctionne : le médecin n'oriente pas toujours parce qu'il ne sait pas que vous le souhaitez.</div>
+      </div>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Informez-le aussi sur vous</div>
+        <div class="dc-phrase">« Je me sens aussi très épuisé·e. Existe-t-il des ressources de soutien pour les aidants dans ce cabinet ? »</div>
+        <div class="dc-why">Pourquoi ça fonctionne : l'aidant est aussi patient. Votre santé est aussi la responsabilité du médecin traitant.</div>
+      </div>
+      <div class="heart-box"><div class="heart-box-title">Apportez toujours une note écrite</div><p>Avant la consultation, écrivez : 3 changements concrets observés + 2 questions à poser + 1 chose dont vous avez besoin. Avec 10 minutes de consultation, l'écrit garantit que vous n'oubliez rien sous la pression du moment.</p></div>
+    </div>
+
+    <div data-lang="ca">
+      <p>Una de les queixes més freqüents del cuidador és sortir de la consulta mèdica sentint-se igual de perdut que en entrar. La cita dura 10 minuts, el metge va ràpid i tu no has dit el que més et preocupa. Això té solució — amb preparació.</p>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Digues això en lloc de "està una mica despistat"</div>
+        <div class="dc-phrase">"En les darreres 6 setmanes, he observat que repeteix la mateixa pregunta 3 o 4 vegades en menys d'una hora, i ahir es va perdre en un carrer que coneix de tota la vida."</div>
+        <div class="dc-why">Per què funciona: concret, observable, amb temps i freqüència. El metge pot actuar sobre dades, no sobre impressions.</div>
+      </div>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Demana això explícitament</div>
+        <div class="dc-phrase">"M'agradaria que valorés si necessita una derivació a la Unitat de Memòria o un estudi neuropsicològic."</div>
+        <div class="dc-why">Per què funciona: el metge de vegades no deriva perquè no sap que tu ho vols. Demanar-ho explícitament canvia la consulta.</div>
+      </div>
+      <div class="heart-box"><div class="heart-box-title">Porta sempre una nota escrita</div><p>Abans de la consulta, escriu: 3 canvis concrets que has observat + 2 preguntes que vols fer + 1 cosa que tu necessites. Amb 10 minuts de cita, el que has escrit garanteix que no oblidis res sota la pressió del moment.</p></div>
+    </div>
+
+    <div data-lang="en">
+      <p>One of the most common caregiver complaints is leaving the medical appointment feeling just as lost as on arrival. The appointment lasts 10 minutes, the doctor moves quickly and you haven't said what worries you most. This has a solution — preparation.</p>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Say this instead of "she's a bit forgetful"</div>
+        <div class="dc-phrase">"Over the last 6 weeks, I've noticed she repeats the same question 3 or 4 times within an hour, and yesterday she got lost in a street she has known all her life."</div>
+        <div class="dc-why">Why it works: concrete, observable, with timeframe and frequency. The doctor can act on data, not impressions.</div>
+      </div>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Ask for this explicitly</div>
+        <div class="dc-phrase">"I'd like you to assess whether she needs a referral to a Memory Clinic or a neuropsychological assessment."</div>
+        <div class="dc-why">Why it works: doctors don't always refer because they don't know you want it. Asking explicitly changes the appointment.</div>
+      </div>
+      <div class="doctor-card">
+        <div class="dc-label">✓ Tell them about yourself too</div>
+        <div class="dc-phrase">"I am also feeling very exhausted. Are there any carer support resources available through this surgery?"</div>
+        <div class="dc-why">Why it works: the caregiver is also a patient. Your health is also the GP's responsibility.</div>
+      </div>
+      <div class="heart-box"><div class="heart-box-title">Always bring a written note</div><p>Before the appointment, write: 3 concrete changes you have observed + 2 questions you want to ask + 1 thing you need. With 10 minutes per appointment, having it written guarantees you don't forget anything under pressure.</p></div>
+    </div>
+  </div>
+
+  <!-- CAP 3: CUÁNDO ESCALAR -->
+  <div class="section">
+    <div class="chapter-header">
+      <span class="ch-icon">🚦</span>
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 3</span><h2 class="section-title">Cuándo es el momento de buscar más ayuda</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 3</span><h2 class="section-title">Quand est-il temps de chercher plus d'aide</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 3</span><h2 class="section-title">Quan és el moment de buscar més ajuda</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 3</span><h2 class="section-title">When it is time to seek more help</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>No hay una respuesta única. Pero hay señales que, cuando aparecen, indican que el nivel actual de cuidado ya no es suficiente — y que buscar más apoyo no es rendirse, sino actuar con responsabilidad.</p>
+      <div class="signal-grid">
+        <div class="signal-card ok"><div class="sig-label">🟢 La situación es manejable</div><p>La persona mantiene cierta autonomía. El cuidado en casa funciona con ajustes. Tú tienes espacios de descanso. La red de apoyo funciona.</p></div>
+        <div class="signal-card warn"><div class="sig-label">🟡 Señales de que algo debe cambiar</div><p>Episodios frecuentes de desorientación o agitación. El cuidado nocturno te agota. Tu salud física o emocional se deteriora. La persona ya no puede quedarse sola de forma segura.</p></div>
+        <div class="signal-card alert"><div class="sig-label">🔴 Busca ayuda profesional ahora</div><p>Riesgo de seguridad para la persona o para ti. Tú estás en nivel 3 de burnout. La persona requiere atención médica que no puedes proporcionar. Sientes que ya no puedes más.</p></div>
+        <div class="signal-card warn"><div class="sig-label">🟡 Considera recursos adicionales</div><p>Centro de día para descanso diurno. Cuidador profesional por horas. Estancia temporal en residencia. Grupo de apoyo para cuidadores.</p></div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Sobre la decisión de una residencia</div>
+        <p>Si llega el momento de considerar un traslado a una residencia, es una de las decisiones más difíciles que enfrentará el cuidador. No es abandono — es reconocer que las necesidades han crecido más allá de lo que puede ofrecer el cuidado domiciliar. Busca apoyo psicológico para acompañar ese proceso. No lo enfrentes solo.</p>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">El diagnóstico precoz como ventaja</div>
+        <p>La detección temprana del DCL y de su progresión permite planificar con tiempo: aspectos legales (poder notarial, voluntades anticipadas), financieros y de cuidado. Las personas que planifican con antelación tienen significativamente mejores resultados de calidad de vida — tanto la persona con DCL como el cuidador — que quienes actúan en crisis.</p>
+        <p class="source">Fuente: Alzheimer's Disease International (2021). <em>World Alzheimer Report: Journey through the Diagnosis of Dementia</em>.</p>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>Il n'y a pas de réponse unique. Mais il y a des signes qui, lorsqu'ils apparaissent, indiquent que le niveau actuel de soin n'est plus suffisant.</p>
+      <div class="signal-grid">
+        <div class="signal-card ok"><div class="sig-label">🟢 La situation est gérable</div><p>La personne maintient une certaine autonomie. Le soin à domicile fonctionne. Vous avez des espaces de repos. Le réseau de soutien fonctionne.</p></div>
+        <div class="signal-card warn"><div class="sig-label">🟡 Signes que quelque chose doit changer</div><p>Épisodes fréquents de désorientation ou d'agitation. Le soin nocturne vous épuise. Votre santé se détériore. La personne ne peut plus rester seule en sécurité.</p></div>
+        <div class="signal-card alert"><div class="sig-label">🔴 Cherchez une aide professionnelle maintenant</div><p>Risque de sécurité pour la personne ou pour vous. Vous êtes au niveau 3 de burnout. La personne nécessite des soins médicaux que vous ne pouvez pas fournir.</p></div>
+        <div class="signal-card warn"><div class="sig-label">🟡 Envisagez des ressources supplémentaires</div><p>Accueil de jour. Aide à domicile professionnelle. Hébergement temporaire. Groupe de soutien pour aidants.</p></div>
+      </div>
+      <div class="heart-box"><div class="heart-box-title">Sur la décision d'un établissement</div><p>Si le moment arrive d'envisager un transfert en établissement, c'est l'une des décisions les plus difficiles pour l'aidant. Ce n'est pas un abandon — c'est reconnaître que les besoins ont grandi au-delà de ce que le soin à domicile peut offrir. Cherchez un soutien psychologique pour accompagner ce processus.</p></div>
+      <div class="science-box"><div class="science-box-title">Le diagnostic précoce comme avantage</div><p>La détection précoce du DCL permet de planifier à temps : aspects juridiques (mandat de protection, directives anticipées), financiers et de soin. Les personnes qui planifient à l'avance ont des résultats de qualité de vie significativement meilleurs.</p><p class="source">Source : Alzheimer's Disease International (2021). <em>World Alzheimer Report: Journey through the Diagnosis of Dementia</em>.</p></div>
+    </div>
+
+    <div data-lang="ca">
+      <p>No hi ha una resposta única. Però hi ha senyals que, quan apareixen, indiquen que el nivell actual de cura ja no és suficient.</p>
+      <div class="signal-grid">
+        <div class="signal-card ok"><div class="sig-label">🟢 La situació és manejable</div><p>La persona manté certa autonomia. La cura a casa funciona amb ajustos. Tu tens espais de descans. La xarxa de suport funciona.</p></div>
+        <div class="signal-card warn"><div class="sig-label">🟡 Senyals que alguna cosa ha de canviar</div><p>Episodes freqüents de desorientació o agitació. La cura nocturna t'esgota. La teva salut es deteriora. La persona ja no pot quedar-se sola de manera segura.</p></div>
+        <div class="signal-card alert"><div class="sig-label">🔴 Busca ajuda professional ara</div><p>Risc de seguretat per a la persona o per a tu. Estàs en nivell 3 de burnout. La persona requereix atenció mèdica que no pots proporcionar.</p></div>
+        <div class="signal-card warn"><div class="sig-label">🟡 Considera recursos addicionals</div><p>Centre de dia. Cuidador professional per hores. Estada temporal en residència. Grup de suport per a cuidadors.</p></div>
+      </div>
+      <div class="heart-box"><div class="heart-box-title">Sobre la decisió d'una residència</div><p>Si arriba el moment de considerar un trasllat a una residència, és una de les decisions més difícils que afronta el cuidador. No és abandonar — és reconèixer que les necessitats han crescut més enllà del que pot oferir la cura domiciliària. Busca suport psicològic per acompanyar aquest procés.</p></div>
+    </div>
+
+    <div data-lang="en">
+      <p>There is no single answer. But there are signs that, when they appear, indicate that the current level of care is no longer sufficient.</p>
+      <div class="signal-grid">
+        <div class="signal-card ok"><div class="sig-label">🟢 The situation is manageable</div><p>The person retains some autonomy. Home care works with adjustments. You have rest periods. The support network functions.</p></div>
+        <div class="signal-card warn"><div class="sig-label">🟡 Signs something must change</div><p>Frequent episodes of disorientation or agitation. Night care is exhausting you. Your physical or emotional health is deteriorating. The person can no longer safely be alone.</p></div>
+        <div class="signal-card alert"><div class="sig-label">🔴 Seek professional help now</div><p>Safety risk for the person or for you. You are at burnout level 3. The person requires medical care you cannot provide. You feel you can no longer cope.</p></div>
+        <div class="signal-card warn"><div class="sig-label">🟡 Consider additional resources</div><p>Day centre for daytime respite. Professional carer by the hour. Temporary residential care. Caregiver support group.</p></div>
+      </div>
+      <div class="heart-box"><div class="heart-box-title">On the decision about a care home</div><p>If the time comes to consider a move to a care home, it is one of the most difficult decisions a caregiver will face. It is not abandonment — it is recognising that needs have grown beyond what home care can offer. Seek psychological support to accompany that process. Don't face it alone.</p></div>
+      <div class="science-box"><div class="science-box-title">Early diagnosis as an advantage</div><p>Early detection of MCI and its progression allows time to plan: legal aspects (Power of Attorney, advance directives), financial and care arrangements. People who plan ahead have significantly better quality of life outcomes — both the person with MCI and the caregiver — than those who act in crisis.</p><p class="source">Source: Alzheimer's Disease International (2021). <em>World Alzheimer Report: Journey through the Diagnosis of Dementia</em>.</p></div>
+    </div>
+  </div>
+
+  <!-- FINALE -->
+  <div class="section">
+    <div class="finale">
+      <span class="finale-icon">🌟</span>
+      <div data-lang="es" class="active">
+        <h2 class="finale-title">Has completado el programa.<br><em>Esto es lo que llevas contigo.</em></h2>
+        <p>Cinco módulos. Cinco capítulos de cada uno. Ciencia honesta, herramientas concretas, espacio para tus emociones y recursos reales para no estar solo. Has invertido tiempo en entender — y eso ya cambia el cuidado.</p>
+        <div class="finale-quote">"Cuidar con sentido no es hacerlo todo perfecto. Es hacerlo con presencia, con conocimiento y con el corazón abierto. Eso ya eres tú."</div>
+      </div>
+      <div data-lang="fr">
+        <h2 class="finale-title">Vous avez terminé le programme.<br><em>Voici ce que vous emportez.</em></h2>
+        <p>Cinq modules. Cinq chapitres chacun. Une science honnête, des outils concrets, un espace pour vos émotions et des ressources réelles pour ne pas être seul·e. Vous avez investi du temps à comprendre — et cela change déjà le soin.</p>
+        <div class="finale-quote">« Prendre soin avec sens, ce n'est pas tout faire parfaitement. C'est le faire avec présence, avec connaissance et avec le cœur ouvert. C'est déjà vous. »</div>
+      </div>
+      <div data-lang="ca">
+        <h2 class="finale-title">Has completat el programa.<br><em>Això és el que portes amb tu.</em></h2>
+        <p>Cinc mòduls. Cinc capítols de cadascun. Ciència honesta, eines concretes, espai per a les teves emocions i recursos reals per no estar sol. Has invertit temps en entendre — i això ja canvia la cura.</p>
+        <div class="finale-quote">"Cuidar amb sentit no és fer-ho tot perfecte. És fer-ho amb presència, amb coneixement i amb el cor obert. Això ja ets tu."</div>
+      </div>
+      <div data-lang="en">
+        <h2 class="finale-title">You have completed the programme.<br><em>This is what you carry with you.</em></h2>
+        <p>Five modules. Five chapters each. Honest science, concrete tools, space for your emotions and real resources so you are not alone. You have invested time in understanding — and that already changes the care.</p>
+        <div class="finale-quote">"Caring with meaning is not doing everything perfectly. It is doing it with presence, with knowledge and with an open heart. That is already you."</div>
+      </div>
+    </div>
+
+    <!-- MODULE BADGES -->
+    <div class="module-badges">
+      <span class="badge done">✓ M1 — Entender</span>
+      <span class="badge done">✓ M2 — Comunicar</span>
+      <span class="badge done">✓ M3 — Activar</span>
+      <span class="badge done">✓ M4 — Cuidarse</span>
+      <span class="badge current">✓ M5 — Orientarse</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="module-nav">
+  <div class="nav-pill">← Módulo 4</div>
+  <div class="nav-pill current">Módulo 5</div>
+  <div class="nav-pill done">✓ Completo</div>
+</div>
+
+<div class="doc-footer">
+  <strong>CuidarConSentido · PrendreSoin avec Sens · Tenir Cura amb Sentit · CaringWithMeaning</strong><br>
+  Módulo 5 de 5 · Module 5 sur 5 · Mòdul 5 de 5 · Module 5 of 5 — Programa completo<br><br>
+  Alzheimer's Disease International (2021) World Alzheimer Report · Livingston G et al. (2020) The Lancet<br>
+  Pinquart & Sörensen (2003) Psychology and Aging · Brodaty & Donkin (2009) Dialogues in Clinical Neuroscience<br><br>
+  <em>Material educativo. No reemplaza el diagnóstico ni el consejo médico profesional.</em>
+</div>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.lang-btn').forEach((b,i) => b.classList.toggle('active', ['es','fr','ca','en'][i] === lang));
+    document.querySelectorAll('[data-lang]').forEach(el => el.classList.toggle('active', el.dataset.lang === lang));
+    if(typeof applyTTSLabel==='function') applyTTSLabel();
+  }
+
+  function setCountry(country) {
+    document.querySelectorAll('.ctab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.country-content').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('country-' + country).classList.add('active');
+  }
+
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  /* ---- Lectura en voz alta (accesibilidad) ---- */
+  var TTS_LBL={listen:{es:"Escuchar",fr:"Écouter",ca:"Escoltar",en:"Listen"},stop:{es:"Parar",fr:"Arrêter",ca:"Aturar",en:"Stop"}};
+  var TTS_LANG={es:"es-ES",fr:"fr-FR",ca:"ca-ES",en:"en-US"};
+  var ttsOn=false;
+  function ttsLang(){var a=document.querySelector('[data-lang].active');return (a&&a.dataset.lang)||'es';}
+  function applyTTSLabel(){var lg=ttsLang();var l=document.getElementById('ttsLbl');var ic=document.getElementById('ttsIco');var b=document.getElementById('ttsBtn');if(l)l.textContent=ttsOn?(TTS_LBL.stop[lg]||TTS_LBL.stop.es):(TTS_LBL.listen[lg]||TTS_LBL.listen.es);if(ic)ic.textContent=ttsOn?'⏹':'🔊';if(b)b.classList.toggle('on',ttsOn);}
+  function ttsGetText(){var parts=[];document.querySelectorAll('[data-lang].active').forEach(function(el){if(el.innerText)parts.push(el.innerText);});return parts.join('. ');}
+  function ttsStop(){try{window.speechSynthesis.cancel();}catch(e){}ttsOn=false;applyTTSLabel();}
+  function toggleTTS(){
+    if(!("speechSynthesis" in window))return;
+    if(ttsOn){ttsStop();return;}
+    var text=(ttsGetText()||"").replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu," ").replace(/\s+/g," ").trim();
+    if(!text)return;
+    try{window.speechSynthesis.cancel();}catch(e){}
+    var u=new SpeechSynthesisUtterance(text);
+    var lg=ttsLang();var lc=TTS_LANG[lg]||"es-ES";
+    u.lang=lc;u.rate=0.95;u.pitch=1;
+    try{var voices=window.speechSynthesis.getVoices()||[];var pref=lc.split("-")[0];var v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(pref)===0;})[0];if(!v&&lg==="ca"){v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf("es")===0;})[0];if(v)u.lang="es-ES";}if(v)u.voice=v;}catch(e){}
+    u.onend=function(){ttsOn=false;applyTTSLabel();};
+    u.onerror=function(){ttsOn=false;applyTTSLabel();};
+    ttsOn=true;applyTTSLabel();
+    window.speechSynthesis.speak(u);
+  }
+  (function(){if(!("speechSynthesis" in window)){var b=document.getElementById("ttsBtn");if(b)b.style.display="none";return;}try{window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=function(){};}catch(e){}applyTTSLabel();})();
+</script>
+<button id="ttsBtn" class="tts-btn" onclick="toggleTTS()" aria-label="Escuchar el texto"><span class="tts-ico" id="ttsIco">🔊</span><span id="ttsLbl">Escuchar</span></button>
+</body>
+</html>

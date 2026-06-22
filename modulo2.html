@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 2 — Hablar y conectar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF6F0;
+    --warm-white: #FDF9F4;
+    --terracotta: #C4714A;
+    --terracotta-light: #E8A882;
+    --sage: #7A9E7E;
+    --sage-light: #B5CEB8;
+    --deep-brown: #2C1A0E;
+    --mid-brown: #6B4423;
+    --gold: #D4A853;
+    --gold-light: #EDD49A;
+    --blue-soft: #5B7FA6;
+    --blue-light: #A8C4DC;
+    --teal: #4A8A8A;
+    --teal-light: #A0C8C8;
+    --text: #3A2A1A;
+    --text-light: #7A6A5A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  .lang-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--deep-brown);
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+  }
+  .lang-btn {
+    padding: 10px 22px;
+    border: none;
+    background: transparent;
+    color: #BFA98A;
+    font-family: 'Source Serif 4', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+  }
+  .lang-btn.active { color: var(--gold-light); border-bottom: 3px solid var(--teal); }
+  .lang-btn:hover { color: white; }
+
+  .progress-bar {
+    position: fixed;
+    top: 44px; left: 0;
+    height: 3px;
+    background: var(--teal);
+    width: 0%;
+    transition: width 0.1s;
+    z-index: 99;
+  }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #1A2C2C 0%, #0E1F1F 60%, #1A1008 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,138,138,0.2) 0%, transparent 70%);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,113,74,0.12) 0%, transparent 70%);
+  }
+  .cover-module-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: 24px;
+  }
+  .cover-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(36px, 6vw, 64px);
+    color: var(--warm-white);
+    line-height: 1.2;
+    max-width: 700px;
+    margin-bottom: 16px;
+  }
+  .cover-title em { color: var(--teal-light); font-style: italic; }
+  .cover-subtitle {
+    font-size: 16px;
+    color: #8AADAD;
+    max-width: 520px;
+    margin-bottom: 48px;
+    font-style: italic;
+    line-height: 1.7;
+  }
+  .cover-langs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .cover-lang-pill {
+    padding: 5px 16px;
+    border: 1px solid rgba(74,138,138,0.5);
+    border-radius: 20px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--teal-light);
+    text-transform: uppercase;
+  }
+  .cover-divider {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+    margin: 0 auto 40px;
+  }
+  .cover-intro {
+    max-width: 560px;
+    color: #6A8A8A;
+    font-size: 15px;
+    line-height: 1.9;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    color: #4A6A6A;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* CONTENT */
+  .content { max-width: 780px; margin: 0 auto; padding: 80px 40px; }
+
+  .section {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .section.visible { opacity: 1; transform: translateY(0); }
+
+  .section-number {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px; display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--deep-brown);
+    margin-bottom: 28px; line-height: 1.3;
+  }
+  .section-title em { color: var(--teal); font-style: italic; }
+
+  p { margin-bottom: 20px; color: var(--text); }
+
+  .pull-quote {
+    border-left: 4px solid var(--teal);
+    padding: 20px 28px;
+    margin: 40px 0;
+    background: var(--warm-white);
+    border-radius: 0 8px 8px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--teal);
+    font-style: italic;
+  }
+
+  .science-box {
+    background: linear-gradient(135deg, #EEF4F8 0%, #E8F0EC 100%);
+    border: 1px solid var(--blue-light);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 36px 0;
+    position: relative;
+  }
+  .science-box::before {
+    content: '🔬'; position: absolute; top: -14px; left: 24px;
+    font-size: 22px; background: var(--cream); padding: 0 8px;
+  }
+  .science-box-title {
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--blue-soft); margin-bottom: 12px; font-weight: 600;
+  }
+  .science-box p { font-size: 15px; color: #4A6070; margin-bottom: 10px; }
+  .science-box .source { font-size: 12px; color: var(--blue-soft); font-style: italic; margin-top: 8px; margin-bottom: 0; }
+
+  .heart-box {
+    background: linear-gradient(135deg, #EDF6F6 0%, #E6F2F2 100%);
+    border: 1px solid var(--teal-light);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 36px 0;
+    position: relative;
+  }
+  .heart-box::before {
+    content: '♡'; position: absolute; top: -14px; left: 24px;
+    font-size: 20px; background: var(--cream); padding: 0 8px; color: var(--teal);
+  }
+  .heart-box-title {
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 12px; font-weight: 600;
+  }
+  .heart-box p { font-size: 15px; color: #2A5050; margin-bottom: 10px; }
+
+  .residence-box {
+    background: linear-gradient(135deg, #F0EDF8 0%, #EAE6F5 100%);
+    border: 1px solid #B8A8D8;
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 36px 0;
+    position: relative;
+  }
+  .residence-box::before {
+    content: '🏠'; position: absolute; top: -14px; left: 24px;
+    font-size: 22px; background: var(--cream); padding: 0 8px;
+  }
+  .residence-box-title {
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: #7A60A8; margin-bottom: 12px; font-weight: 600;
+  }
+  .residence-box p { font-size: 15px; color: #4A3A6A; margin-bottom: 10px; }
+  .residence-box ul { margin: 12px 0 12px 20px; }
+  .residence-box ul li { font-size: 15px; color: #4A3A6A; margin-bottom: 8px; }
+
+  /* DIALOGUE CARDS */
+  .dialogue-block { margin: 40px 0; }
+  .dialogue-label {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 16px; font-weight: 600;
+  }
+  .dialogue-label.avoid { color: #C84040; }
+  .dialogue-label.better { color: var(--teal); }
+
+  .dialogue-card {
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .dialogue-card.avoid-card {
+    background: #FDE8E8;
+    border: 1px solid #E8A8A8;
+    color: #6A2A2A;
+  }
+  .dialogue-card.better-card {
+    background: #E6F4F4;
+    border: 1px solid var(--teal-light);
+    color: #1A4040;
+  }
+  .dialogue-card .why {
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  /* PRINCIPLE CARDS */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 36px 0;
+  }
+  @media (max-width: 600px) { .principles-grid { grid-template-columns: 1fr; } }
+  .principle-card {
+    background: var(--warm-white);
+    border: 1px solid rgba(74,138,138,0.2);
+    border-radius: 12px;
+    padding: 22px;
+    border-top: 3px solid var(--teal);
+  }
+  .principle-icon { font-size: 24px; margin-bottom: 10px; display: block; }
+  .principle-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--deep-brown);
+    margin-bottom: 8px;
+  }
+  .principle-desc { font-size: 14px; color: var(--text-light); margin-bottom: 0; }
+
+  /* CHAPTER HEADER */
+  .chapter-header {
+    background: linear-gradient(135deg, #1A2C2C 0%, #0E1F1F 100%);
+    color: var(--warm-white);
+    padding: 48px 40px;
+    margin: 60px -40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .chapter-header::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(74,138,138,0.2);
+  }
+  .chapter-header .section-number { color: var(--teal-light); }
+  .chapter-header .section-title { color: var(--warm-white); margin-bottom: 0; }
+
+  /* MOMENT CARDS */
+  .moment-card {
+    background: var(--warm-white);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--teal);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .moment-situation {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px; font-weight: 600;
+  }
+  .moment-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px; color: var(--deep-brown); margin-bottom: 14px;
+  }
+  .moment-body { font-size: 15px; color: var(--text); margin-bottom: 0; }
+
+  .checklist { list-style: none; margin: 20px 0; }
+  .checklist li {
+    padding: 10px 0 10px 36px;
+    position: relative;
+    border-bottom: 1px solid rgba(74,138,138,0.1);
+    font-size: 16px; color: var(--text);
+  }
+  .checklist li::before {
+    content: '→'; position: absolute; left: 8px;
+    color: var(--teal); font-weight: bold;
+  }
+
+  .sep { text-align: center; margin: 60px 0; color: var(--teal-light); font-size: 20px; letter-spacing: 16px; }
+
+  /* LANG */
+  [data-lang] { display: none; }
+  [data-lang].active { display: block; }
+
+  /* FOOTER */
+  .doc-footer {
+    background: linear-gradient(135deg, #1A2C2C 0%, #0E1F1F 100%);
+    color: #5A8A8A;
+    text-align: center;
+    padding: 48px 40px;
+    font-size: 13px;
+    line-height: 2;
+  }
+  .doc-footer strong { color: var(--teal-light); }
+
+  /* MODULE NAV */
+  .module-nav {
+    background: var(--warm-white);
+    border-top: 1px solid rgba(74,138,138,0.15);
+    padding: 32px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .nav-pill {
+    padding: 10px 24px;
+    border-radius: 24px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    cursor: default;
+    font-family: 'Source Serif 4', serif;
+  }
+  .nav-pill.current { background: var(--teal); color: white; }
+  /* Botón de lectura en voz alta (accesibilidad) */
+  .tts-btn{position:fixed;right:14px;bottom:18px;z-index:99999;display:inline-flex;align-items:center;gap:7px;background:#2f6045;color:#fff;border:none;border-radius:26px;padding:12px 18px;font-size:15px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.28);cursor:pointer;font-family:inherit}
+  .tts-btn .tts-ico{font-size:18px;line-height:1}
+  .tts-btn.on{background:#b4452f}
+  @media print{.tts-btn{display:none}}
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('es')">🇪🇸 Español</button>
+  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+  <button class="lang-btn" onclick="setLang('ca')">🏴 Català</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+</div>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ══════════ COVER ══════════ -->
+<div class="cover">
+  <div class="cover-module-label">Programa CuidarConSentido · Módulo 2 · Module 2</div>
+
+  <div data-lang="es" class="active">
+    <h1 class="cover-title">Hablar y<br><em>conectar</em></h1>
+    <p class="cover-subtitle">La comunicación que calma — cómo estar presente cuando las palabras cambian</p>
+  </div>
+  <div data-lang="fr">
+    <h1 class="cover-title">Parler et<br><em>se connecter</em></h1>
+    <p class="cover-subtitle">La communication qui apaise — comment être présent quand les mots changent</p>
+  </div>
+  <div data-lang="ca">
+    <h1 class="cover-title">Parlar i<br><em>connectar</em></h1>
+    <p class="cover-subtitle">La comunicació que calma — com estar present quan les paraules canvien</p>
+  </div>
+  <div data-lang="en">
+    <h1 class="cover-title">Speaking and<br><em>connecting</em></h1>
+    <p class="cover-subtitle">Communication that calms — how to be present when words begin to change</p>
+  </div>
+
+  <div class="cover-langs">
+    <span class="cover-lang-pill">Español</span>
+    <span class="cover-lang-pill">Français</span>
+    <span class="cover-lang-pill">Català</span>
+    <span class="cover-lang-pill">English</span>
+  </div>
+  <div class="cover-divider"></div>
+
+  <div data-lang="es" class="active"><p class="cover-intro">Comunicarse con una persona con deterioro cognitivo leve no requiere técnicas complicadas. Requiere presencia, paciencia y algunas claves que cambian todo.</p></div>
+  <div data-lang="fr"><p class="cover-intro">Communiquer avec une personne atteinte de déclin cognitif léger ne demande pas des techniques compliquées. Cela demande présence, patience et quelques clés qui changent tout.</p></div>
+  <div data-lang="ca"><p class="cover-intro">Comunicar-se amb una persona amb deteriorament cognitiu lleu no requereix tècniques complicades. Requereix presència, paciència i algunes claus que ho canvien tot.</p></div>
+  <div data-lang="en"><p class="cover-intro">Communicating with someone with mild cognitive impairment doesn't require complicated techniques. It requires presence, patience, and a few key principles that change everything.</p></div>
+
+  <div class="scroll-hint">▼ &nbsp; continue</div>
+</div>
+
+<!-- ══════════ CONTENT ══════════ -->
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Introducción</span>
+      <h2 class="section-title">Por qué la comunicación<br><em>lo cambia todo</em></h2>
+      <p>Cuando el cerebro cambia, las palabras también cambian. No desaparecen de golpe — se vuelven más escurridizas, más lentas, a veces confusas. Y la persona que las busca sabe, en algún lugar, que algo es diferente. Eso genera una angustia silenciosa que tú, como cuidador, puedes calmar o agravar sin darte cuenta.</p>
+      <p>La forma en que hablamos con alguien que tiene DCL no es un detalle secundario. Es, en muchos casos, <strong>el factor que más influye en su bienestar diario</strong>. Más que la medicación, más que los ejercicios cognitivos, más que cualquier intervención formal.</p>
+      <div class="pull-quote">"No es lo que dices. Es cómo lo dices, cuándo lo dices y lo que tu presencia comunica cuando ya no hacen falta palabras."</div>
+    </div>
+    <div data-lang="fr">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">Pourquoi la communication<br><em>change tout</em></h2>
+      <p>Quand le cerveau change, les mots changent aussi. Ils ne disparaissent pas d'un coup — ils deviennent plus fuyants, plus lents, parfois confus. Et la personne qui les cherche sait, quelque part, que quelque chose est différent. Cela génère une angoisse silencieuse que vous, en tant qu'aidant, pouvez calmer ou aggraver sans vous en rendre compte.</p>
+      <p>La manière dont nous parlons avec quelqu'un qui a un DCL n'est pas un détail secondaire. C'est, dans bien des cas, <strong>le facteur qui influence le plus le bien-être quotidien</strong>. Plus que la médication, plus que les exercices cognitifs, plus que n'importe quelle intervention formelle.</p>
+      <div class="pull-quote">« Ce n'est pas ce que vous dites. C'est comment vous le dites, quand vous le dites, et ce que votre présence communique quand les mots ne sont plus nécessaires. »</div>
+    </div>
+    <div data-lang="ca">
+      <span class="section-number">Introducció</span>
+      <h2 class="section-title">Per què la comunicació<br><em>ho canvia tot</em></h2>
+      <p>Quan el cervell canvia, les paraules també canvien. No desapareixen de cop — es tornen més escorredisses, més lentes, de vegades confuses. I la persona que les busca sap, en algun lloc, que alguna cosa és diferent. Això genera una angoixa silenciosa que tu, com a cuidador, pots calmar o agreujar sense adonar-te'n.</p>
+      <p>La forma en què parlem amb algú que té DCL no és un detall secundari. És, en molts casos, <strong>el factor que més influeix en el seu benestar diari</strong>. Més que la medicació, més que els exercicis cognitius, més que qualsevol intervenció formal.</p>
+      <div class="pull-quote">"No és el que dius. És com ho dius, quan ho dius i el que la teva presència comunica quan ja no calen paraules."</div>
+    </div>
+    <div data-lang="en">
+      <span class="section-number">Introduction</span>
+      <h2 class="section-title">Why communication<br><em>changes everything</em></h2>
+      <p>When the brain changes, words change too. They don't disappear all at once — they become more elusive, slower, sometimes confused. And the person searching for them knows, somewhere, that something is different. This creates a silent anxiety that you, as a caregiver, can either calm or intensify without realizing it.</p>
+      <p>The way we communicate with someone who has MCI is not a secondary detail. In many cases, it is <strong>the single factor that most influences their daily wellbeing</strong>. More than medication, more than cognitive exercises, more than any formal intervention.</p>
+      <div class="pull-quote">"It's not what you say. It's how you say it, when you say it, and what your presence communicates when words are no longer enough."</div>
+    </div>
+
+    <div class="science-box">
+      <div class="science-box-title" data-lang="es" style="display:block">Lo que dice la ciencia</div>
+      <div class="science-box-title" data-lang="fr">Ce que dit la science</div>
+      <div class="science-box-title" data-lang="ca">El que diu la ciència</div>
+      <div class="science-box-title" data-lang="en">What the science says</div>
+      <div data-lang="es" class="active"><p>El concepto de <strong>comunicación centrada en la persona</strong> (person-centred communication) ha demostrado reducir significativamente los comportamientos de agitación y la angustia en personas con deterioro cognitivo. Los estudios muestran que el tono de voz, el contacto visual y la proximidad física tienen tanto o más impacto que el contenido verbal en sí.</p><p class="source">Fuente: Eggenberger E et al. (2013). "Dementia-specific communication training for staff working in residential and nursing homes." <em>Cochrane Database of Systematic Reviews</em>. / Kitwood T. (1997). <em>Dementia Reconsidered</em>. Open University Press.</p></div>
+      <div data-lang="fr"><p>Le concept de <strong>communication centrée sur la personne</strong> a démontré une réduction significative des comportements d'agitation et de l'angoisse chez les personnes avec déclin cognitif. Les études montrent que le ton de la voix, le contact visuel et la proximité physique ont autant, voire plus d'impact que le contenu verbal lui-même.</p><p class="source">Source : Eggenberger E et al. (2013). « Dementia-specific communication training for staff working in residential and nursing homes. » <em>Cochrane Database of Systematic Reviews</em>. / Kitwood T. (1997). <em>Dementia Reconsidered</em>. Open University Press.</p></div>
+      <div data-lang="ca"><p>El concepte de <strong>comunicació centrada en la persona</strong> ha demostrat reduir significativament els comportaments d'agitació i l'angoixa en persones amb deteriorament cognitiu. Els estudis mostren que el to de veu, el contacte visual i la proximitat física tenen tant o més impacte que el contingut verbal en si mateix.</p><p class="source">Font: Eggenberger E et al. (2013). "Dementia-specific communication training for staff." <em>Cochrane Database of Systematic Reviews</em>. / Kitwood T. (1997). <em>Dementia Reconsidered</em>. Open University Press.</p></div>
+      <div data-lang="en"><p>The concept of <strong>person-centred communication</strong> has been shown to significantly reduce agitation behaviours and distress in people with cognitive decline. Studies demonstrate that tone of voice, eye contact and physical proximity have equal or greater impact than verbal content itself.</p><p class="source">Source: Eggenberger E et al. (2013). "Dementia-specific communication training for staff working in residential and nursing homes." <em>Cochrane Database of Systematic Reviews</em>. / Kitwood T. (1997). <em>Dementia Reconsidered</em>. Open University Press.</p></div>
+    </div>
+  </div>
+
+  <div class="sep">· · ·</div>
+
+  <!-- CAPÍTULO 1: LOS 5 PRINCIPIOS -->
+  <div class="section">
+    <div class="chapter-header">
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 1</span><h2 class="section-title">Los 5 principios de la comunicación que conecta</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 1</span><h2 class="section-title">Les 5 principes de la communication qui connecte</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 1</span><h2 class="section-title">Els 5 principis de la comunicació que connecta</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 1</span><h2 class="section-title">The 5 principles of communication that truly connects</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <div class="principles-grid">
+        <div class="principle-card">
+          <span class="principle-icon">🌿</span>
+          <div class="principle-title">1. Calma antes que palabras</div>
+          <p class="principle-desc">Tu estado interno se transmite. Si llegas agitado, ella lo siente antes de que digas nada. Tómate un momento antes de entrar en contacto.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">👁️</span>
+          <div class="principle-title">2. Ojos antes que voz</div>
+          <p class="principle-desc">Asegúrate de tener contacto visual antes de hablar. Ponerse al mismo nivel físico (sentarse si ella está sentada) marca una diferencia enorme.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">⏱️</span>
+          <div class="principle-title">3. Tiempo para responder</div>
+          <p class="principle-desc">El cerebro con DCL necesita más tiempo para procesar. Espera. No completes sus frases, no repitas la pregunta en 5 segundos. El silencio no es vacío — es procesamiento.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">🎯</span>
+          <div class="principle-title">4. Una idea a la vez</div>
+          <p class="principle-desc">Evita frases largas con varias instrucciones. "¿Quieres lavarte, desayunar y después salir?" es demasiado. Ve paso a paso.</p>
+        </div>
+        <div class="principle-card" style="grid-column: span 2;">
+          <span class="principle-icon">🤝</span>
+          <div class="principle-title">5. Valida, no corrijas</div>
+          <p class="principle-desc">Si dice algo incorrecto sobre la realidad — que su madre sigue viva, que vive en otra ciudad — no corrijas automáticamente. Primero valida la emoción. "Entiendo que la echas de menos." La corrección sin validación genera angustia y resistencia.</p>
+        </div>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <div class="principles-grid">
+        <div class="principle-card">
+          <span class="principle-icon">🌿</span>
+          <div class="principle-title">1. Le calme avant les mots</div>
+          <p class="principle-desc">Votre état intérieur se transmet. Si vous arrivez agité·e, elle le ressent avant que vous disiez quoi que ce soit. Prenez un moment avant d'entrer en contact.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">👁️</span>
+          <div class="principle-title">2. Les yeux avant la voix</div>
+          <p class="principle-desc">Assurez-vous d'établir un contact visuel avant de parler. Se mettre au même niveau physique (s'asseoir si elle est assise) fait une différence énorme.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">⏱️</span>
+          <div class="principle-title">3. Le temps de répondre</div>
+          <p class="principle-desc">Le cerveau avec DCL a besoin de plus de temps pour traiter. Attendez. Ne terminez pas ses phrases, ne répétez pas la question dans les 5 secondes. Le silence n'est pas vide — c'est du traitement.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">🎯</span>
+          <div class="principle-title">4. Une idée à la fois</div>
+          <p class="principle-desc">Évitez les phrases longues avec plusieurs instructions. "Tu veux te laver, déjeuner et ensuite sortir ?" c'est trop. Allez étape par étape.</p>
+        </div>
+        <div class="principle-card" style="grid-column: span 2;">
+          <span class="principle-icon">🤝</span>
+          <div class="principle-title">5. Valider, pas corriger</div>
+          <p class="principle-desc">Si elle dit quelque chose d'inexact — que sa mère est encore en vie, qu'elle habite dans une autre ville — ne corrigez pas automatiquement. Validez d'abord l'émotion. "Je comprends qu'elle te manque." La correction sans validation génère angoisse et résistance.</p>
+        </div>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <div class="principles-grid">
+        <div class="principle-card">
+          <span class="principle-icon">🌿</span>
+          <div class="principle-title">1. Calma abans que paraules</div>
+          <p class="principle-desc">El teu estat intern es transmet. Si arribes agitat, ella ho sent abans que diguis res. Pren-te un moment abans d'entrar en contacte.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">👁️</span>
+          <div class="principle-title">2. Ulls abans que veu</div>
+          <p class="principle-desc">Assegura't de tenir contacte visual abans de parlar. Posar-se al mateix nivell físic (seure si ella és asseguda) marca una diferència enorme.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">⏱️</span>
+          <div class="principle-title">3. Temps per respondre</div>
+          <p class="principle-desc">El cervell amb DCL necessita més temps per processar. Espera. No completis les seves frases, no repeteixis la pregunta en 5 segons. El silenci no és buit — és processament.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">🎯</span>
+          <div class="principle-title">4. Una idea a la vegada</div>
+          <p class="principle-desc">Evita frases llargues amb diverses instruccions. "Vols rentar-te, esmorzar i després sortir?" és massa. Vés pas a pas.</p>
+        </div>
+        <div class="principle-card" style="grid-column: span 2;">
+          <span class="principle-icon">🤝</span>
+          <div class="principle-title">5. Valida, no corregeixis</div>
+          <p class="principle-desc">Si diu alguna cosa incorrecta sobre la realitat — que la seva mare és viva, que viu en una altra ciutat — no corregeixis automàticament. Primer valida l'emoció. "Entenc que la trobes a faltar." La correcció sense validació genera angoixa i resistència.</p>
+        </div>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <div class="principles-grid">
+        <div class="principle-card">
+          <span class="principle-icon">🌿</span>
+          <div class="principle-title">1. Calm before words</div>
+          <p class="principle-desc">Your inner state is contagious. If you arrive agitated, they feel it before you say a word. Take a moment before making contact.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">👁️</span>
+          <div class="principle-title">2. Eyes before voice</div>
+          <p class="principle-desc">Establish eye contact before speaking. Getting to the same physical level (sitting down if they are seated) makes an enormous difference.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">⏱️</span>
+          <div class="principle-title">3. Time to respond</div>
+          <p class="principle-desc">The MCI brain needs more time to process. Wait. Don't complete their sentences or repeat the question within 5 seconds. Silence isn't emptiness — it's processing.</p>
+        </div>
+        <div class="principle-card">
+          <span class="principle-icon">🎯</span>
+          <div class="principle-title">4. One idea at a time</div>
+          <p class="principle-desc">Avoid long sentences with multiple instructions. "Do you want to wash up, have breakfast, and then go out?" is too much. Go step by step.</p>
+        </div>
+        <div class="principle-card" style="grid-column: span 2;">
+          <span class="principle-icon">🤝</span>
+          <div class="principle-title">5. Validate, don't correct</div>
+          <p class="principle-desc">If they say something factually incorrect — that their mother is still alive, that they live somewhere else — don't automatically correct them. First validate the emotion. "I understand you miss her." Correction without validation generates distress and resistance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO 2: DIÁLOGOS -->
+  <div class="section">
+    <div class="chapter-header">
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 2</span><h2 class="section-title">Lo que ayuda y lo que no — ejemplos reales</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 2</span><h2 class="section-title">Ce qui aide et ce qui ne aide pas — exemples concrets</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 2</span><h2 class="section-title">El que ajuda i el que no — exemples reals</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 2</span><h2 class="section-title">What helps and what doesn't — real examples</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>Las siguientes situaciones son las más frecuentes que encuentran los cuidadores. Para cada una, verás qué genera dificultad y qué abre espacio.</p>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ Evitar</div>
+        <div class="dialogue-card avoid-card">
+          "¿No te acuerdas que ya te lo dije esta mañana? Te lo dije dos veces."
+          <p class="why">Por qué no funciona: pone el foco en el fallo de memoria, genera vergüenza y cierra la conversación.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Mejor así</div>
+        <div class="dialogue-card better-card">
+          "Claro, te cuento otra vez." [Pausa. Tono tranquilo. Frase corta.]
+          <p class="why">Por qué funciona: normaliza, no juzga, mantiene la dignidad y la confianza en la relación.</p>
+        </div>
+      </div>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ Evitar</div>
+        <div class="dialogue-card avoid-card">
+          "¿Qué quieres comer? ¿Sopa, ensalada, pasta, algo ligero o prefieres esperar?"
+          <p class="why">Por qué no funciona: demasiadas opciones simultáneas saturan el procesamiento cognitivo.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Mejor así</div>
+        <div class="dialogue-card better-card">
+          "¿Quieres sopa hoy, o prefieres algo frío?"
+          <p class="why">Por qué funciona: máximo dos opciones concretas. Fácil de procesar, mantiene la autonomía de elegir.</p>
+        </div>
+      </div>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ Evitar</div>
+        <div class="dialogue-card avoid-card">
+          "Papá, tu madre murió hace veinte años. Ya te lo hemos dicho mil veces."
+          <p class="why">Por qué no funciona: la corrección brusca genera dolor emocional real, aunque no quede en la memoria.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Mejor así</div>
+        <div class="dialogue-card better-card">
+          "Veo que la tienes muy presente. ¿Qué recuerdas de ella?"
+          <p class="why">Por qué funciona: valida la emoción, redirige hacia recuerdos positivos, preserva la dignidad.</p>
+        </div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Sobre el dolor de las correcciones</div>
+        <p>Las investigaciones en neurociencia afectiva muestran que las emociones negativas — vergüenza, miedo, humillación — se procesan incluso cuando la memoria explícita no las retiene. La persona puede no recordar lo que pasó, pero el estado emocional persiste horas después.</p>
+        <p>Esto significa que una corrección brusca de mañana puede afectar al humor de la tarde, aunque la persona no sepa por qué se siente mal.</p>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>Les situations suivantes sont les plus fréquentes que rencontrent les aidants. Pour chacune, vous verrez ce qui génère de la difficulté et ce qui ouvre un espace.</p>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ À éviter</div>
+        <div class="dialogue-card avoid-card">
+          "Tu ne te souviens pas que je te l'ai déjà dit ce matin ? Je te l'ai dit deux fois."
+          <p class="why">Pourquoi ça ne fonctionne pas : cela met l'accent sur l'échec de mémoire, génère de la honte et ferme la conversation.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Mieux comme ça</div>
+        <div class="dialogue-card better-card">
+          "Bien sûr, je te le redis." [Pause. Ton calme. Phrase courte.]
+          <p class="why">Pourquoi ça fonctionne : normalise, ne juge pas, préserve la dignité et la confiance dans la relation.</p>
+        </div>
+      </div>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ À éviter</div>
+        <div class="dialogue-card avoid-card">
+          "Qu'est-ce que tu veux manger ? De la soupe, une salade, des pâtes, quelque chose de léger ou tu préfères attendre ?"
+          <p class="why">Pourquoi ça ne fonctionne pas : trop d'options simultanées saturent le traitement cognitif.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Mieux comme ça</div>
+        <div class="dialogue-card better-card">
+          "Tu veux de la soupe aujourd'hui, ou tu préfères quelque chose de froid ?"
+          <p class="why">Pourquoi ça fonctionne : deux options concrètes maximum. Facile à traiter, maintient l'autonomie de choisir.</p>
+        </div>
+      </div>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ À éviter</div>
+        <div class="dialogue-card avoid-card">
+          "Papa, ta mère est morte il y a vingt ans. On te l'a dit mille fois."
+          <p class="why">Pourquoi ça ne fonctionne pas : la correction brusque génère une vraie douleur émotionnelle, même si elle ne reste pas en mémoire.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Mieux comme ça</div>
+        <div class="dialogue-card better-card">
+          "Je vois qu'elle t'est très présente. Qu'est-ce que tu te rappelles d'elle ?"
+          <p class="why">Pourquoi ça fonctionne : valide l'émotion, redirige vers des souvenirs positifs, préserve la dignité.</p>
+        </div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Sur la douleur des corrections</div>
+        <p>Les recherches en neuroscience affective montrent que les émotions négatives — honte, peur, humiliation — sont traitées même quand la mémoire explicite ne les retient pas. La personne peut ne pas se souvenir de ce qui s'est passé, mais l'état émotionnel persiste des heures après.</p>
+        <p>Cela signifie qu'une correction brusque du matin peut affecter l'humeur de l'après-midi, même si la personne ne sait pas pourquoi elle se sent mal.</p>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>Les situacions següents són les més freqüents que troben els cuidadors. Per a cadascuna, veuràs el que genera dificultat i el que obre espai.</p>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ Evitar</div>
+        <div class="dialogue-card avoid-card">
+          "No te'n recordes que ja t'ho vaig dir aquest matí? T'ho vaig dir dues vegades."
+          <p class="why">Per què no funciona: posa el focus en el error de memòria, genera vergonya i tanca la conversa.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Millor així</div>
+        <div class="dialogue-card better-card">
+          "Clar, t'ho explico una altra vegada." [Pausa. To tranquil. Frase curta.]
+          <p class="why">Per què funciona: normalitza, no jutja, manté la dignitat i la confiança en la relació.</p>
+        </div>
+      </div>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ Evitar</div>
+        <div class="dialogue-card avoid-card">
+          "Pare, la teva mare va morir fa vint anys. Ja t'ho hem dit mil vegades."
+          <p class="why">Per què no funciona: la correcció brusca genera dolor emocional real, tot i que no quedi a la memòria.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Millor així</div>
+        <div class="dialogue-card better-card">
+          "Veig que la tens molt present. Què en recordes, d'ella?"
+          <p class="why">Per què funciona: valida l'emoció, redirigeix cap a records positius, preserva la dignitat.</p>
+        </div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">Sobre el dolor de les correccions</div>
+        <p>Les investigacions en neurociència afectiva mostren que les emocions negatives — vergonya, por, humiliació — es processen fins i tot quan la memòria explícita no les reté. La persona pot no recordar el que va passar, però l'estat emocional persisteix hores després.</p>
+        <p>Això significa que una correcció brusca del matí pot afectar l'humor de la tarda, tot i que la persona no sàpiga per què es troba malament.</p>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p>The following situations are the most common ones caregivers encounter. For each one, you'll see what creates difficulty and what opens space.</p>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ Avoid</div>
+        <div class="dialogue-card avoid-card">
+          "Don't you remember I already told you this morning? I told you twice."
+          <p class="why">Why it doesn't work: it highlights the memory failure, generates shame, and shuts the conversation down.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Better this way</div>
+        <div class="dialogue-card better-card">
+          "Of course, let me tell you again." [Pause. Calm tone. Short sentence.]
+          <p class="why">Why it works: normalises, doesn't judge, maintains dignity and trust in the relationship.</p>
+        </div>
+      </div>
+
+      <div class="dialogue-block">
+        <div class="dialogue-label avoid">❌ Avoid</div>
+        <div class="dialogue-card avoid-card">
+          "Dad, your mother died twenty years ago. We've told you a thousand times."
+          <p class="why">Why it doesn't work: abrupt correction generates real emotional pain, even if it isn't retained in memory.</p>
+        </div>
+        <div class="dialogue-label better" style="margin-top:16px;">✓ Better this way</div>
+        <div class="dialogue-card better-card">
+          "I can see she's very present for you. What do you remember about her?"
+          <p class="why">Why it works: validates the emotion, redirects toward positive memories, preserves dignity.</p>
+        </div>
+      </div>
+
+      <div class="heart-box">
+        <div class="heart-box-title">On the pain of corrections</div>
+        <p>Research in affective neuroscience shows that negative emotions — shame, fear, humiliation — are processed even when explicit memory does not retain them. The person may not remember what happened, but the emotional state persists for hours afterward.</p>
+        <p>This means a harsh correction in the morning can affect the afternoon's mood, even though the person doesn't know why they feel bad.</p>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">Scientific grounding</div>
+        <p>The concept of <strong>emotional memory without declarative memory</strong> was described in landmark studies by LeDoux (1996) and Damasio (1994). In the context of dementia, Magai et al. (2002) demonstrated that people with advanced dementia retain emotional responses to interpersonal interactions even when explicit recall is absent.</p>
+        <p class="source">Source: LeDoux J. (1996). <em>The Emotional Brain</em>. Simon & Schuster. / Magai C et al. (2002). "Emotional experience and expression in Alzheimer's disease." <em>Psychology and Aging</em>, 17(4), 571–579.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO 3: MOMENTOS DIFÍCILES -->
+  <div class="section">
+    <div class="chapter-header">
+      <div data-lang="es" class="active"><span class="section-number">Capítulo 3</span><h2 class="section-title">Los momentos difíciles — cómo estar presente</h2></div>
+      <div data-lang="fr"><span class="section-number">Chapitre 3</span><h2 class="section-title">Les moments difficiles — comment être présent</h2></div>
+      <div data-lang="ca"><span class="section-number">Capítol 3</span><h2 class="section-title">Els moments difícils — com estar present</h2></div>
+      <div data-lang="en"><span class="section-number">Chapter 3</span><h2 class="section-title">Difficult moments — how to be present</h2></div>
+    </div>
+
+    <div data-lang="es" class="active">
+      <p>Hay momentos en que las palabras no son suficientes. O en que la persona está angustiada, agitada o perdida. Estos son los momentos que más agotan al cuidador — y para los que menos preparación existe.</p>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situación 1</div>
+        <div class="moment-title">La repetición constante</div>
+        <p class="moment-body">Hace la misma pregunta cada diez minutos. Es una de las experiencias más agotadoras para el cuidador. Recuerda: cada vez que pregunta, para ella es la primera vez. No está siendo difícil a propósito. <strong>Responde con el mismo tono la tercera vez que la primera.</strong> Si puedes, busca la emoción detrás de la pregunta — a menudo hay ansiedad o necesidad de conexión.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situación 2</div>
+        <div class="moment-title">La agitación y el miedo</div>
+        <p class="moment-body">Se pone agitada sin razón aparente. Grita, llora, quiere irse. En estos momentos, las palabras racionales no funcionan — el cerebro emocional ha tomado el control. <strong>Baja el tono de voz. Acércate despacio. Ofrece contacto físico si lo acepta.</strong> No intentes explicar ni convencer. Solo estar. "Estoy aquí contigo" puede ser todo lo que necesita.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situación 3</div>
+        <div class="moment-title">Cuando dice "no" a todo</div>
+        <p class="moment-body">Se niega a comer, a ducharse, a tomar la medicación. La resistencia casi siempre viene del miedo o de la pérdida de control. <strong>No forcéis. No insistáis cinco veces seguidas.</strong> Dejad pasar diez minutos y proponed de otra manera. Cambiad quién propone, cambiad el momento del día, cambiad el enfoque.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situación 4</div>
+        <div class="moment-title">El silencio que preocupa</div>
+        <p class="moment-body">A veces está callada, ausente, sin responder. No siempre es un problema. <strong>La presencia sin palabras también es comunicación.</strong> Sentarse cerca, poner música que le guste, tomarle la mano en silencio — estas cosas comunican más que cualquier frase.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Para residencias: protocolo de momentos difíciles</div>
+        <p>En contexto residencial, los momentos de agitación son frecuentemente gestionados con intervención farmacológica como primera respuesta. La evidencia recomienda priorizar siempre la intervención no farmacológica primero:</p>
+        <ul>
+          <li><strong>Protocolo de desescalada:</strong> tono bajo, contacto visual, reducción de estímulos ambientales</li>
+          <li><strong>Historia de vida:</strong> conocer las preferencias, miedos y rituales de cada residente permite anticipar y personalizar la respuesta</li>
+          <li><strong>Rotación de referente:</strong> si el cuidador habitual genera resistencia en un momento, otro puede conseguir mejor resultado</li>
+          <li><strong>Registro de patrones:</strong> documentar en qué momentos del día, con qué estímulos o en qué contextos aparece la agitación permite anticiparla</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <p>Il y a des moments où les mots ne suffisent pas. Ou où la personne est angoissée, agitée ou perdue. Ce sont les moments qui épuisent le plus les aidants — et pour lesquels il existe le moins de préparation.</p>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situation 1</div>
+        <div class="moment-title">La répétition constante</div>
+        <p class="moment-body">Elle pose la même question toutes les dix minutes. C'est l'une des expériences les plus épuisantes pour l'aidant. Rappellez-vous : chaque fois qu'elle pose la question, pour elle c'est la première fois. Elle n'est pas difficile exprès. <strong>Répondez avec le même ton la troisième fois qu'à la première.</strong> Si vous le pouvez, cherchez l'émotion derrière la question — il y a souvent de l'anxiété ou un besoin de connexion.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situation 2</div>
+        <div class="moment-title">L'agitation et la peur</div>
+        <p class="moment-body">Elle s'agite sans raison apparente. Elle crie, pleure, veut partir. Dans ces moments, les mots rationnels ne fonctionnent pas — le cerveau émotionnel a pris le contrôle. <strong>Baissez le ton. Approchez-vous doucement. Proposez un contact physique si elle l'accepte.</strong> N'essayez pas d'expliquer ni de convaincre. Juste être là. "Je suis là avec toi" peut être tout ce dont elle a besoin.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situation 3</div>
+        <div class="moment-title">Quand elle dit "non" à tout</div>
+        <p class="moment-body">Elle refuse de manger, de se laver, de prendre ses médicaments. La résistance vient presque toujours de la peur ou de la perte de contrôle. <strong>Ne forcez pas. N'insistez pas cinq fois de suite.</strong> Laissez passer dix minutes et proposez autrement. Changez qui propose, changez le moment de la journée, changez l'approche.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situation 4</div>
+        <div class="moment-title">Le silence qui inquiète</div>
+        <p class="moment-body">Parfois elle est silencieuse, absente, sans réponse. Ce n'est pas toujours un problème. <strong>La présence sans mots est aussi une communication.</strong> S'asseoir près d'elle, mettre de la musique qu'elle aime, lui tenir la main en silence — ces choses communiquent plus que n'importe quelle phrase.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Pour les établissements : protocole des moments difficiles</div>
+        <p>En contexte résidentiel, les moments d'agitation sont fréquemment gérés par une intervention pharmacologique en première réponse. Les données probantes recommandent de toujours prioriser l'intervention non pharmacologique en premier :</p>
+        <ul>
+          <li><strong>Protocole de désescalade :</strong> ton bas, contact visuel, réduction des stimuli environnementaux</li>
+          <li><strong>Histoire de vie :</strong> connaître les préférences, craintes et rituels de chaque résident permet d'anticiper et de personnaliser la réponse</li>
+          <li><strong>Rotation de référent :</strong> si l'aidant habituel génère de la résistance, un autre peut obtenir un meilleur résultat</li>
+          <li><strong>Enregistrement des patterns :</strong> documenter à quels moments de la journée, avec quels stimuli l'agitation apparaît permet de l'anticiper</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <p>Hi ha moments en què les paraules no són suficients. O en què la persona està angoixada, agitada o perduda. Aquests són els moments que més esgoten el cuidador — i per als quals menys preparació existeix.</p>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situació 1</div>
+        <div class="moment-title">La repetició constant</div>
+        <p class="moment-body">Fa la mateixa pregunta cada deu minuts. És una de les experiències més esgotadores per al cuidador. Recorda: cada vegada que pregunta, per a ella és la primera vegada. No és difícil aposta. <strong>Respon amb el mateix to la tercera vegada que la primera.</strong> Si pots, cerca l'emoció darrere la pregunta — sovint hi ha ansietat o necessitat de connexió.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situació 2</div>
+        <div class="moment-title">L'agitació i la por</div>
+        <p class="moment-body">S'agita sense raó aparent. Crida, plora, vol marxar. En aquests moments, les paraules racionals no funcionen — el cervell emocional ha pres el control. <strong>Baixa el to de veu. Apropa't a poc a poc. Ofereix contacte físic si ho accepta.</strong> No intentis explicar ni convèncer. Només estar. "Soc aquí amb tu" pot ser tot el que necessita.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situació 3</div>
+        <div class="moment-title">Quan diu "no" a tot</div>
+        <p class="moment-body">Es nega a menjar, a dutxar-se, a prendre la medicació. La resistència gairebé sempre ve de la por o de la pèrdua de control. <strong>No forceu. No insistiu cinc vegades seguides.</strong> Deixeu passar deu minuts i proposeu d'una altra manera. Canvieu qui proposa, canvieu el moment del dia, canvieu l'enfocament.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">Per a residències: protocol de moments difícils</div>
+        <p>En context residencial, els moments d'agitació es gestionen freqüentment amb intervenció farmacològica com a primera resposta. L'evidència recomana prioritzar sempre la intervenció no farmacològica primer:</p>
+        <ul>
+          <li><strong>Protocol de desescalada:</strong> to baix, contacte visual, reducció d'estímuls ambientals</li>
+          <li><strong>Història de vida:</strong> conèixer les preferències, pors i rituals de cada resident permet anticipar i personalitzar la resposta</li>
+          <li><strong>Rotació de referent:</strong> si el cuidador habitual genera resistència, un altre pot aconseguir millor resultat</li>
+          <li><strong>Registre de patrons:</strong> documentar en quins moments del dia apareix l'agitació permet anticipar-la</li>
+        </ul>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p>There are moments when words aren't enough. Or when the person is anxious, agitated, or lost. These are the moments that most exhaust caregivers — and for which the least preparation exists.</p>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situation 1</div>
+        <div class="moment-title">The constant repetition</div>
+        <p class="moment-body">She asks the same question every ten minutes. This is one of the most exhausting experiences for caregivers. Remember: every time she asks, for her it is the first time. She is not being difficult on purpose. <strong>Answer with the same tone the third time as the first.</strong> If you can, look for the emotion behind the question — there is often anxiety or a need for connection.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situation 2</div>
+        <div class="moment-title">Agitation and fear</div>
+        <p class="moment-body">She becomes agitated for no apparent reason. Shouts, cries, wants to leave. In these moments, rational words don't work — the emotional brain has taken over. <strong>Lower your tone. Approach slowly. Offer physical contact if accepted.</strong> Don't try to explain or convince. Just be there. "I'm here with you" can be everything they need.</p>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-situation">Situation 3</div>
+        <div class="moment-title">When they say "no" to everything</div>
+        <p class="moment-body">Refusing to eat, to shower, to take medication. Resistance almost always comes from fear or loss of control. <strong>Don't force. Don't insist five times in a row.</strong> Let ten minutes pass and propose differently. Change who makes the suggestion, change the time of day, change the approach.</p>
+      </div>
+
+      <div class="science-box">
+        <div class="science-box-title">Evidence-based approach to resistance</div>
+        <p>The <strong>A-B-C behavioural model</strong> (Antecedent–Behaviour–Consequence) applied to dementia care helps teams identify what precedes resistant behaviour and redesign the context rather than the person. Studies show this reduces the use of antipsychotic medication significantly in residential settings.</p>
+        <p class="source">Source: Cohen-Mansfield J. (2001). "Nonpharmacologic interventions for inappropriate behaviors in dementia." <em>American Journal of Geriatric Psychiatry</em>, 9(4), 361–381.</p>
+      </div>
+
+      <div class="residence-box">
+        <div class="residence-box-title">For care homes: difficult moments protocol</div>
+        <p>In residential settings, moments of agitation are frequently managed with pharmacological intervention as the first response. Evidence consistently recommends prioritising non-pharmacological intervention first:</p>
+        <ul>
+          <li><strong>De-escalation protocol:</strong> low tone, eye contact, reduction of environmental stimuli</li>
+          <li><strong>Life history knowledge:</strong> knowing each resident's preferences, fears and rituals allows anticipation and personalised response</li>
+          <li><strong>Key worker rotation:</strong> if the regular carer is generating resistance, another may achieve a better outcome</li>
+          <li><strong>Pattern recording:</strong> documenting when and in what context agitation appears allows teams to anticipate and prevent it</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CIERRE -->
+  <div class="section">
+    <div data-lang="es" class="active">
+      <span class="section-number">Para terminar este módulo</span>
+      <h2 class="section-title">Lo que ya llevas <em>contigo</em></h2>
+      <p>La comunicación no es una técnica que se aprende una vez y ya está. Es una práctica diaria, imperfecta, que mejora con la reflexión y la compasión — hacia la persona que cuidas y hacia ti mismo.</p>
+      <div class="pull-quote">"No tienes que hacerlo perfecto. Tienes que hacerlo con presencia."</div>
+      <ul class="checklist">
+        <li>Tu calma es la herramienta más poderosa que tienes</li>
+        <li>Valida siempre la emoción antes de corregir la realidad</li>
+        <li>Menos opciones, más claridad — una idea a la vez</li>
+        <li>El silencio también comunica — aprende a estar sin hablar</li>
+        <li>La resistencia casi siempre esconde miedo — responde al miedo, no a la conducta</li>
+        <li>Cada vez que lo haces bien, estás construyendo confianza</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">El siguiente módulo</div>
+        <p>En el Módulo 3 veremos cómo <strong>activar con alegría</strong> — actividades concretas que estimulan el cerebro sin generar frustración, adaptadas al nivel y a los intereses de la persona. Música, memoria, movimiento, creatividad — el repertorio es más amplio de lo que imaginas.</p>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <span class="section-number">Pour conclure ce module</span>
+      <h2 class="section-title">Ce que vous emportez <em>avec vous</em></h2>
+      <p>La communication n'est pas une technique qu'on apprend une fois pour toutes. C'est une pratique quotidienne, imparfaite, qui s'améliore avec la réflexion et la compassion — envers la personne que vous accompagnez et envers vous-même.</p>
+      <div class="pull-quote">« Vous n'avez pas à le faire parfaitement. Vous avez à le faire avec présence. »</div>
+      <ul class="checklist">
+        <li>Votre calme est l'outil le plus puissant dont vous disposez</li>
+        <li>Validez toujours l'émotion avant de corriger la réalité</li>
+        <li>Moins d'options, plus de clarté — une idée à la fois</li>
+        <li>Le silence aussi communique — apprenez à être sans parler</li>
+        <li>La résistance cache presque toujours de la peur — répondez à la peur, pas au comportement</li>
+        <li>Chaque fois que vous le faites bien, vous construisez de la confiance</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">Le prochain module</div>
+        <p>Dans le Module 3, nous verrons comment <strong>stimuler avec joie</strong> — des activités concrètes qui stimulent le cerveau sans générer de frustration, adaptées au niveau et aux intérêts de la personne. Musique, mémoire, mouvement, créativité — le répertoire est plus large que vous ne l'imaginez.</p>
+      </div>
+    </div>
+
+    <div data-lang="ca">
+      <span class="section-number">Per acabar aquest mòdul</span>
+      <h2 class="section-title">El que ja portes <em>amb tu</em></h2>
+      <p>La comunicació no és una tècnica que s'aprèn una vegada i ja està. És una pràctica diària, imperfecta, que millora amb la reflexió i la compassió — cap a la persona que cuides i cap a tu mateix.</p>
+      <div class="pull-quote">"No has de fer-ho perfecte. Has de fer-ho amb presència."</div>
+      <ul class="checklist">
+        <li>La teva calma és l'eina més poderosa que tens</li>
+        <li>Valida sempre l'emoció abans de corregir la realitat</li>
+        <li>Menys opcions, més claredat — una idea a la vegada</li>
+        <li>El silenci també comunica — aprèn a estar sense parlar</li>
+        <li>La resistència gairebé sempre amaga por — respon a la por, no a la conducta</li>
+        <li>Cada vegada que ho fas bé, estàs construint confiança</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">El proper mòdul</div>
+        <p>Al Mòdul 3 veurem com <strong>activar amb alegria</strong> — activitats concretes que estimulen el cervell sense generar frustració, adaptades al nivell i als interessos de la persona.</p>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <span class="section-number">To close this module</span>
+      <h2 class="section-title">What you now carry <em>with you</em></h2>
+      <p>Communication is not a technique learned once and done. It is a daily, imperfect practice that improves with reflection and compassion — toward the person you care for, and toward yourself.</p>
+      <div class="pull-quote">"You don't have to do it perfectly. You have to do it with presence."</div>
+      <ul class="checklist">
+        <li>Your calm is the most powerful tool you have</li>
+        <li>Always validate the emotion before correcting the reality</li>
+        <li>Fewer options, more clarity — one idea at a time</li>
+        <li>Silence also communicates — learn to be present without speaking</li>
+        <li>Resistance almost always hides fear — respond to the fear, not the behaviour</li>
+        <li>Every time you do it well, you are building trust</li>
+      </ul>
+      <div class="heart-box">
+        <div class="heart-box-title">Next module</div>
+        <p>In Module 3 we will explore how to <strong>activate with joy</strong> — concrete activities that stimulate the brain without generating frustration, adapted to the person's level and interests. Music, memory, movement, creativity — the repertoire is broader than you might imagine.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end content -->
+
+<!-- MODULE NAV -->
+<div class="module-nav">
+  <div class="nav-pill">← Módulo 1</div>
+  <div class="nav-pill current">Módulo 2</div>
+  <div class="nav-pill">Módulo 3 →</div>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <strong>CuidarConSentido · PrendreSoin avec Sens · Tenir Cura amb Sentit · CaringWithMeaning</strong><br>
+  Módulo 2 de 5 · Module 2 sur 5 · Mòdul 2 de 5 · Module 2 of 5<br><br>
+  Eggenberger E et al. (2013) Cochrane Database · Kitwood T. (1997) Dementia Reconsidered<br>
+  LeDoux J. (1996) The Emotional Brain · Magai C et al. (2002) Psychology and Aging · Cohen-Mansfield J. (2001) Am J Geriatric Psychiatry<br><br>
+  <em>Material educativo. No reemplaza el diagnóstico ni el consejo médico profesional.</em>
+</div>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.lang-btn').forEach((b,i) => b.classList.toggle('active', ['es','fr','ca','en'][i] === lang));
+    document.querySelectorAll('[data-lang]').forEach(el => el.classList.toggle('active', el.dataset.lang === lang));
+    if(typeof applyTTSLabel==='function') applyTTSLabel();
+  }
+
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  /* ---- Lectura en voz alta (accesibilidad) ---- */
+  var TTS_LBL={listen:{es:"Escuchar",fr:"Écouter",ca:"Escoltar",en:"Listen"},stop:{es:"Parar",fr:"Arrêter",ca:"Aturar",en:"Stop"}};
+  var TTS_LANG={es:"es-ES",fr:"fr-FR",ca:"ca-ES",en:"en-US"};
+  var ttsOn=false;
+  function ttsLang(){var a=document.querySelector('[data-lang].active');return (a&&a.dataset.lang)||'es';}
+  function applyTTSLabel(){var lg=ttsLang();var l=document.getElementById('ttsLbl');var ic=document.getElementById('ttsIco');var b=document.getElementById('ttsBtn');if(l)l.textContent=ttsOn?(TTS_LBL.stop[lg]||TTS_LBL.stop.es):(TTS_LBL.listen[lg]||TTS_LBL.listen.es);if(ic)ic.textContent=ttsOn?'⏹':'🔊';if(b)b.classList.toggle('on',ttsOn);}
+  function ttsGetText(){var parts=[];document.querySelectorAll('[data-lang].active').forEach(function(el){if(el.innerText)parts.push(el.innerText);});return parts.join('. ');}
+  function ttsStop(){try{window.speechSynthesis.cancel();}catch(e){}ttsOn=false;applyTTSLabel();}
+  function toggleTTS(){
+    if(!("speechSynthesis" in window))return;
+    if(ttsOn){ttsStop();return;}
+    var text=(ttsGetText()||"").replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu," ").replace(/\s+/g," ").trim();
+    if(!text)return;
+    try{window.speechSynthesis.cancel();}catch(e){}
+    var u=new SpeechSynthesisUtterance(text);
+    var lg=ttsLang();var lc=TTS_LANG[lg]||"es-ES";
+    u.lang=lc;u.rate=0.95;u.pitch=1;
+    try{var voices=window.speechSynthesis.getVoices()||[];var pref=lc.split("-")[0];var v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(pref)===0;})[0];if(!v&&lg==="ca"){v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf("es")===0;})[0];if(v)u.lang="es-ES";}if(v)u.voice=v;}catch(e){}
+    u.onend=function(){ttsOn=false;applyTTSLabel();};
+    u.onerror=function(){ttsOn=false;applyTTSLabel();};
+    ttsOn=true;applyTTSLabel();
+    window.speechSynthesis.speak(u);
+  }
+  (function(){if(!("speechSynthesis" in window)){var b=document.getElementById("ttsBtn");if(b)b.style.display="none";return;}try{window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=function(){};}catch(e){}applyTTSLabel();})();
+</script>
+<button id="ttsBtn" class="tts-btn" onclick="toggleTTS()" aria-label="Escuchar el texto"><span class="tts-ico" id="ttsIco">🔊</span><span id="ttsLbl">Escuchar</span></button>
+</body>
+</html>
