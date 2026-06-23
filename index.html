@@ -1160,7 +1160,7 @@ function genCert(){
   document.getElementById("cdName").textContent=n;
   var loc={es:'es-ES',fr:'fr-FR',ca:'ca-ES',en:'en-GB'}[curLang]||'es-ES';
   var f=new Date().toLocaleDateString(loc,{year:'numeric',month:'long',day:'numeric'});
-  document.getElementById("cdDate").textContent=cT("dateLbl")+": "+f;
+  document.getElementById("cdDate").textContent="Tarragona, "+f;
   var fol="CCS-"+new Date().getFullYear()+"-"+(("00000"+(ccsHash(n+f)%100000)).slice(-5));
   var fe=document.getElementById("cdFolio"); if(fe) fe.textContent="N.\u00ba "+fol+"  \u00b7  cuidarconsentido.netlify.app";
   var sy=document.getElementById("sealYear"); if(sy) sy.textContent="\u2605 "+new Date().getFullYear()+" \u2605";
