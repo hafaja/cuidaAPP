@@ -297,7 +297,15 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
   </div>
 
   <div id="sec-incidencias" style="display:none">
-  <div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:15px 16px;margin-bottom:16px"><div id="agenda-root"></div></div>
+  <div class="feat" style="background:linear-gradient(135deg,#2f6b6b,#4fb0a0);cursor:pointer" onclick="toggleAgenda()">
+      <div class="feat-tag" id="ag-feat-tag">🗓️ Cuidado diario</div>
+      <div class="feat-icon">✅</div>
+      <div class="feat-title" id="ag-feat-title">Agenda diaria</div>
+      <div class="feat-sub" id="ag-feat-sub">Medicación, comidas, higiene… ▾</div>
+    </div>
+    <div id="agendaBody" style="display:none">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:15px 16px;margin-bottom:16px"><div id="agenda-root"></div></div>
+    </div>
     <div class="feat" style="background:linear-gradient(135deg,#3a4a6b,#6b7aa5);cursor:pointer" onclick="toggleIncForm()">
       <div class="feat-tag" id="inc-add-tag">📋 Registro del cuidador</div>
       <div class="feat-icon">➕</div>
@@ -1662,9 +1670,14 @@ function agShare(){
   if(navigator.share){ navigator.share({text:text}).catch(function(){}); }
   else { try{ window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank"); }catch(e){} }
 }
+var AG_OPEN_INIT=false;
+function agInitOpen(){ var b=document.getElementById("agendaBody"); if(!b)return; var v="0"; try{ v=localStorage.getItem("ccs_agOpen")||"0"; }catch(e){} b.style.display=(v==="1")?"block":"none"; }
+function agSyncFeat(done,total){ var tag={es:"🗓️ Cuidado diario",fr:"🗓️ Soin quotidien",ca:"🗓️ Cura diària",en:"🗓️ Daily care"}; var prog={es:"completado hoy",fr:"complété aujourd'hui",ca:"completat avui",en:"done today"}; var b=document.getElementById("agendaBody"); var open=b&&b.style.display!=="none"; var arrow=open?" ▴":" ▾"; var t=document.getElementById("ag-feat-tag"); if(t)t.textContent=tag[curLang]||tag.es; var ti=document.getElementById("ag-feat-title"); if(ti)ti.textContent=agL("title"); var s=document.getElementById("ag-feat-sub"); if(s)s.textContent=done+"/"+total+" "+(prog[curLang]||prog.es)+arrow; }
+function toggleAgenda(){ var b=document.getElementById("agendaBody"); if(!b)return; var willOpen=b.style.display==="none"; b.style.display=willOpen?"block":"none"; try{ localStorage.setItem("ccs_agOpen", willOpen?"1":"0"); }catch(e){} renderAgenda(); }
 function renderAgenda(){
   var root=document.getElementById("agenda-root"); if(!root) return;
   if(!AG_LOADED) agLoad(); var d=AG_DAY;
+  if(!AG_OPEN_INIT){ AG_OPEN_INIT=true; agInitOpen(); }
   var done=0;
   ["m","t","n"].forEach(function(k){ if(d.med[k])done++; });
   ["des","com","cen"].forEach(function(k){ if(d.meals[k])done++; });
@@ -1687,7 +1700,7 @@ function renderAgenda(){
   var waterRow=`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;font-size:14px;color:${d.water>0?'var(--text)':'var(--text3)'}">💧<span style="flex:1">${agL("water")}</span><span onclick="agWater(-1)" style="${circ}">−</span><span style="min-width:60px;text-align:center;font-size:13px">${d.water||0} ${agL("glasses")}</span><span onclick="agWater(1)" style="${circ}">+</span></div>`;
   var fInp="width:100%;box-sizing:border-box;background:var(--bg2);border:1px solid var(--border);border-radius:9px;color:var(--text);padding:9px 11px;font-size:13px;font-family:inherit;outline:none";
   var famHtml=`<input id="agFamResp" oninput="agFam('resp',this.value)" value="${esc(d.fam.resp)}" placeholder="${agL("respPh")}" style="${fInp};margin-bottom:8px"><textarea id="agFamNote" oninput="agFam('note',this.value)" placeholder="${agL("notePh")}" rows="2" style="${fInp};resize:vertical">${esc(d.fam.note)}</textarea>`;
-  root.innerHTML=`<div style="display:flex;align-items:center;gap:9px;margin-bottom:2px"><span style="font-size:22px">🗓️</span><div style="flex:1"><div style="font-size:16px;font-weight:800;color:var(--text)">${agL("title")}</div><div style="font-size:12px;color:var(--text3);text-transform:capitalize">${agDateLabel()} · ${agL("todayWord")}</div></div><span style="font-size:13px;color:var(--green2);font-weight:700">${done}/${total}</span></div>`
+  root.innerHTML=`<div style="display:flex;align-items:center;margin-bottom:6px"><div style="flex:1;font-size:12px;color:var(--text3);text-transform:capitalize">${agDateLabel()} · ${agL("todayWord")}</div><span style="font-size:13px;color:var(--green2);font-weight:700">${done}/${total}</span></div>`
   + head(agL("med"),cnt(["m","t","n"],d.med),3) + row("med","m",agL("mMorning")) + row("med","t",agL("mNoon")) + row("med","n",agL("mNight")) + medBox
   + head(agL("meals"),cnt(["des","com","cen"],d.meals),3) + row("meals","des",agL("des")) + row("meals","com",agL("com")) + row("meals","cen",agL("cen")) + waterRow
   + head(agL("hyg"),cnt(["aseo","dientes","vestido"],d.hyg),3) + row("hyg","aseo",agL("aseo")) + row("hyg","dientes",agL("dientes")) + row("hyg","vestido",agL("vestido"))
@@ -1696,6 +1709,7 @@ function renderAgenda(){
   + head(agL("fam"),null) + `<div style="font-size:11px;color:var(--text3);margin-bottom:4px">${agL("resp")}</div>` + famHtml
   + `<button onclick="agShare()" style="width:100%;margin-top:10px;background:var(--green);border:none;border-radius:11px;color:#fff;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">📤 ${agL("share")}</button>`
   + `<div style="font-size:10px;color:var(--text3);line-height:1.5;margin-top:10px">${agL("disclaimer")}</div>`;
+  agSyncFeat(done,total);
 }
 
 // INIT
