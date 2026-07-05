@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap">
 <meta name="theme-color" content="#2f6045">
 <script>
-/* Detecta si la app corre dentro de la Play Store (TWA) para ocultar las compras externas */
 (function(){
   try{
     var fromApp = document.referrer && document.referrer.indexOf("android-app://")===0;
@@ -192,10 +191,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty{text-align:center;padding:30px 20px;color:var(--text3)}
 .empty-icon{font-size:36px;margin-bottom:10px}
-/* Ocultar compras externas dentro de la app de la Play Store (TWA) */
 html.is-twa .buy-hide{display:none!important}
 html.is-twa a[href*="buy.stripe.com"]{display:none!important}
-/* Botón de lectura en voz alta (accesibilidad) */
 .tts-btn{position:fixed;right:14px;bottom:74px;z-index:9999;display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;background:var(--green);color:#fff;border:none;border-radius:50%;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;font-family:inherit}
 .tts-btn .tts-ico{font-size:23px;line-height:1}
 .tts-btn #ttsLbl{display:none}
@@ -376,6 +373,11 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
       <div class="ic-info"><div class="ic-title" id="libt5">Módulo 5</div><div class="ic-sub" id="libs5">Abrir módulo →</div></div>
       <div class="ic-badge b-azul" id="libb5">🔒</div>
     </div>
+    <div class="ic" onclick="location.href='refranes.html'" style="cursor:pointer">
+      <div class="ic-thumb" style="background:linear-gradient(135deg,#4a2a1a,#c08a4a)">📜</div>
+      <div class="ic-info"><div class="ic-title" id="refTitle">Refranes</div><div class="ic-sub" id="refSub">Abrir módulo →</div></div>
+      <div class="ic-badge b-verde" id="refBadge">4 🌐</div>
+    </div>
     <div class="feat" style="background:linear-gradient(135deg,#8a6d2a,#c9a24b)" onclick="openCert()">
       <div class="feat-tag" id="cert-tag">🏅 Certificado</div>
       <div class="feat-icon">🏅</div>
@@ -515,7 +517,6 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
   </div>
 </div>
 </div>
-
 <script>
 var AI_QUOTA = {
   free: 5,
@@ -586,7 +587,6 @@ function activateAIPack(){
     if(err){ err.style.display='block'; setTimeout(function(){ err.style.display='none'; },3000); }
   }
 }
-
 var EXPERT_CONTENT = {
   "mod1":"<h3>Antes de empezar: esto es para ti</h3><p>Nadie te ha preparado para esto. Un día algo cambió — una conversación repetida, un nombre olvidado, una mirada diferente. Y de repente te encontraste en un territorio nuevo, sin mapa.</p><p style=\"font-style:italic;color:var(--green2)\">\"No necesitas saberlo todo. Necesitas entender lo suficiente para acompañar con amor y con sentido.\"</p><h3>¿Qué es el DCL?</h3><p>El deterioro cognitivo leve es un estado <strong>intermedio entre el envejecimiento normal y la demencia</strong>. Es un cambio real y medible — pero que <strong>no impide llevar una vida prácticamente normal</strong>. El DCL afecta al <strong>15-20% de los mayores de 65 años</strong>. Un porcentaje similar se estabiliza o mejora con estimulación adecuada. <em>Petersen RC et al. (2018) Archives of Neurology · Livingston G et al. (2020) The Lancet.</em></p><p><strong>Lo que tú haces importa.</strong> No eres un espectador — eres parte del entorno que puede marcar la diferencia.</p><h3>Mitos y realidades</h3><ul><li>❌ \"Si olvida, tiene Alzheimer\" → ✅ El DCL y el Alzheimer son diagnósticos distintos</li><li>❌ \"No hay nada que hacer\" → ✅ Con estimulación y apoyo social, muchas personas mejoran</li><li>❌ \"Si le corrijo, le ayudo\" → ✅ La corrección constante genera ansiedad — acompañar es más útil</li><li>❌ \"Ya no puede decidir\" → ✅ En el DCL, la autonomía se conserva en gran medida</li></ul><h3>Las 3 trayectorias posibles</h3><ul><li><strong>Estabilización:</strong> Frecuente con buena estimulación y apoyo social</li><li><strong>Mejora parcial:</strong> Posible con factores reversibles: sueño, depresión, aislamiento</li><li><strong>Progresión gradual:</strong> El ritmo puede modularse — cada etapa puede ser más digna</li></ul><p>La <strong>reserva cognitiva</strong> actúa como amortiguador. El ejercicio aeróbico (30 min, 5 veces/semana) es uno de los factores más protectores. <em>Nunca es tarde para construirla.</em></p><h3>Señales de alerta</h3><ul><li>🟢 Normal: Olvidar las llaves pero acordarse · Tardar más en aprender</li><li>🟡 DCL: Repetir la misma pregunta · Olvidar conversaciones recientes · Desorientación</li><li>🔴 Consultar: Cambios de humor · Retirada de actividades · Memoria que afecta el día a día</li></ul><h3>Tu lista de inicio</h3><ul><li>✓ El DCL no es Alzheimer automáticamente, pero merece atención</li><li>✓ Puedes marcar la diferencia — el entorno importa</li><li>✓ La persona conserva su autonomía y dignidad</li><li>✓ Tu bienestar también es parte del cuidado</li><li>✓ El diagnóstico precoz es siempre una ventaja</li></ul>",
   "mod1_fr":"<h3>Avant de commencer : ceci est pour vous</h3><p>Personne ne vous a préparé à cela. Un jour quelque chose a changé — une conversation répétée, un prénom oublié.</p><p style=\"font-style:italic;color:var(--green2)\">« Vous n'avez pas besoin de tout savoir. Vous avez besoin de comprendre suffisamment pour accompagner avec amour. »</p><h3>Qu'est-ce que le DCL ?</h3><p>Le déclin cognitif léger est un état <strong>intermédiaire entre le vieillissement normal et la démence</strong>. Il touche <strong>15-20% des personnes de plus de 65 ans</strong>. Un pourcentage similaire se stabilise ou s'améliore avec une stimulation adaptée. <em>Petersen RC et al. (2018) · Livingston G et al. (2020) The Lancet.</em></p><p><strong>Ce que vous faites compte.</strong></p><h3>Mythes et réalités</h3><ul><li>❌ S'il oublie, c'est Alzheimer → ✅ DCL et Alzheimer sont des diagnostics distincts</li><li>❌ Il n'y a rien à faire → ✅ Avec stimulation et lien social, beaucoup s'améliorent</li><li>❌ Le corriger l'aide → ✅ La correction constante génère de l'anxiété</li><li>❌ Il ne peut plus décider → ✅ L'autonomie est largement préservée</li></ul><h3>Les 3 trajectoires possibles</h3><ul><li><strong>Stabilisation :</strong> Fréquente avec bonne stimulation</li><li><strong>Amélioration partielle :</strong> Possible avec facteurs réversibles</li><li><strong>Progression graduelle :</strong> Le rythme peut être modulé</li></ul><h3>Votre liste de départ</h3><ul><li>✓ Le DCL n'est pas automatiquement Alzheimer</li><li>✓ Vous pouvez faire la différence</li><li>✓ La personne conserve son autonomie et sa dignité</li><li>✓ Votre bien-être fait partie du soin</li><li>✓ Le diagnostic précoce est toujours un avantage</li></ul>",
@@ -629,13 +629,23 @@ var EXPERT_CONTENT = {
   "c0_ca":"<h3>La ciència de la validació</h3><p>Quan corregim directament, activem la resposta d'amenaça. La validació emocional (Feil, 1993): la realitat emocional és sempre vàlida.</p><ul><li>❌ No, això no és així → ✅ Entenc que això et preocupa</li><li>❌ Ja t'ho he dit → ✅ Explica'm més sobre el que sents</li></ul>",
   "c1_ca":"<h3>La neurociència del contacte visual</h3><ul><li>Sempre al mateix nivell · Espera que et miri · Somriu primer · 2-3 segons de contacte visual</li></ul>",
   "c1_en":"<h3>The neuroscience of eye contact</h3><p>The brain processes eye contact before words. Establishing it first activates attention.</p><ul><li>Always at the same level · Wait for them to look · Smile first · 2-3 seconds before speaking</li></ul>",
+  "c0_p":"<h3>1. Antes de corregir, para</h3><p>La próxima vez que vayas a corregir algo automáticamente, respira antes. Pregúntate: ¿importa de verdad ahora mismo, o puedo dejarlo pasar?</p><h3>2. Frases que puedes usar hoy</h3><ul><li>Si dice algo equivocado → <em>Cuéntame más sobre eso</em></li><li>Si está agitado/a → <em>Veo que esto te preocupa. Estoy aquí</em></li><li>Si busca a alguien que ya no está → <em>¿Qué recuerdas de esa persona?</em></li></ul><h3>3. Practícalo en una situación real esta semana</h3><p>Elige un momento del día en que suele repetirse una idea incorrecta (una rutina, un recuerdo, una pregunta) y aplica la validación en vez de la corrección. Observa cómo cambia su reacción.</p>",
+  "c1_p":"<h3>1. Colócate a su altura antes de hablar</h3><p>Siéntate o agáchate para estar al mismo nivel físico. Evita hablar de pie a alguien que está sentado.</p><h3>2. Espera el contacto visual</h3><p>Cuenta 2-3 segundos de contacto visual antes de empezar a hablar. Si no te mira, toca suavemente su brazo o di su nombre primero, con calma.</p><h3>3. Practícalo hoy</h3><p>En la próxima conversación, hazlo consciente: acércate, mírale, sonríe, espera, y solo entonces habla. Nota si responde de forma distinta a como lo hace habitualmente.</p>",
+  "c2_p":"<h3>1. Prepara una respuesta corta de antemano</h3><p>Ten pensada una frase breve y calmante para la pregunta que más se repite, y úsala siempre igual — la repetición de tu respuesta también da seguridad.</p><h3>2. Evita el «ya te lo dije»</h3><p>Esa frase genera vergüenza y más ansiedad. Sustitúyela por una respuesta neutra, cariñosa, dicha con el mismo tono que la primera vez.</p><h3>3. Cuida tu propio límite</h3><p>Si notas que se te agota la paciencia, tómate un respiro breve antes de responder de nuevo. Puedes decir con calma: «dame un momento y te lo explico».</p>",
+  "c3_p":"<h3>1. Reduce cada frase a una sola acción</h3><p>En vez de «vamos a ducharnos y luego cambiarte y después comemos», di solo: «vamos a ducharnos».</p><h3>2. Da como máximo dos opciones</h3><p>«¿Quieres sopa o algo frío?» es más fácil de procesar que una pregunta abierta o con muchas alternativas.</p><h3>3. Practícalo hoy</h3><p>Elige un momento de rutina (vestirse, comer) y divide las instrucciones en pasos separados, esperando a que termine uno antes de dar el siguiente.</p>",
+  "c4_p":"<h3>1. Prueba a estar sin hablar</h3><p>Siéntate cerca sin exigir conversación. A veces la presencia tranquila comunica más que cualquier palabra.</p><h3>2. Usa el contacto físico si lo acepta</h3><p>Una mano en el hombro, sostener su mano — solo si la persona lo permite y parece disfrutarlo.</p><h3>3. Añade un ancla sensorial</h3><p>Pon de fondo una música suave que le guste mientras estáis juntos en silencio; ayuda a sostener el momento sin necesidad de hablar.</p>",
+  "c5_p":"<h3>1. Cuenta hasta cinco en silencio</h3><p>Después de hacer una pregunta, espera al menos cinco segundos antes de repetirla o de ayudar.</p><h3>2. No completes sus frases</h3><p>Aunque creas saber lo que va a decir, deja que termine ella misma, aunque tarde más de lo habitual.</p><h3>3. Si la respuesta no llega</h3><p>Reformula con palabras más simples, en vez de repetir lo mismo más alto o más rápido — eso solo aumenta la presión.</p>",
+  "c6_p":"<h3>1. No insistas en el momento</h3><p>Si hay un «no» claro, retírate con calma. Insistir en el momento casi siempre aumenta la angustia.</p><h3>2. Vuelve a intentarlo de otra forma</h3><p>Espera unos diez minutos y propón la misma actividad con otras palabras, u otro contexto (otro lugar, otro momento del día).</p><h3>3. Valida antes de proponer</h3><p>Empieza con «veo que ahora no te apetece» antes de ofrecer cualquier alternativa — se recibe mucho mejor.</p>",
+  "c7_p":"<h3>1. Antes de entrar en la habitación</h3><p>Haz tres respiraciones lentas y baja los hombros antes de acercarte a la persona.</p><h3>2. Regula tu tono de voz</h3><p>Habla un poco más despacio y más bajo de lo habitual — el cuerpo capta esto antes que las palabras.</p><h3>3. Conviértelo en un pequeño ritual</h3><p>Practica este momento de calma siempre antes de una tarea de cuidado que sepas que puede ser difícil (aseo, comida, cambios de rutina).</p>",
+  "c8_p":"<h3>1. Elige algo pequeño hoy</h3><p>Un paseo de 10 minutos, una llamada a un amigo, o simplemente sentarte con un café sin hacer nada más.</p><h3>2. Ponlo en el calendario</h3><p>Trátalo como una cita que no se cancela, igual que una cita médica — anótalo si eso te ayuda a respetarlo.</p><h3>3. Pide un relevo concreto</h3><p>«¿Puedes venir el martes de 17 a 19h?» funciona mucho mejor que «necesito ayuda» — la petición concreta es más fácil de aceptar.</p>",
+  "c9_p":"<h3>1. Haz esta pequeña autoevaluación</h3><p>¿Te recuperas con el descanso (verde)? ¿Estás irritable y sin reservas (amarillo)? ¿Sientes un agotamiento profundo (rojo)?</p><h3>2. Actúa según el nivel</h3><ul><li>🟢 Verde: mantén tus rutinas de descanso habituales</li><li>🟡 Amarillo: busca ayuda puntual esta misma semana</li><li>🔴 Rojo: pide apoyo profesional cuanto antes</li></ul><h3>3. Repite esta pregunta cada semana</h3><p>No hace falta esperar a estar mal para comprobar cómo estás — conviértelo en una pequeña rutina de autocuidado.</p>",
   "mod5":"<h3>El laberinto de los recursos tiene salida</h3>\n<p>Uno de los grandes problemas del cuidador es que no sabe lo que no sabe. Nadie le explica que existen ayudas económicas, que hay asociaciones gratuitas, que el médico puede derivar si se le pide correctamente.</p>\n<p style=\"font-style:italic;color:var(--green2)\">\"No estás solo. El sistema no siempre es visible, pero está ahí. Este módulo te ayuda a encontrarlo.\"</p>\n<h3>🇪🇸 España</h3>\n<ul>\n<li><strong>Ley de Dependencia (SAAD):</strong> Prestaciones y servicios para personas con limitación de autonomía. Solicitud en Servicios Sociales municipales. · imserso.es</li>\n<li><strong>Alzheimer España:</strong> Grupos de apoyo, línea de información gratuita. · alzheimer-spain.org / 900 210 212</li>\n<li><strong>Centros de Día:</strong> Atención diurna especializada. Gestionados por municipios y CCAA.</li>\n<li><strong>Unidades de Memoria:</strong> Evaluación neuropsicológica. Solicitar derivación al médico con informe de síntomas observados.</li>\n<li><strong>Programas de Respiro Familiar:</strong> Estancias temporales en centros especializados. · Cruz Roja / IMSERSO</li>\n</ul>\n<h3>🏴 Catalunya</h3>\n<ul>\n<li><strong>PADES:</strong> Equipos de atención domiciliaria especializados. A través del CAP.</li>\n<li><strong>Alzheimer Catalunya:</strong> Formación, grupos de apoyo, atención psicológica. · alzheimercatalunya.cat / 93 430 49 93</li>\n<li><strong>Prestació per Dependència:</strong> Tramitación en Serveis Socials del municipio.</li>\n<li><strong>SAD (Servei d'Atenció a Domicili):</strong> Cuidadores profesionales en el hogar por horas. Cofinanciado según renta.</li>\n</ul>\n<h3>🇫🇷 Francia</h3>\n<ul>\n<li><strong>APA (Allocation Personnalisée d'Autonomie):</strong> Para personas mayores de 60 años con pérdida de autonomía. Solicitud en el Conseil Départemental. · service-public.fr</li>\n<li><strong>France Alzheimer:</strong> Red nacional, grupos Café Alzheimer, formación para cuidadores (Pixel). · francealzheimer.org / 0 811 112 112</li>\n<li><strong>MAIA / CLIC:</strong> Coordinación local de todos los servicios del territorio.</li>\n<li><strong>CESU / Aide à Domicile:</strong> Cheque empleo con ventajas fiscales. Financiable con APA. · cesu.urssaf.fr</li>\n<li><strong>Mandat de Protection Future:</strong> Designar anticipadamente quien tomará decisiones. Notario.</li>\n</ul>\n<h3>🇬🇧 Reino Unido</h3>\n<ul>\n<li><strong>Carer's Allowance:</strong> Prestación semanal para cuidadores de al menos 35h/semana. · gov.uk/carers-allowance</li>\n<li><strong>Alzheimer's Society:</strong> Línea de apoyo, grupos locales, Dementia Connect. · alzheimers.org.uk / 0333 150 3456</li>\n<li><strong>Carer's Assessment:</strong> Evaluación gratuita de necesidades del cuidador por el Local Authority.</li>\n<li><strong>Attendance Allowance:</strong> Para la persona con deterioro cognitivo mayor de 65 años. · gov.uk/attendance-allowance</li>\n<li><strong>Lasting Power of Attorney:</strong> Figura legal para actuar en nombre de la persona. Registrar cuanto antes. · gov.uk/power-of-attorney</li>\n</ul>\n<h3>Capítulo 2 — Cómo hablar con el médico y que te escuchen</h3>\n<p>La cita dura 10 minutos. El médico va rápido. Tú no has dicho lo que más te preocupa. Esto tiene solución — con preparación.</p>\n<ul>\n<li>✓ <strong>Di esto:</strong> <em>\"En las últimas 6 semanas, he observado que repite la misma pregunta 3-4 veces en menos de una hora, y ayer se perdió en una calle que conoce de toda la vida.\"</em> — Concreto, observable, con tiempo y frecuencia.</li>\n<li>✓ <strong>Pide esto:</strong> <em>\"Me gustaría que valorara si necesita derivación a la Unidad de Memoria o un estudio neuropsicológico.\"</em></li>\n<li>✓ <strong>Infórmale sobre ti:</strong> <em>\"Yo también me encuentro muy agotado. ¿Hay recursos de apoyo para cuidadores en este centro de salud?\"</em></li>\n</ul>\n<p><strong>Lleva siempre una nota escrita:</strong> 3 cambios observados + 2 preguntas + 1 cosa que tú necesitas.</p>\n<h3>Capítulo 3 — Cuándo es el momento de buscar más ayuda</h3>\n<ul>\n<li>🟢 <strong>Manejable:</strong> La persona mantiene cierta autonomía. Tú tienes espacios de descanso. La red funciona.</li>\n<li>🟡 <strong>Señales de alerta:</strong> Episodios frecuentes de desorientación. El cuidado nocturno te agota. Tu salud se deteriora. La persona ya no puede quedarse sola de forma segura.</li>\n<li>🔴 <strong>Busca ayuda ahora:</strong> Riesgo de seguridad. Estás en nivel 3 de burnout. Sientes que ya no puedes más.</li>\n</ul>\n<p>Si llega el momento de considerar una residencia: no es abandono — es reconocer que las necesidades han crecido más allá de lo que puede ofrecer el cuidado domiciliar. Busca apoyo psicológico para acompañar ese proceso.</p>\n<p><em>El diagnóstico precoz permite planificar con tiempo: aspectos legales, financieros y de cuidado. Las personas que planifican tienen significativamente mejores resultados. · ADI (2021) World Alzheimer Report.</em></p>\n<h3>Has completado el programa</h3>\n<p style=\"font-style:italic;color:var(--green2)\">\"Cuidar con sentido no es hacerlo todo perfecto. Es hacerlo con presencia, con conocimiento y con el corazón abierto. Eso ya eres tú.\"</p>",
   "mod5_fr":"<h3>Le labyrinthe des ressources a une sortie</h3>\n<p>L'un des grands problèmes de l'aidant informel est qu'il ne sait pas ce qu'il ne sait pas. Personne ne lui explique qu'il existe des aides financières, des associations gratuites.</p>\n<p style=\"font-style:italic;color:var(--green2)\">« Vous n'êtes pas seul·e. Le système n'est pas toujours visible, mais il est là. »</p>\n<h3>🇫🇷 France</h3>\n<ul>\n<li><strong>APA (Allocation Personnalisée d'Autonomie) :</strong> Pour les personnes de plus de 60 ans en perte d'autonomie. Demande au Conseil Départemental. · service-public.fr</li>\n<li><strong>France Alzheimer :</strong> Réseau national, groupes Café Alzheimer, formation aidants (Pixel). · francealzheimer.org / 0 811 112 112</li>\n<li><strong>MAIA / CLIC :</strong> Points de coordination locaux pour orienter vers tous les services.</li>\n<li><strong>CESU / Aide à Domicile :</strong> Chèque emploi avec avantages fiscaux. · cesu.urssaf.fr</li>\n<li><strong>Mandat de Protection Future :</strong> Désigner à l'avance qui prendra les décisions. Notaire.</li>\n</ul>\n<h3>🇪🇸 Espagne</h3>\n<ul>\n<li><strong>Ley de Dependencia (SAAD) :</strong> Prestations pour personnes à autonomie limitée. Services Sociaux municipaux.</li>\n<li><strong>Alzheimer España :</strong> Groupes de soutien, ligne d'information gratuite. · 900 210 212</li>\n</ul>\n<h3>🇬🇧 Royaume-Uni</h3>\n<ul>\n<li><strong>Carer's Allowance :</strong> Prestation hebdomadaire (35h+/semaine). · gov.uk/carers-allowance</li>\n<li><strong>Alzheimer's Society :</strong> 0333 150 3456 · alzheimers.org.uk</li>\n<li><strong>Lasting Power of Attorney :</strong> À enregistrer rapidement. · gov.uk/power-of-attorney</li>\n</ul>\n<h3>Chapitre 2 — Comment parler au médecin et être écouté·e</h3>\n<ul>\n<li>✓ <strong>Dites ceci :</strong> <em>« Ces 6 dernières semaines, j'ai observé qu'il/elle répète la même question 3-4 fois en moins d'une heure. »</em></li>\n<li>✓ <strong>Demandez ceci :</strong> <em>« J'aimerais que vous évaluiez s'il/elle a besoin d'une orientation vers une consultation mémoire. »</em></li>\n<li>✓ <strong>Informez-le sur vous :</strong> <em>« Je me sens aussi très épuisé·e. Existe-t-il des ressources pour les aidants ici ? »</em></li>\n</ul>\n<p><strong>Apportez toujours une note écrite :</strong> 3 changements observés + 2 questions + 1 chose dont vous avez besoin.</p>\n<h3>Chapitre 3 — Quand chercher plus d'aide</h3>\n<ul>\n<li>🟢 <strong>Gérable :</strong> La personne maintient une certaine autonomie. Vous avez des temps de repos.</li>\n<li>🟡 <strong>Signaux d'alerte :</strong> Épisodes fréquents de désorientation. Soins nocturnes épuisants. Votre santé se détériore.</li>\n<li>🔴 <strong>Cherchez de l'aide maintenant :</strong> Risque de sécurité. Burnout niveau 3. Vous ne pouvez plus.</li>\n</ul>\n<h3>Vous avez terminé le programme</h3>\n<p style=\"font-style:italic;color:var(--green2)\">« Prendre soin avec sens, ce n'est pas tout faire parfaitement. C'est le faire avec présence, avec connaissance et avec le cœur ouvert. C'est déjà vous. »</p>",
   "mod5_ca":"<h3>El laberint dels recursos té sortida</h3>\n<p>Un dels grans problemes del cuidador és que no sap el que no sap. Ningú li explica que existeixen ajudes econòmiques, que hi ha associacions gratuïtes.</p>\n<p style=\"font-style:italic;color:var(--green2)\">\"No estàs sol. El sistema no sempre és visible, però hi és.\"</p>\n<h3>🏴 Catalunya</h3>\n<ul>\n<li><strong>PADES:</strong> Equips d'atenció domiciliària especialitzats. A través del CAP.</li>\n<li><strong>Alzheimer Catalunya:</strong> Formació, grups de suport, atenció psicològica. · alzheimercatalunya.cat / 93 430 49 93</li>\n<li><strong>Prestació per Dependència:</strong> Tramitació als Serveis Socials del municipi.</li>\n<li><strong>SAD (Servei d'Atenció a Domicili):</strong> Cuidadors professionals a la llar per hores. Cofinançat segons renda.</li>\n</ul>\n<h3>🇪🇸 Espanya</h3>\n<ul>\n<li><strong>Llei de Dependència (SAAD):</strong> Prestacions per a persones amb limitació d'autonomia. Serveis Socials municipals.</li>\n<li><strong>Alzheimer España:</strong> Grups de suport, línia d'informació gratuïta. · 900 210 212</li>\n</ul>\n<h3>Capítol 2 — Com parlar amb el metge i que t'escoltin</h3>\n<ul>\n<li>✓ <strong>Digues això:</strong> <em>\"En les darreres 6 setmanes, he observat que repeteix la mateixa pregunta 3-4 vegades en menys d'una hora.\"</em></li>\n<li>✓ <strong>Demana això:</strong> <em>\"M'agradaria que valorés si necessita una derivació a la Unitat de Memòria.\"</em></li>\n<li>✓ <strong>Informa'l sobre tu:</strong> <em>\"Jo també em trobo molt esgotat. Hi ha recursos de suport per a cuidadors aquí?\"</em></li>\n</ul>\n<h3>Capítol 3 — Quan és el moment de buscar més ajuda</h3>\n<ul>\n<li>🟢 <strong>Manejable:</strong> La persona manté certa autonomia. Tens espais de descans.</li>\n<li>🟡 <strong>Senyals d'alerta:</strong> Episodes freqüents de desorientació. La cura nocturna t'esgota. La teva salut es deteriora.</li>\n<li>🔴 <strong>Busca ajuda ara:</strong> Risc de seguretat. Nivell 3 de burnout. Ja no pots més.</li>\n</ul>\n<h3>Has completat el programa</h3>\n<p style=\"font-style:italic;color:var(--green2)\">\"Cuidar amb sentit no és fer-ho tot perfecte. És fer-ho amb presència, amb coneixement i amb el cor obert. Això ja ets tu.\"</p>",
   "mod5_en":"<h3>The resource labyrinth has an exit</h3>\n<p>One of the great problems for informal caregivers is that they don't know what they don't know. Nobody explains that financial support exists, that there are free associations.</p>\n<p style=\"font-style:italic;color:var(--green2)\">\"You are not alone. The system isn't always visible, but it is there. This module helps you find it.\"</p>\n<h3>🇬🇧 United Kingdom</h3>\n<ul>\n<li><strong>Carer's Allowance:</strong> Weekly benefit for carers providing 35h+/week. · gov.uk/carers-allowance</li>\n<li><strong>Alzheimer's Society:</strong> Support line, local groups, Dementia Connect guidance. · alzheimers.org.uk / 0333 150 3456</li>\n<li><strong>Carer's Assessment:</strong> Free assessment of carer's needs by Local Authority. Request via GP or council.</li>\n<li><strong>Attendance Allowance:</strong> For the person with cognitive decline aged 65+. · gov.uk/attendance-allowance</li>\n<li><strong>Lasting Power of Attorney:</strong> Register as early as possible. · gov.uk/power-of-attorney</li>\n</ul>\n<h3>🇪🇸 Spain</h3>\n<ul>\n<li><strong>Ley de Dependencia (SAAD):</strong> Benefits and services for dependent persons. Municipal Social Services.</li>\n<li><strong>Alzheimer España:</strong> Support groups, free information line. · 900 210 212</li>\n<li><strong>Memory Units:</strong> Specialist neuropsychological assessment. Request GP referral.</li>\n</ul>\n<h3>🇫🇷 France</h3>\n<ul>\n<li><strong>APA:</strong> For people over 60 with loss of autonomy. Conseil Départemental.</li>\n<li><strong>France Alzheimer:</strong> 0 811 112 112 · francealzheimer.org</li>\n<li><strong>Lasting Power of Attorney equivalent:</strong> Mandat de Protection Future — register with notary now.</li>\n</ul>\n<h3>Chapter 2 — How to talk to the doctor and be heard</h3>\n<ul>\n<li>✓ <strong>Say this:</strong> <em>\"Over the last 6 weeks, I've noticed she repeats the same question 3-4 times within an hour, and yesterday she got lost in a street she has known all her life.\"</em></li>\n<li>✓ <strong>Ask for this:</strong> <em>\"I'd like you to assess whether she needs a referral to a Memory Clinic or neuropsychological assessment.\"</em></li>\n<li>✓ <strong>Tell them about you:</strong> <em>\"I am also feeling very exhausted. Are there any carer support resources at this surgery?\"</em></li>\n</ul>\n<p><strong>Always bring a written note:</strong> 3 concrete changes observed + 2 questions + 1 thing you need.</p>\n<h3>Chapter 3 — When it is time to seek more help</h3>\n<ul>\n<li>🟢 <strong>Manageable:</strong> Person retains some autonomy. You have rest periods. Support network functions.</li>\n<li>🟡 <strong>Warning signs:</strong> Frequent disorientation. Night care exhausting you. Your health deteriorating. Person can no longer safely be alone.</li>\n<li>🔴 <strong>Seek help now:</strong> Safety risk. Burnout level 3. You feel you can no longer cope.</li>\n</ul>\n<p>If the time comes to consider a care home: it is not abandonment — it is recognising that needs have grown beyond what home care can offer. Seek psychological support. Don't face it alone.</p>\n<p><em>Early diagnosis allows time to plan: legal (Power of Attorney, advance directives), financial and care arrangements. · ADI (2021) World Alzheimer Report.</em></p>\n<h3>You have completed the programme</h3>\n<p style=\"font-style:italic;color:var(--green2)\">\"Caring with meaning is not doing everything perfectly. It is doing it with presence, with knowledge and with an open heart. That is already you.\"</p>",
-  "mod5_p":"<h3>1. Esta semana: una llamada de orientación</h3>\n<p>Elige el recurso más relevante para tu situación y llama:</p>\n<ul>\n<li><strong>España:</strong> Alzheimer España 900 210 212 (gratuito)</li>\n<li><strong>Francia:</strong> France Alzheimer 0 811 112 112</li>\n<li><strong>UK:</strong> Alzheimer's Society 0333 150 3456</li>\n<li><strong>Catalunya:</strong> Alzheimer Catalunya 93 430 49 93</li>\n</ul>\n<p>Pregunta: <em>\"¿Qué recursos hay disponibles para mi situación y cómo se solicitan?\"</em></p>\n<h3>2. Si no tienes valoración de dependencia — empiézala esta semana</h3>\n<p>Ve a Servicios Sociales de tu municipio. Lleva DNI e informe médico. El proceso tarda meses — cuanto antes empieces, antes tienes acceso a recursos.</p>\n<h3>3. Prepara la próxima visita médica</h3>\n<ul>\n<li>3 cambios observados desde la última visita</li>\n<li>Tu estado como cuidador — el médico debe saberlo</li>\n<li>Frase exacta: <em>\"Necesito que me derive a la Unidad de Memoria\"</em></li>\n</ul>\n<h3>4. Registra el Poder Notarial / Lasting Power of Attorney</h3>\n<p>Mientras la persona todavía puede consentir. Una vez que pierde capacidad, no puede hacerse. Es la decisión legal más importante que puedes tomar ahora.</p>\n<h3>5. Tu semáforo ahora mismo</h3>\n<ul>\n<li>🟢 Verde: busca ayuda a domicilio o Centro de Día</li>\n<li>🟡 Amarillo: Centro de Día urgente + grupo de apoyo</li>\n<li>🔴 Rojo: habla HOY con el médico. La residencia no es abandono.</li>\n</ul>",
+  "mod5_p":"<h3>1. Esta semana: una llamada de orientación</h3>\n<ul>\n<li>España: Alzheimer España 900 210 212 (gratuito)</li>\n<li>Francia: France Alzheimer 0 811 112 112</li>\n<li>UK: Alzheimer's Society 0333 150 3456</li>\n<li>Catalunya: Alzheimer Catalunya 93 430 49 93</li>\n</ul>\n<p>Pregunta: <em>\"¿Qué recursos hay para mi situación y cómo se solicitan?\"</em></p>\n<h3>2. Si no tienes valoración de dependencia — empiézala esta semana</h3>\n<p>Ve a Servicios Sociales de tu municipio. Lleva DNI e informe médico. El proceso tarda meses — cuanto antes empieces, antes tienes acceso a recursos.</p>\n<h3>3. Prepara la próxima visita médica</h3>\n<ul>\n<li>3 cambios observados desde la última visita</li>\n<li>Tu estado como cuidador — el médico debe saberlo</li>\n<li>Frase exacta: <em>\"Necesito que me derive a la Unidad de Memoria\"</em></li>\n</ul>\n<h3>4. Registra el Poder Notarial / Lasting Power of Attorney</h3>\n<p>Mientras la persona todavía puede consentir. Una vez que pierde capacidad, no puede hacerse. Es la decisión legal más importante que puedes tomar ahora.</p>\n<h3>5. Tu semáforo ahora mismo</h3>\n<ul>\n<li>🟢 Verde: busca ayuda a domicilio o Centro de Día</li>\n<li>🟡 Amarillo: Centro de Día urgente + grupo de apoyo</li>\n<li>🔴 Rojo: habla HOY con el médico. La residencia no es abandono.</li>\n</ul>",
   "mod5_p_fr":"<h3>1. Cette semaine : un appel d'orientation</h3>\n<ul>\n<li>France Alzheimer : 0 811 112 112</li>\n<li>MAIA/CLIC : trouvez le vôtre sur monparcourshandicap.gouv.fr</li>\n</ul>\n<h3>2. Demandez l'APA cette semaine si ce n'est pas fait</h3>\n<p>Conseil Départemental. Le processus prend des mois — commencez maintenant.</p>\n<h3>3. Préparez la prochaine consultation médicale</h3>\n<ul>\n<li>3 changements observés · Votre état d'aidant · Demandez une orientation mémoire</li>\n</ul>\n<h3>4. Enregistrez le Mandat de Protection Future</h3>\n<p>Pendant que la personne peut encore consentir. Notaire ou formulaire administratif.</p>",
-  "mod5_p_en":"<h3>1. This week: one orientation call</h3>\n<ul>\n<li><strong>UK:</strong> Alzheimer's Society 0333 150 3456</li>\n<li><strong>Spain:</strong> Alzheimer España 900 210 212</li>\n<li><strong>France:</strong> France Alzheimer 0 811 112 112</li>\n</ul>\n<h3>2. Apply for Carer's Allowance this week if eligible</h3>\n<p>gov.uk/carers-allowance — if you provide 35+ hours of care per week.</p>\n<h3>3. Prepare the next medical appointment</h3>\n<ul>\n<li>3 concrete changes observed · Your state as a carer · Request Memory Clinic referral</li>\n</ul>\n<h3>4. Register Lasting Power of Attorney now</h3>\n<p>While the person can still consent. gov.uk/power-of-attorney — don't wait.</p>\n<h3>5. Your traffic light right now</h3>\n<ul>\n<li>🟢 Green: home help or day centre</li>\n<li>🟡 Amber: day centre urgent + support group</li>\n<li>🔴 Red: talk to your GP TODAY. A care home is not abandonment.</li>\n</ul>"
+  "mod5_p_en":"<h3>1. This week: one orientation call</h3>\n<ul>\n<li><strong>UK:</strong> Alzheimer's Society 0333 150 3456</li>\n<li><strong>Spain:</strong> Alzheimer España 900 210 212</li>\n<li><strong>France:</strong> France Alzheimer 0 811 112 112</li>\n</ul>\n<p>Ask: <em>What resources are available for my situation and how do I apply?</em></p>\n<h3>2. Apply for Carer's Allowance this week if eligible</h3>\n<p>gov.uk/carers-allowance — if you provide 35+ hours of care per week.</p>\n<h3>3. Prepare the next medical appointment</h3>\n<ul>\n<li>3 concrete changes observed · Your state as a carer · Request Memory Clinic referral</li>\n</ul>\n<h3>4. Register Lasting Power of Attorney now</h3>\n<p>While the person can still consent. gov.uk/power-of-attorney — don't wait.</p>\n<h3>5. Your traffic light right now</h3>\n<ul>\n<li>🟢 Green: home help or day centre</li>\n<li>🟡 Amber: day centre urgent + support group</li>\n<li>🔴 Red: talk to your GP TODAY. A care home is not abandonment.</li>\n</ul>"
 };
 EXPERT_CONTENT["biblio"] = "<p style='color:var(--text3);font-size:13px;margin-bottom:10px'>Bases científicas que sustentan cuidaAPP y el programa MAR. Cada obra incluye una nota de para qué te sirve.</p><h3>Atención Centrada en la Persona</h3><ul><li><strong>Kitwood, T. (1997).</strong> Dementia reconsidered: The person comes first. Open University Press. <em>— La persona va primero, no la enfermedad: el origen del cuidado centrado en la persona.</em></li></ul><h3>Reserva cognitiva</h3><ul><li><strong>Stern, Y. (2012).</strong> Cognitive reserve in ageing and Alzheimer's disease. Lancet Neurology, 11(11), 1006–1012. <em>— Por qué estimular la mente protege: el cerebro acumula una reserva que amortigua el deterioro.</em></li></ul><h3>Persona y entorno</h3><ul><li><strong>Lawton, M. P., & Nahemow, L. (1973).</strong> Ecology and the aging process. APA. <em>— El entorno puede ayudar o perjudicar: importa el ajuste entre la persona y su ambiente.</em></li><li><strong>Baltes, P. B., & Baltes, M. M. (1990).</strong> Successful aging. Cambridge University Press. <em>— Envejecer bien es posible adaptando recursos y estrategias.</em></li></ul><h3>Atención gerontológica (España)</h3><ul><li><strong>Martínez-Rodríguez, T. (2019).</strong> La atención gerontológica centrada en la persona. Fundación Pilares. <em>— Guía práctica para aplicar la ACP en residencias.</em></li><li><strong>Díaz-Veiga, P., Sancho, M., & Rodríguez, P. (2020).</strong> Revista Española de Geriatría y Gerontología, 55(2), 98–106. <em>— Una institucionalización rígida acelera la pérdida de autonomía.</em></li><li><strong>Rojo-Pérez, F., Fernández-Mayoralas, G., & Rodríguez-Rodríguez, V. (2022).</strong> Social Indicators Research, 162(3), 1105–1127. <em>— La salud cognitiva depende del entorno y de los apoyos sociales.</em></li></ul><h3>Entorno residencial y dependencia</h3><ul><li><strong>Calkins, M. P. (2018).</strong> Supportive and therapeutic environments for people living with dementia. Johns Hopkins University Press. <em>— Cómo diseñar entornos que cuidan.</em></li><li><strong>Kontos, P. C., Miller, K. L., & Mitchell, G. J. (2010).</strong> Gerontologist, 50(3), 352–362. <em>— La estandarización excesiva descuida el juicio del cuidador.</em></li></ul><h3>Solidaridades y contexto intergeneracional</h3><ul><li><strong>Mvé Ondo, B. (2014).</strong> Vieillissement et solidarités familiales en Afrique subsaharienne. Cahiers de l'IFORD. <em>— El papel de la familia y la comunidad en el cuidado.</em></li><li><strong>Mba, C. J. (2010).</strong> International Journal of Sociology and Anthropology, 2(1), 1–7. <em>— El envejecimiento también crece en África subsahariana.</em></li><li><strong>Iniesta-Martínez, M. (2018).</strong> Familias, parentesco y dinámicas intergeneracionales en el África subsahariana. UB. <em>— Las crisis socioeconómicas debilitan las redes familiares.</em></li></ul><h3>Organismos internacionales</h3><ul><li><strong>Organización Mundial de la Salud (2022).</strong> Década del Envejecimiento Saludable 2021–2030. <em>— Marco global para envejecer con salud y dignidad.</em></li><li><strong>United Nations (2023).</strong> World Population Prospects 2022. <em>— Datos sobre la transición demográfica mundial.</em></li></ul><p style='font-size:11px;color:var(--text3);margin-top:10px'>Dirección científica: Pr. Mayi Marc Bruno · Hafashimana Jean Marie Vianney · Université de Yaoundé I.</p>";
 EXPERT_CONTENT["biblio_fr"] = "<p style='color:var(--text3);font-size:13px;margin-bottom:10px'>Bases scientifiques qui fondent cuidaAPP et le programme MAR. Chaque ouvrage inclut une note sur son utilité.</p><h3>Soins Centrés sur la Personne</h3><ul><li><strong>Kitwood, T. (1997).</strong> Dementia reconsidered: The person comes first. Open University Press. <em>— La personne d'abord, pas la maladie : l'origine des soins centrés sur la personne.</em></li></ul><h3>Réserve cognitive</h3><ul><li><strong>Stern, Y. (2012).</strong> Cognitive reserve in ageing and Alzheimer's disease. Lancet Neurology, 11(11), 1006–1012. <em>— Pourquoi stimuler l'esprit protège : le cerveau accumule une réserve qui amortit le déclin.</em></li></ul><h3>Personne et environnement</h3><ul><li><strong>Lawton, M. P., & Nahemow, L. (1973).</strong> Ecology and the aging process. APA. <em>— L'environnement peut aider ou nuire : l'ajustement personne-milieu compte.</em></li><li><strong>Baltes, P. B., & Baltes, M. M. (1990).</strong> Successful aging. Cambridge University Press. <em>— Bien vieillir est possible en adaptant ses ressources.</em></li></ul><h3>Gérontologie (Espagne)</h3><ul><li><strong>Martínez-Rodríguez, T. (2019).</strong> La atención gerontológica centrada en la persona. Fundación Pilares. <em>— Guide pratique des SCP en établissement.</em></li><li><strong>Díaz-Veiga, P., Sancho, M., & Rodríguez, P. (2020).</strong> Revista Española de Geriatría y Gerontología, 55(2), 98–106. <em>— Une institutionnalisation rigide accélère la perte d'autonomie.</em></li><li><strong>Rojo-Pérez, F., et al. (2022).</strong> Social Indicators Research, 162(3), 1105–1127. <em>— La santé cognitive dépend de l'environnement et des soutiens sociaux.</em></li></ul><h3>Environnement résidentiel et dépendance</h3><ul><li><strong>Calkins, M. P. (2018).</strong> Supportive and therapeutic environments for people living with dementia. Johns Hopkins University Press. <em>— Concevoir des environnements qui prennent soin.</em></li><li><strong>Kontos, P. C., Miller, K. L., & Mitchell, G. J. (2010).</strong> Gerontologist, 50(3), 352–362. <em>— La standardisation excessive néglige le jugement de l'aidant.</em></li></ul><h3>Solidarités et contexte intergénérationnel</h3><ul><li><strong>Mvé Ondo, B. (2014).</strong> Vieillissement et solidarités familiales en Afrique subsaharienne. Cahiers de l'IFORD. <em>— Le rôle de la famille et de la communauté.</em></li><li><strong>Mba, C. J. (2010).</strong> International Journal of Sociology and Anthropology, 2(1), 1–7. <em>— Le vieillissement croît aussi en Afrique subsaharienne.</em></li><li><strong>Iniesta-Martínez, M. (2018).</strong> Familias, parentesco y dinámicas intergeneracionales en el África subsahariana. UB. <em>— Les crises socio-économiques fragilisent les réseaux familiaux.</em></li></ul><h3>Organismes internationaux</h3><ul><li><strong>Organisation mondiale de la Santé (2022).</strong> Décennie du vieillissement en bonne santé 2021–2030. <em>— Cadre mondial pour vieillir en santé et dignité.</em></li><li><strong>United Nations (2023).</strong> World Population Prospects 2022. <em>— Données sur la transition démographique mondiale.</em></li></ul><p style='font-size:11px;color:var(--text3);margin-top:10px'>Direction scientifique : Pr. Mayi Marc Bruno · Hafashimana Jean Marie Vianney · Université de Yaoundé I.</p>";
@@ -916,7 +926,6 @@ var curCats = {consejos:"todos",actividades:"todos",incidencias:"todos"};
 var curItem = null;
 var loadedTabs = {};
 
-// ---- Capa de traducción de títulos y categorías de los ítems (ES es la base) ----
 var I18N = {
   cat: {
     fr: {"Comunicación":"Communication","Bienestar":"Bien-être","Lenguaje":"Langage","Música":"Musique","Memoria":"Mémoire","Movimiento":"Mouvement","Creatividad":"Créativité","Sensorial":"Sensoriel","Comprensión":"Compréhension","Emociones":"Émotions","Estrategias":"Stratégies","Recursos":"Ressources","Programa":"Programme","Complemento de formación":"Complément de formation"},
@@ -931,7 +940,6 @@ var I18N = {
 };
 function locTitle(item){ var L=I18N.title[curLang]; return (L && L[item.id]) ? L[item.id] : item.title; }
 function locCat(item){ var c=item.catLabel||item.modulo||""; var L=I18N.cat[curLang]; return (L && L[c]) ? L[c] : c; }
-// Llama a la IA (proxy) y vuelca el resultado en un elemento, en el idioma actual. No descuenta cuota.
 function aiInto(targetId, prompt){
   var el=document.getElementById(targetId); if(!el) return;
   el.innerHTML="<span class='spin'></span> "+aiThinkingLabel();
@@ -942,7 +950,6 @@ function aiInto(targetId, prompt){
 }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
-// ---- Incidencias (registro del cuidador, guardadas en el dispositivo) ----
 var INC = {
   statusVal:["abierta","pendiente","resuelta"],
   types:{
@@ -1027,7 +1034,6 @@ function renderIncList(items, listEl){
   });
 }
 
-// ===== AGENDA DEL DÍA (checklist + resumen para la familia) =====
 var AG_L = {
   secTitle:{es:"🗓️ Agenda del día",fr:"🗓️ Agenda du jour",ca:"🗓️ Agenda del dia",en:"🗓️ Daily agenda"},
   titleClosed:{es:"Abrir la agenda del día",fr:"Ouvrir l'agenda du jour",ca:"Obrir l'agenda del dia",en:"Open the daily agenda"},
@@ -1133,8 +1139,6 @@ function shareAgenda(){
   else { window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank"); }
 }
 
-// Etiqueta traducida para los filtros de categoría (usa el mapa I18N.cat)
-// ---- Biblioteca: títulos de los 5 módulos en 4 idiomas ----
 var LIB = {
   modWord:{es:"Módulo",fr:"Module",ca:"Mòdul",en:"Module"},
   titles:{
@@ -1212,7 +1216,19 @@ function applyLib(){
   }
 }
 
-// ---- Certificado de finalización ----
+/* ---- Refranes: tarjeta independiente del menú principal (no forma parte del programa de pago) ---- */
+var REF_TXT = {
+  es:{title:"Refranes", sub:"Abrir módulo →"},
+  fr:{title:"Proverbes", sub:"Ouvrir le module →"},
+  ca:{title:"Refranys", sub:"Obrir el mòdul →"},
+  en:{title:"Proverbs", sub:"Open module →"}
+};
+function applyRefranes(){
+  var tx = REF_TXT[curLang]||REF_TXT.es;
+  sid("refTitle", tx.title);
+  sid("refSub", tx.sub);
+}
+
 var CERT = {
   tag:{es:"🏅 Certificado",fr:"🏅 Certificat",ca:"🏅 Certificat",en:"🏅 Certificate"},
   cardTitle:{es:"Certificado de finalización",fr:"Certificat de réussite",ca:"Certificat de finalització",en:"Certificate of Completion"},
@@ -1300,44 +1316,46 @@ function callAI(prompt, targetId){
   var tab = targetId === "aiE" ? "e" : targetId === "aiP" ? "p" : "q";
   if(tab === "e"){
     var st = "color:var(--text3);font-size:13px;margin-bottom:10px";
-    // 1) Contenido escrito en el idioma actual
     var expertLoc = EXPERT_CONTENT[item.id+"_"+curLang];
     if(expertLoc){
       el.innerHTML = (item.objetivo ? "<p style='"+st+"'>"+item.objetivo+"</p>" : "") + expertLoc;
       return;
     }
-    // 2) Español: contenido base escrito o construido desde los datos
-    if(curLang === "es"){
-      var expertEs = EXPERT_CONTENT[item.id];
-      if(expertEs){ el.innerHTML = (item.objetivo ? "<p style='"+st+"'>"+item.objetivo+"</p>" : "") + expertEs; return; }
-      var html2 = "";
-      if(item.objetivo) html2 += "<h3>Objetivo</h3><p>"+item.objetivo+"</p>";
-      if(item.desc) html2 += "<h3>Por qué importa</h3><p>"+item.desc+"</p>";
-      if(item.pasos){ var steps=item.pasos.split(".."); html2+="<h3>Paso a paso</h3><ul>"; steps.forEach(function(s2){ if(s2.trim()) html2+="<li>"+s2.replace(/^\d+\.\s*/,"")+"</li>"; }); html2+="</ul>"; }
-      el.innerHTML = html2 || "<p style='color:var(--text3)'>Sin contenido disponible.</p>";
-      return;
-    }
-    // 3) Otro idioma sin traducción escrita: la IA traduce/explica fielmente el contenido base
     var base = EXPERT_CONTENT[item.id];
     if(base){
-      aiInto("aiE", "Traduce y adapta fielmente este contenido formativo para cuidadores, conservando el sentido, la estructura HTML (h3, p, ul, li, strong) y los datos y citas. No añadas información nueva. Contenido a traducir:\n"+base);
-    } else {
-      var ctx = (item.objetivo?("Objetivo: "+item.objetivo+". "):"")+(item.desc?("Descripción: "+item.desc+". "):"")+(item.materiales?("Materiales: "+item.materiales+". "):"")+(item.pasos?("Pasos: "+item.pasos.replace(/\.\./g," / ")):"");
-      aiInto("aiE", "Explica de forma clara y breve, para cuidadores de personas mayores con deterioro cognitivo leve, el tema: '"+locTitle(item)+"'. Básate solo en esta información y no inventes datos: "+ctx+". Devuelve HTML simple (h3, p, ul, li, strong).");
+      if(curLang === "es"){ el.innerHTML = (item.objetivo ? "<p style='"+st+"'>"+item.objetivo+"</p>" : "") + base; }
+      else { aiInto("aiE", "Traduce y adapta fielmente este contenido formativo para cuidadores, conservando el sentido, la estructura HTML (h3, p, ul, li, strong) y los datos y citas. No añadas información nueva. Contenido a traducir:\n"+base); }
+      return;
     }
+    // Sin ficha redactada: si hay pasos (actividades), construir una explicación estructurada sin duplicar objetivo/descripción
+    if(item.pasos){
+      var html2 = "";
+      if(item.objetivo) html2 += "<h3>Objetivo</h3><p>"+item.objetivo+"</p>";
+      var descDiff = item.desc && item.desc.trim() !== (item.objetivo||"").trim();
+      if(descDiff) html2 += "<h3>Por qué importa</h3><p>"+item.desc+"</p>";
+      var steps=item.pasos.split(".."); html2+="<h3>Paso a paso</h3><ul>"; steps.forEach(function(s2){ if(s2.trim()) html2+="<li>"+s2.replace(/^\d+\.\s*/,"")+"</li>"; }); html2+="</ul>";
+      if(curLang === "es"){ el.innerHTML = html2; }
+      else { aiInto("aiE", "Traduce y adapta fielmente este contenido formativo para cuidadores, conservando el sentido y la estructura HTML (h3, p, ul, li). No añadas información nueva. Contenido a traducir:\n"+html2); }
+      return;
+    }
+    // Sin ficha ni pasos: contenido demasiado escueto para mostrarlo tal cual -> pedir a la IA una explicación completa, en cualquier idioma (incluido español)
+    var ctx = (item.objetivo?("Objetivo: "+item.objetivo+". "):"")+(item.desc?("Descripción: "+item.desc+". "):"")+(item.materiales?("Materiales: "+item.materiales+". "):"")+(item.pasos?("Pasos: "+item.pasos.replace(/\.\./g," / ")):"");
+    aiInto("aiE", "Explica de forma clara y completa, para cuidadores de personas mayores con deterioro cognitivo leve, el tema: '"+locTitle(item)+"'. Básate solo en esta información y no inventes datos ni cifras: "+ctx+". Desarrolla el tema con 2-3 apartados breves. Devuelve HTML simple (h3, p, ul, li, strong).");
     return;
   } else if(tab === "p"){
     var pLoc = EXPERT_CONTENT[item.id+"_p_"+curLang];
-    if(pLoc){ el.innerHTML = pLoc; }
-    else if(curLang === "es"){
-      var pc = EXPERT_CONTENT[item.id+"_p"] || "";
-      if(pc){ el.innerHTML = pc; }
-      else if(item.pasos){ var h3="<h3>Paso a paso</h3><ul>"; item.pasos.split("..").forEach(function(s3){ if(s3.trim()) h3+="<li>"+s3.replace(/^\d+\.\s*/,"")+"</li>"; }); el.innerHTML=h3+"</ul>"; }
-      else { el.innerHTML = "<p>"+(item.desc||"")+"</p>"; }
+    if(pLoc){ el.innerHTML = pLoc; return; }
+    var pc = EXPERT_CONTENT[item.id+"_p"] || "";
+    if(pc){
+      if(curLang === "es"){ el.innerHTML = pc; }
+      else { aiInto("aiP", "Traduce y adapta fielmente esta guía práctica para cuidadores, conservando el sentido y la estructura HTML (h3, p, ul, li, em). No añadas información nueva. Contenido a traducir:\n"+pc); }
+      return;
     }
-    else {
-      aiInto("aiP", "Guía práctica titulada '¿Cómo aplicarlo hoy?' sobre el tema: "+locTitle(item)+". Para cuidadores de personas mayores con deterioro cognitivo leve. Da 3-4 pasos concretos, breves y accionables.");
+    if(curLang === "es" && item.pasos){
+      var h3="<h3>Paso a paso</h3><ul>"; item.pasos.split("..").forEach(function(s3){ if(s3.trim()) h3+="<li>"+s3.replace(/^\d+\.\s*/,"")+"</li>"; }); el.innerHTML=h3+"</ul>";
+      return;
     }
+    aiInto("aiP", "Guía práctica titulada '¿Cómo aplicarlo hoy?' sobre el tema: "+locTitle(item)+". Para cuidadores de personas mayores con deterioro cognitivo leve. Da 3-4 pasos concretos, breves y accionables. Responde en "+t("aiLang")+".");
   }
 }
 
@@ -1349,7 +1367,6 @@ function loadTab(tab){
   callAI("", targetId);
 }
 
-// Rellena el input con el texto de una sugerencia y lanza la pregunta
 function askChip(el){
   var q = el.getAttribute("data-q");
   if(!q) return;
@@ -1358,7 +1375,6 @@ function askChip(el){
   askCustom(true);
 }
 
-// Mensajes localizados del asistente
 function aiMsg(key){
   var M = {
     err:{es:"No se pudo conectar con el asistente. Comprueba que la función esté desplegada en Netlify.",fr:"Impossible de contacter l'assistant. Vérifiez que la fonction est déployée sur Netlify.",ca:"No s'ha pogut connectar amb l'assistent. Comprova que la funció estigui desplegada a Netlify.",en:"Could not reach the assistant. Check that the function is deployed on Netlify."},
@@ -1367,8 +1383,6 @@ function aiMsg(key){
   return (M[key] && M[key][curLang]) || (M[key] && M[key].es) || "";
 }
 
-// askCustom: las preguntas ESCRITAS van siempre a la IA real (en el idioma elegido).
-// Las sugerencias (chips) dan respuesta instantánea solo si existe en ese idioma; si no, van a la IA.
 function askCustom(fromChip){
   var q = document.getElementById("qi").value.trim();
   if(!q || !curItem) return;
@@ -1383,7 +1397,6 @@ function askCustom(fromChip){
   var aiQ = document.getElementById("aiQ");
   if(!aiQ) return;
 
-  // 1) Solo para sugerencias: respuesta predefinida en el MISMO idioma (sin fallback a español)
   if(fromChip){
     var qa = QA_CONTENT[curItem.id+"_"+curLang];
     if(qa){
@@ -1401,8 +1414,7 @@ function askCustom(fromChip){
     }
   }
 
-  // 2) IA real (en el idioma elegido), controlando la cuota
-  if(!AI_QUOTA.canAsk()){
+  if(!fromChip && !AI_QUOTA.canAsk()){
     aiQ.innerHTML = showAIQuotaUI();
     return;
   }
@@ -1427,10 +1439,10 @@ function askCustom(fromChip){
     }
     var txt = d && d.text ? d.text : "";
     if(txt){
-      AI_QUOTA.increment(); // solo se descuenta cuota si la IA respondió de verdad
+      if(!fromChip) AI_QUOTA.increment();
       var rem = AI_QUOTA.getRemaining();
       aiQ.innerHTML = txt.replace(/```html?/gi,"").replace(/```/g,"") +
-        (rem<=2 && rem>0 ? "<p style='font-size:11px;color:var(--text3);margin-top:8px'>("+rem+")</p>" : "");
+        (!fromChip && rem<=2 && rem>0 ? "<p style='font-size:11px;color:var(--text3);margin-top:8px'>("+rem+")</p>" : "");
     } else {
       aiQ.innerHTML = "<p>"+aiMsg('retry')+"</p>";
     }
@@ -1528,11 +1540,6 @@ function openItem(id){
 function buildFields(){
   var i=curItem,html="";
   if(curLang==="es"){
-    var hasExpert=!!(EXPERT_CONTENT[i.id+"_"+curLang]||EXPERT_CONTENT[i.id]);
-    if(!hasExpert){
-      if(i.objetivo) html+='<div class="db"><div class="db-label">🎯 Objetivo</div><div class="db-text">'+i.objetivo+"</div></div>";
-      if(i.desc) html+='<div class="db"><div class="db-label">📝 Descripción</div><div class="db-text">'+i.desc+"</div></div>";
-    }
     if(i.materiales) html+='<div class="db"><div class="db-label">🧰 Materiales</div><div class="db-text">'+i.materiales+"</div></div>";
   }
   document.getElementById("mFields").innerHTML=html;
@@ -1614,12 +1621,10 @@ function applyTxt(){
   }
   sid("pay-title",tx.payTitle); sid("pay-sub",tx.paySub);
   sid("contact-title",tx.contactTitle); sid("af-tag",tx.afTag);
-  // Filtros de categoría (consejos / actividades)
   sid("cpc-todos",allLabel()); sid("cpc-com",pillLabel("Comunicación","💬")); sid("cpc-bien",pillLabel("Bienestar","🌿"));
   sid("cpa-todos",allLabel()); sid("cpa-mus",pillLabel("Música","🎵")); sid("cpa-mem",pillLabel("Memoria","📸"));
   sid("cpa-len",pillLabel("Lenguaje","📖")); sid("cpa-mov",pillLabel("Movimiento","🚶"));
   sid("cpa-cre",pillLabel("Creatividad","🎨")); sid("cpa-sen",pillLabel("Sensorial","🤲"));
-  // Incidencias
   sid("cpi-todos",allLabel()); sid("cpi-ab",incL("abAb")); sid("cpi-pe",incL("abPe")); sid("cpi-re",incL("abRe"));
   sid("inc-add-tag",incL("addTag")); sid("inc-add-title",incL("addTitle")); sid("inc-add-sub",incL("addSub"));
   sid("inc-l-type",incL("lType")); sid("inc-l-desc",incL("lDesc")); sid("inc-l-status",incL("lStatus"));
@@ -1630,6 +1635,7 @@ function applyTxt(){
   if(typeof renderAgenda==="function") renderAgenda();
   fillIncSelects();
   applyLib();
+  applyRefranes();
   applyCert();
   sid("privlink", {es:"Política de privacidad",fr:"Politique de confidentialité",ca:"Política de privacitat",en:"Privacy Policy"}[curLang]||"Política de privacidad");
   if(profile) applyProfile();
@@ -1764,7 +1770,6 @@ function renderAll(){
   renderSec("incidencias");
 }
 
-// INIT
 (function(){
   var qi = document.getElementById("qi");
   if(qi) qi.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); askCustom(); } });
