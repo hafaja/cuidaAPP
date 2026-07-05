@@ -323,6 +323,28 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
     </div>
     <div class="sh"><div class="sh-title" id="sec-title-incidencias">Incidencias</div><div class="sh-count" id="count-incidencias">0</div></div>
     <div id="list-incidencias"></div>
+    <div style="height:22px;border-top:1px solid var(--border);margin:18px 0 0"></div>
+    <div class="feat" style="background:linear-gradient(135deg,#3a5a4a,#6b9a7a);cursor:pointer" onclick="toggleAgendaForm()">
+      <div class="feat-tag" id="ag-add-tag">🗓️ Agenda del cuidador</div>
+      <div class="feat-icon">➕</div>
+      <div class="feat-title" id="ag-add-title">Anotar en la agenda</div>
+      <div class="feat-sub" id="ag-add-sub">Rutinas, citas, medicación, vida diaria… →</div>
+    </div>
+    <div id="agForm" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-bottom:5px" id="ag-l-when">Momento</div>
+      <input id="agWhen" type="text" placeholder="Ej.: Mañana, Comida, 18:00" style="width:100%;padding:9px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:13px;outline:none;margin-bottom:10px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-bottom:5px" id="ag-l-act">Actividad / tarea</div>
+      <input id="agAct" type="text" style="width:100%;padding:9px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:13px;outline:none;margin-bottom:10px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-bottom:5px" id="ag-l-note">Nota (opcional)</div>
+      <textarea id="agNote" rows="2" style="width:100%;padding:9px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:13px;outline:none;margin-bottom:12px;resize:vertical"></textarea>
+      <div style="display:flex;gap:8px">
+        <button onclick="saveAgenda()" style="flex:1;padding:10px;background:var(--gdim);border:none;border-radius:9px;color:var(--gpale);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit" id="ag-save">Guardar</button>
+        <button onclick="toggleAgendaForm()" style="padding:10px 14px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text3);font-size:13px;cursor:pointer;font-family:inherit" id="ag-cancel">Cancelar</button>
+      </div>
+    </div>
+    <div class="sh"><div class="sh-title" id="sec-title-agenda">Agenda / vida diaria</div><div class="sh-count" id="count-agenda">0</div></div>
+    <div id="list-agenda"></div>
+    <button onclick="shareAgenda()" style="width:100%;margin-top:10px;padding:11px;background:var(--gdim);border:none;border-radius:11px;color:var(--gpale);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit" id="ag-share">📤 Compartir con la familia</button>
   </div>
 
   <div id="sec-cuidador" style="display:none">
@@ -855,6 +877,7 @@ var DATA = {
   {id:"a23",icon:"🎨",bg:"linear-gradient(135deg,#4a2a1a,#8a4a2a)",cat:"creatividad",catLabel:"Creatividad",title:"Fotografía sencilla",objetivo:"Estimular la observación y la decisión estética",materiales:"Un móvil o cámara sencilla",pasos:"Dale el móvil · Di: Fotografía lo que te guste · No des instrucciones · Luego mirad las fotos juntos · Pídele que explique cada una",desc:"Estimular la observación y la decisión estética",prompt:""}
   ],
   incidencias:[],
+  agenda:[],
   cuidador:[
   {id:"cu0",icon:"🧠",bg:"linear-gradient(135deg,#1a2a4a,#3a4a9b)",cat:"comprension",catLabel:"Comprensión",title:"¿Qué es el deterioro cognitivo leve?",desc:"El DCL es un estado intermedio entre el envejecimiento normal del cerebro y la demencia. No es Alzheimer automáticamente, pero merece atención. La persona puede llevar una vida prácticamente normal.",modulo:"M1",objetivo:"",prompt:""},
   {id:"cu1",icon:"🧠",bg:"linear-gradient(135deg,#1a2a4a,#3a4a9b)",cat:"comprension",catLabel:"Comprensión",title:"La diferencia entre DCL y demencia",desc:"En el DCL la autonomía se conserva en gran medida. La persona puede y debe seguir tomando decisiones sobre su propia vida. La diferencia clave con la demencia es que las actividades cotidianas no se ven gravemente afectadas.",modulo:"M1",objetivo:"",prompt:""},
@@ -1014,6 +1037,69 @@ function renderIncList(items, listEl){
     d.onclick=function(){ incCycle(it.id); };
     listEl.appendChild(d);
   });
+}
+
+// ===== AGENDA DEL CUIDADOR (vida diaria + compartir con la familia) =====
+var AG_TX = {
+  addTag:{es:"🗓️ Agenda del cuidador",fr:"🗓️ Agenda de l'aidant",ca:"🗓️ Agenda del cuidador",en:"🗓️ Caregiver agenda"},
+  addTitle:{es:"Anotar en la agenda",fr:"Ajouter à l'agenda",ca:"Anotar a l'agenda",en:"Add to the agenda"},
+  addSub:{es:"Rutinas, citas, medicación, vida diaria… →",fr:"Routines, rendez-vous, médication… →",ca:"Rutines, cites, medicació… →",en:"Routines, appointments, medication… →"},
+  lWhen:{es:"Momento",fr:"Moment",ca:"Moment",en:"When"},
+  lAct:{es:"Actividad / tarea",fr:"Activité / tâche",ca:"Activitat / tasca",en:"Activity / task"},
+  lNote:{es:"Nota (opcional)",fr:"Note (facultatif)",ca:"Nota (opcional)",en:"Note (optional)"},
+  phWhen:{es:"Ej.: Mañana, Comida, 18:00",fr:"Ex. : Matin, Repas, 18h00",ca:"Ex.: Matí, Dinar, 18:00",en:"E.g.: Morning, Lunch, 6 PM"},
+  save:{es:"Guardar",fr:"Enregistrer",ca:"Desar",en:"Save"},
+  cancel:{es:"Cancelar",fr:"Annuler",ca:"Cancel·lar",en:"Cancel"},
+  secTitle:{es:"Agenda / vida diaria",fr:"Agenda / vie quotidienne",ca:"Agenda / vida diària",en:"Agenda / daily life"},
+  empty:{es:"Agenda vacía. Pulsa arriba para anotar la rutina del día.",fr:"Agenda vide. Appuyez en haut pour noter la routine du jour.",ca:"Agenda buida. Prem a dalt per anotar la rutina del dia.",en:"Empty agenda. Tap above to note the day's routine."},
+  share:{es:"📤 Compartir con la familia",fr:"📤 Partager avec la famille",ca:"📤 Compartir amb la família",en:"📤 Share with the family"},
+  shareTitle:{es:"🗓️ Agenda del cuidador — CuidarConSentido",fr:"🗓️ Agenda de l'aidant — CuidarConSentido",ca:"🗓️ Agenda del cuidador — CuidarConSentido",en:"🗓️ Caregiver agenda — CuidarConSentido"},
+  shareEmpty:{es:"No hay nada en la agenda todavía.",fr:"L'agenda est encore vide.",ca:"L'agenda encara és buida.",en:"The agenda is still empty."},
+  openInc:{es:"Incidencias abiertas",fr:"Incidents ouverts",ca:"Incidències obertes",en:"Open incidents"}
+};
+function agL(k){ return (AG_TX[k]&&AG_TX[k][curLang])||(AG_TX[k]&&AG_TX[k].es)||""; }
+function loadAgenda(){ try{ DATA.agenda=JSON.parse(localStorage.getItem("ccs_agenda")||"[]"); }catch(e){ DATA.agenda=[]; } }
+function persistAgenda(){ localStorage.setItem("ccs_agenda", JSON.stringify(DATA.agenda)); }
+function toggleAgendaForm(){ var f=document.getElementById("agForm"); if(!f) return; f.style.display = (f.style.display==="none"||!f.style.display) ? "block" : "none"; }
+function saveAgenda(){
+  var when=((document.getElementById("agWhen")||{}).value||"").trim();
+  var act=((document.getElementById("agAct")||{}).value||"").trim();
+  var note=((document.getElementById("agNote")||{}).value||"").trim();
+  if(!act){ return; }
+  var now=new Date();
+  var fecha=now.getDate()+"/"+(now.getMonth()+1)+"/"+now.getFullYear();
+  DATA.agenda.unshift({id:"ag"+now.getTime(), when:when, act:act, note:note, fecha:fecha});
+  persistAgenda();
+  ["agWhen","agAct","agNote"].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=""; });
+  toggleAgendaForm();
+  renderAgenda();
+}
+function agendaDelete(id){ DATA.agenda=DATA.agenda.filter(function(x){return x.id!==id;}); persistAgenda(); renderAgenda(); }
+function renderAgenda(){
+  var listEl=document.getElementById("list-agenda"); if(!listEl) return;
+  var cnt=document.getElementById("count-agenda"); if(cnt) cnt.textContent=(DATA.agenda||[]).length;
+  if(!DATA.agenda||!DATA.agenda.length){ listEl.innerHTML='<div class="empty"><div class="empty-icon">🗓️</div><p>'+agL("empty")+'</p></div>'; return; }
+  listEl.innerHTML="";
+  DATA.agenda.forEach(function(it){
+    var d=document.createElement("div"); d.className="ic";
+    d.innerHTML='<div class="ic-thumb" style="background:linear-gradient(135deg,#3a5a4a,#6b9a7a)">🗓️</div>'+
+      '<div class="ic-info"><div class="ic-title">'+(it.when?esc(it.when)+" · ":"")+esc(it.act)+'</div>'+
+      '<div class="ic-sub">'+(it.note?esc(it.note)+" · ":"")+esc(it.fecha||"")+'</div></div>'+
+      '<div onclick="event.stopPropagation();agendaDelete(\''+it.id+'\')" style="margin-left:8px;color:var(--text3);font-size:15px;cursor:pointer;flex-shrink:0">🗑️</div>';
+    listEl.appendChild(d);
+  });
+}
+function shareAgenda(){
+  if(!DATA.agenda||!DATA.agenda.length){ alert(agL("shareEmpty")); return; }
+  var lines=[agL("shareTitle"),""];
+  DATA.agenda.slice().reverse().forEach(function(it){
+    lines.push("• "+(it.when?it.when+": ":"")+it.act+(it.note?" ("+it.note+")":""));
+  });
+  var openInc=(DATA.incidencias||[]).filter(function(x){return x.status==="abierta";});
+  if(openInc.length){ lines.push(""); lines.push("⚠️ "+agL("openInc")+":"); openInc.forEach(function(x){ lines.push("- "+x.type+(x.desc?": "+x.desc:"")); }); }
+  var text=lines.join("\n");
+  if(navigator.share){ navigator.share({title:agL("shareTitle"), text:text}).catch(function(){}); }
+  else { window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank"); }
 }
 
 // Etiqueta traducida para los filtros de categoría (usa el mapa I18N.cat)
@@ -1329,7 +1415,30 @@ function buildChips(){
   document.getElementById("qchips").innerHTML=chips.map(function(q){ return '<div class="qchip" data-q="'+q+'" onclick="askChip(this)">'+q+'</div>'; }).join("");
 }
 
+var BIBLIO_REFS = ["Aboderin, I. (2004). Decline in material family support for older people in urban Ghana, Africa: Understanding processes and causes of change. The Journals of Gerontology: Series B, 59(3), S128-S137.", "Aboderin, I. (2006). Intergenerational support and old age in Africa. Transaction Publishers.", "American Psychiatric Association. (2022). Diagnostic and statistical manual of mental disorders (5e éd., texte rév. ; DSM-5-TR). APA.", "Amieva, H., Le Goff, M., Millet, X., Orgogozo, J. M., Pérès, K., Barberger-Gateau, P., Jacqmin-Gadda, H., & Dartigues, J. F. (2008). Prodromal Alzheimer's disease: Successive emergence of the clinical symptoms. Annals of Neurology, 64(5), 492-498.", "Apt, N. A. (1996). Coping with old age in a changing Africa: Social change and the elderly Ghanaian. Avebury.", "Apt, N. A. (2012). Aging in Africa: Past experiences and strategic directions. Ageing International, 37(1), 93-103.", "Ardila, A. (2005). Cultural values underlying psychometric cognitive testing. Neuropsychology Review, 15(4), 185-195.", "Ardila, A., & Rosselli, M. (1989). Neuropsychological characteristics of normal aging. Developmental Neuropsychology, 5(4), 307-320.", "Ardila, A., Bertolucci, P. H., Braga, L. W., Castro-Caldas, A., Cole, M., Judd, T., Kosmidis, M. H., Matute, E., Nitrini, R., Ostrosky-Solís, F., & Rosselli, M. (2010). Cognition without reading: Neuropsychology of illiteracy. Archives of Clinical Neuropsychology, 25(8), 689-712.", "Atchley, R. C. (1989). A continuity theory of normal aging. The Gerontologist, 29(2), 183-190.", "Baddeley, A. (2000). The episodic buffer: A new component of working memory? Trends in Cognitive Sciences, 4(11), 417-423.", "Baltes, M. M. (1996). The many faces of dependency in old age. Cambridge University Press.", "Baltes, P. B. (1997). On the incomplete architecture of human ontogeny: Selection, optimization, and compensation as foundation of developmental theory. American Psychologist, 52(4), 366-380.", "Baltes, P. B., & Baltes, M. M. (1990). Successful aging: Perspectives from the behavioral sciences. Cambridge University Press.", "Bamford, C., Lamont, S., Eccles, M., Robinson, L., May, C., & Bond, J. (2004). Disclosing a diagnosis of dementia: A systematic review. International Journal of Geriatric Psychiatry, 19(2), 151-169.", "Beard, J. R., Officer, A., de Carvalho, I. A., Sadana, R., Pot, A. M., Michel, J.-P., … Chatterji, S. (2016). The World report on ageing and health: A policy framework for healthy ageing. The Lancet, 387(10033), 2145-2154.", "Beauvoir, S. de. (1970). La vieillesse. Gallimard.", "Boots, L. M. M., de Vugt, M. E., van Knippenberg, R. J. M., Kempen, G. I. J. M., & Verhey, F. R. J. (2014). A systematic review of Internet-based supportive interventions for caregivers of patients with dementia. International Journal of Geriatric Psychiatry, 29(4), 331-344.", "Brooker, D. (2004). What is person-centred care for people with dementia? Reviews in Clinical Gerontology, 13(3), 215-222.", "Busse, E. W. (1969). Theories of aging. Dans E. W. Busse & E. Pfeiffer (dir.), Behavior and adaptation in late life (p. 11-32). Little, Brown.", "Butler, R. N. (1969). Age-ism: Another form of bigotry. The Gerontologist, 9(4), 243-246.", "Cabeza, R. (2002). Hemispheric asymmetry reduction in older adults: The HAROLD model. Psychology and Aging, 17(1), 85-100.", "Calkins, M. P. (2018). From research to application: Supportive and therapeutic environments for people living with dementia. The Gerontologist, 58(suppl. 1), S114-S128.", "Charras, K., Eynard, C., & Viatour, G. (2011). Principes théoriques et modalités d'application pour l'aménagement des lieux de vie accueillant des personnes atteintes de la maladie d'Alzheimer. La Revue Francophone de Gériatrie et de Gérontologie, 18(177), 203-210.", "Chochinov, H. M. (2002). Dignity-conserving care: A new model for palliative care. JAMA, 287(17), 2253-2260.", "Corbo, I., Marselli, G., Di Ciero, V., & Casagrande, M. (2023). The protective role of cognitive reserve in mild cognitive impairment: A systematic review. Journal of Clinical Medicine, 12(5), 1759.", "Cumming, E., & Henry, W. E. (1961). Growing old: The process of disengagement. Basic Books.", "Dannefer, D. (2003). Cumulative advantage/disadvantage and the life course: Cross-fertilizing age and social science theory. The Journals of Gerontology: Series B, 58(6), S327-S337.", "Dartigues, J. F., Gagnon, M., Michel, P., Letenneur, L., Commenges, D., Barberger-Gateau, P., … Salamon, R. (1991). Le programme de recherche Paquid sur l'épidémiologie de la démence : méthodologie et résultats initiaux. Revue Neurologique, 147(3), 225-230.", "Day, K., Carreon, D., & Stump, C. (2000). The therapeutic design of environments for people with dementia: A review of the empirical research. The Gerontologist, 40(4), 397-416.", "Desai, R., Leung, W. G., Fearn, C., John, A., Stott, J., & Spector, A. (2024). Effectiveness of Cognitive Stimulation Therapy (CST) for mild to moderate dementia: A systematic literature review and meta-analysis of randomised controlled trials using the original CST protocol. Ageing Research Reviews, 97, 102312.", "Díaz-Veiga, P., Sancho, M., & Rodríguez, P. (2020a). Avances y retos de la atención centrada en la persona en centros residenciales en España. Revista Española de Geriatría y Gerontología, 55(2), 98-106.", "Díaz-Veiga, P., Sancho, M., García, A., Rivas, E., Abad, E., Suárez, N., … Yanguas, J. (2020b). Efectos del modelo de atención centrada en la persona en la calidad de vida de personas con deterioro cognitivo de centros gerontológicos. Revista Española de Geriatría y Gerontología, 49(6), 266-271.", "Dubois, B., Feldman, H. H., Jacova, C., Hampel, H., Molinuevo, J. L., Blennow, K., … Cummings, J. L. (2014). Advancing research diagnostic criteria for Alzheimer's disease: The IWG-2 criteria. The Lancet Neurology, 13(6), 614-629.", "Engel, G. L. (1977). The need for a new medical model: A challenge for biomedicine. Science, 196(4286), 129-136.", "Erikson, E. H., & Erikson, J. M. (1997). The life cycle completed (extended version). W. W. Norton.", "Eriksson, P. S., Perfilieva, E., Björk-Eriksson, T., Alborn, A. M., Nordborg, C., Peterson, D. A., & Gage, F. H. (1998). Neurogenesis in the adult human hippocampus. Nature Medicine, 4(11), 1313-1317.", "Eustache, F., & Desgranges, B. (2008). MNESIS: Towards the integration of current multisystem models of memory. Neuropsychology Review, 18(1), 53-69.", "Folstein, M. F., Folstein, S. E., & McHugh, P. R. (1975). « Mini-mental state »: A practical method for grading the cognitive state of patients for the clinician. Journal of Psychiatric Research, 12(3), 189-198.", "Gee, E. M., & Gutman, G. M. (2000). The overselling of population aging: Apocalyptic demography, intergenerational challenges, and social policy. Oxford University Press.", "Gil, R. (2018). Neuropsychologie (7e éd.). Elsevier Masson.", "Goffman, E. (1961). Asylums: Essays on the social situation of mental patients and other inmates. Anchor Books.", "Guerchet, M., Mbelesso, P., Ndamba-Bandzouzi, B., Pilleron, S., Desormais, I., Lacroix, P., … Preux, P. M. (2014). Epidemiology of dementia in Central Africa (EPIDEMCA): Protocol for a multicentre population-based study in rural and urban areas of the Central African Republic and the Republic of Congo. SpringerPlus, 3, 338.", "Harman, D. (1956). Aging: A theory based on free radical and radiation chemistry. Journal of Gerontology, 11(3), 298-300.", "Hasher, L., & Zacks, R. T. (1988). Working memory, comprehension, and aging: A review and a new view. In G. H. Bower (Éd.), The psychology of learning and motivation (Vol. 22, pp. 193-225). Academic Press.", "Havighurst, R. J. (1961). Successful aging. The Gerontologist, 1(1), 8-13.", "Hendrie, H. C., Ogunniyi, A., Hall, K. S., Baiyewu, O., Unverzagt, F. W., Gureje, O., … Hui, S. L. (2001). Incidence of dementia and Alzheimer disease in 2 communities: Yoruba residing in Ibadan, Nigeria, and African Americans residing in Indianapolis, Indiana. JAMA, 285(6), 739-747.", "Iniesta-Martínez, M. (2018). Familias, parentesco y dinámicas intergeneracionales en el África subsahariana contemporánea. Edicions de la Universitat de Barcelona.", "Jack, C. R., Bennett, D. A., Blennow, K., Carrillo, M. C., Dunn, B., Haeberlein, S. B., … Sperling, R. (2018). NIA-AA Research Framework: Toward a biological definition of Alzheimer's disease. Alzheimer's & Dementia, 14(4), 535-562.", "Kant, E. (1993). Fondements de la métaphysique des mœurs (V. Delbos, trad.). Le Livre de Poche. (Ouvrage original publié en 1785)", "Katzman, R., Terry, R., DeTeresa, R., Brown, T., Davies, P., Fuld, P., … Peck, A. (1988). Clinical, pathological, and neurochemical changes in dementia: A subgroup with preserved mental status and numerous neocortical plaques. Annals of Neurology, 23(2), 138-144.", "Kitwood, T. (1997). Dementia reconsidered: The person comes first. Open University Press.", "Kontos, P. C., Miller, K. L., & Mitchell, G. J. (2010). Neglecting the importance of the decision-making and care regimes of personal support workers: A critique of standardization of care planning through the RAI/MDS. The Gerontologist, 50(3), 352-362.", "Langer, E. J., & Rodin, J. (1976). The effects of choice and enhanced personal responsibility for the aged: A field experiment in an institutional setting. Journal of Personality and Social Psychology, 34(2), 191-198.", "Lawton, M. P., & Nahemow, L. (1973). Ecology and the aging process. Dans C. Eisdorfer & M. P. Lawton (dir.), The psychology of adult development and aging (p. 619-674). American Psychological Association.", "Levy, B. R. (2009). Stereotype embodiment: A psychosocial approach to aging. Current Directions in Psychological Science, 18(6), 332-336.", "Livingston, G., Huntley, J., Liu, K. Y., Costafreda, S. G., Selbæk, G., Alladi, S., … Mukadam, N. (2024). Dementia prevention, intervention, and care: 2024 report of the Lancet standing Commission. The Lancet, 404(10452), 572-628.", "Martínez-Rodríguez, T. (2019a). La atención centrada en la persona en los servicios gerontológicos: Modelos de atención y evaluación. Fundación Pilares para la Autonomía Personal.", "Martínez-Rodríguez, T. (2019b). La atención gerontológica centrada en la persona: Guía para profesionales de centros residenciales. Fundación Pilares para la Autonomía Personal.", "Martinson, M., & Berridge, C. (2015). Successful aging and its discontents: A systematic review of the social gerontology literature. The Gerontologist, 55(1), 58-69.", "Mba, C. J. (2010a). Population ageing in Ghana: Research gaps and the way forward. Journal of Aging Research, 2010, 672157.", "Mba, C. J. (2010b). Population ageing in sub-Saharan Africa: Trends and implications. International Journal of Sociology and Anthropology, 2(1), 1-7.", "Mvé Ondo, B. (2014a). Repenser la solidarité africaine envers les personnes âgées. Présence Africaine.", "Mvé Ondo, B. (2014b). Vieillissement et solidarités familiales en Afrique subsaharienne. Cahiers de l’IFORD.", "Nasreddine, Z. S., Phillips, N. A., Bédirian, V., Charbonneau, S., Whitehead, V., Collin, I., Cummings, J. L., & Chertkow, H. (2005). The Montreal Cognitive Assessment (MoCA): A brief screening tool for mild cognitive impairment. Journal of the American Geriatrics Society, 53(4), 695-699.", "Nordenfelt, L. (2004). The varieties of dignity. Health Care Analysis, 12(2), 69-81.", "Ojagbemi, A., Bello, T., & Gureje, O. (2016). Cognitive reserve, incident dementia, and associated mortality in the Ibadan Study of Ageing. Journal of the American Geriatrics Society, 64(3), 590-595.", "Olazarán, J., Reisberg, B., Clare, L., Cruz, I., Peña-Casanova, J., Del Ser, T., … Muñiz, R. (2010). Nonpharmacological therapies in Alzheimer's disease: A systematic review of efficacy. Dementia and Geriatric Cognitive Disorders, 30(2), 161-178.", "Oliver, M. (1990). The politics of disablement. Macmillan.", "Organisation mondiale de la Santé. (2001). Classification internationale du fonctionnement, du handicap et de la santé (CIF). OMS. (Ouvrage original publié en 2001).", "Organisation mondiale de la Santé. (2002). Vieillir en restant actif : cadre d’orientation. OMS.", "Organisation mondiale de la Santé. (2015). World report on ageing and health. WHO.", "Organisation mondiale de la Santé. (2017). Global action plan on the public health response to dementia 2017-2025. OMS.", "Organisation mondiale de la Santé. (2019). International classification of diseases for mortality and morbidity statistics (11e révision ; CIM-11). OMS.", "Organisation mondiale de la Santé. (2021). Global report on ageism. World Health Organization.", "Organisation mondiale de la Santé. (2022). Décennie pour le vieillissement en bonne santé 2021-2030. OMS.", "Organisation mondiale de la Santé. (2024). Integrated care for older people (ICOPE): Guidance for person-centred assessment and pathways in primary care (2e éd.). WHO.", "Ostrosky-Solís, F., Ardila, A., & Rosselli, M. (1999). NEUROPSI: A brief neuropsychological test battery in Spanish with norms by age and educational level. Journal of the International Neuropsychological Society, 5(5), 413-433.", "Pappalettera, C., Miraglia, F., Ferrise, M. C., Quattrocchi, C. C., Vecchio, F., & Rossini, P. M. (2024). Cognitive resilience/reserve: Myth or reality? A review of definitions and measurement methods. Alzheimer’s & Dementia, 20(4), 3567-3586.", "Peña-Casanova, J., Blesa, R., Aguilar, M., Gramunt-Fombuena, N., Gómez-Ansón, B., Oliva, R., … Sol, J. M.; NEURONORMA Study Team. (2009). Spanish Multicenter Normative Studies (NEURONORMA Project): Methods and sample characteristics. Archives of Clinical Neuropsychology, 24(4), 307-319.", "Petersen, R. C. (2004). Mild cognitive impairment as a diagnostic entity. Journal of Internal Medicine, 256(3), 183-194.", "Petersen, R. C., Roberts, R. O., Knopman, D. S., Boeve, B. F., Geda, Y. E., Ivnik, R. J., … Jack, C. R. (2009). Mild cognitive impairment: Ten years later. Archives of Neurology, 66(12), 1447-1455.", "Reuter-Lorenz, P. A., & Park, D. C. (2014). How does it STAC up? Revisiting the scaffolding theory of aging and cognition. Neuropsychology Review, 24(3), 355-370.", "Rodin, J., & Langer, E. J. (1977). Long-term effects of a control-relevant intervention with the institutionalized aged. Journal of Personality and Social Psychology, 35(12), 897-902.", "Rogers, C. R. (1961). On becoming a person: A therapist’s view of psychotherapy. Houghton Mifflin.", "Rojo-Pérez, F., Fernández-Mayoralas, G., & Rodríguez-Rodríguez, V. (2022). Active ageing profiles among older adults: A multivariate analysis. Social Indicators Research, 162(3), 1105-1127.", "Rosselli, M., & Ardila, A. (2003). The impact of culture and education on non-verbal neuropsychological measurements: A critical review. Brain and Cognition, 52(3), 326-333.", "Rowe, J. W., & Kahn, R. L. (1997). Successful aging. The Gerontologist, 37(4), 433-440.", "Salthouse, T. A. (1996). The processing-speed theory of adult age differences in cognition. Psychological Review, 103(3), 403-428.", "Seligman, M. E. P. (1975). Helplessness: On depression, development, and death. W. H. Freeman.", "Stern, Y. (2012). Cognitive reserve in ageing and Alzheimer’s disease. The Lancet Neurology, 11(11), 1006-1012.", "Stern, Y., Albert, M., Barnes, C. A., Cabeza, R., Pascual-Leone, A., & Rapp, P. R. (2023). A framework for concepts of reserve and resilience in aging. Neurobiology of Aging, 124, 100-103.", "Tornstam, L. (2005). Gerotranscendence: A developmental theory of positive aging. Springer.", "Tronto, J. C. (1993). Moral boundaries: A political argument for an ethic of care. Routledge.", "Tulving, E. (2002). Episodic memory: From mind to brain. Annual Review of Psychology, 53, 1-25.", "United Nations, Department of Economic and Social Affairs, Population Division. (2024). World Population Prospects 2024: Summary of results. United Nations.", "Williams, K. N., Herman, R., Gajewski, B., & Wilson, K. (2009). Elderspeak communication: Impact on dementia care. American Journal of Alzheimer's Disease & Other Dementias, 24(1), 11-20.", "Woods, B., Rai, H. K., Elliott, E., Aguirre, E., Orrell, M., & Spector, A. (2023). Cognitive stimulation to improve cognitive functioning in people with dementia. Cochrane Database of Systematic Reviews, 2023(1), CD005562."];
+function biblioHeading(){ return ({es:"Bibliografía — Tesis doctoral (Cap. 1–3)",fr:"Bibliographie — Thèse de doctorat (Ch. 1–3)",ca:"Bibliografia — Tesi doctoral (Cap. 1–3)",en:"Bibliography — Doctoral thesis (Ch. 1–3)"})[curLang]||"Bibliografía"; }
+function biblioIntro(){ return ({es:"Referencias que sustentan el programa, procedentes de la tesis doctoral en neuropsicología gerontológica (Université de Yaoundé I, dir. Pr. Mayi Marc Bruno).",fr:"Références issues de la thèse de doctorat en neuropsychologie gérontologique (Université de Yaoundé I, dir. Pr. Mayi Marc Bruno).",ca:"Referències procedents de la tesi doctoral en neuropsicologia gerontològica (Université de Yaoundé I).",en:"References from the doctoral thesis in gerontological neuropsychology (Université de Yaoundé I)."})[curLang]||""; }
+function showBiblio(){
+  var it=findItem("biblio"); if(!it) return;
+  document.getElementById("mThumb").style.background=it.bg;
+  document.getElementById("mThumb").textContent=it.icon;
+  document.getElementById("mSec").textContent=locCat(it)||"";
+  document.getElementById("mTitle").textContent=locTitle(it);
+  var m=document.querySelector(".mtabs"); if(m) m.style.display="none";
+  document.querySelectorAll(".tp").forEach(function(tp){tp.classList.remove("active");});
+  var html='<div class="db"><div class="db-label">📚 '+esc(biblioHeading())+'</div>'+
+    '<div class="db-text" style="font-size:12.5px;line-height:1.55">'+
+    '<p style="margin:0 0 12px;color:var(--text3)">'+esc(biblioIntro())+'</p>'+
+    BIBLIO_REFS.map(function(r){ return '<p style="margin:0 0 9px;padding-left:15px;text-indent:-15px">'+esc(r)+'</p>'; }).join("")+
+    '<p style="margin:12px 0 0;color:var(--text3);font-size:11px">'+BIBLIO_REFS.length+' '+(({es:"referencias",fr:"références",ca:"referències",en:"references"})[curLang]||"referencias")+'</p>'+
+    '</div></div>';
+  document.getElementById("mFields").innerHTML=html;
+  document.getElementById("overlay").classList.add("open");
+  document.querySelector(".modal").scrollTop=0;
+}
+
 function openItem(id){
+  if(id==="biblio"){ showBiblio(); return; }
   if(id.indexOf("mod")===0 && id !== FREE_MOD && !hasAccess){ showModLock(id); return; }
   curItem=findItem(id);
   if(!curItem) return;
@@ -1451,6 +1560,12 @@ function applyTxt(){
   sid("inc-add-tag",incL("addTag")); sid("inc-add-title",incL("addTitle")); sid("inc-add-sub",incL("addSub"));
   sid("inc-l-type",incL("lType")); sid("inc-l-desc",incL("lDesc")); sid("inc-l-status",incL("lStatus"));
   sid("inc-save",incL("save")); sid("inc-cancel",incL("cancel"));
+  sid("ag-add-tag",agL("addTag")); sid("ag-add-title",agL("addTitle")); sid("ag-add-sub",agL("addSub"));
+  sid("ag-l-when",agL("lWhen")); sid("ag-l-act",agL("lAct")); sid("ag-l-note",agL("lNote"));
+  sid("ag-save",agL("save")); sid("ag-cancel",agL("cancel"));
+  sid("sec-title-agenda",agL("secTitle")); sid("ag-share",agL("share"));
+  var _agw=document.getElementById("agWhen"); if(_agw) _agw.placeholder=agL("phWhen");
+  if(typeof renderAgenda==="function") renderAgenda();
   fillIncSelects();
   applyLib();
   applyCert();
@@ -1597,8 +1712,10 @@ if(profile){
   document.getElementById("ob").style.display="none";
 }
 loadInc();
+loadAgenda();
 applyTxt();
 renderAll();
+renderAgenda();
 </script>
 <style>
   .cert-overlay{ position:fixed; inset:0; background:rgba(10,20,14,.78); z-index:9999; display:none; overflow:auto; padding:18px; }
