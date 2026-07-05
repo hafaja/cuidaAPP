@@ -940,13 +940,14 @@ var I18N = {
 };
 function locTitle(item){ var L=I18N.title[curLang]; return (L && L[item.id]) ? L[item.id] : item.title; }
 function locCat(item){ var c=item.catLabel||item.modulo||""; var L=I18N.cat[curLang]; return (L && L[c]) ? L[c] : c; }
-function aiInto(targetId, prompt){
+function aiInto(targetId, prompt, prefix){
   var el=document.getElementById(targetId); if(!el) return;
-  el.innerHTML="<span class='spin'></span> "+aiThinkingLabel();
+  prefix = prefix || "";
+  el.innerHTML=prefix+"<span class='spin'></span> "+aiThinkingLabel();
   fetch("/.netlify/functions/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({lang:curLang,messages:[{role:"user",content:prompt}]})})
     .then(function(r){return r.json();})
-    .then(function(d){ if(d && d.error){ el.innerHTML="<p style='color:var(--rose)'>"+d.error+"</p>"; return; } var t=d && d.text ? d.text : ""; el.innerHTML = t ? t.replace(/```html?/gi,"").replace(/```/g,"") : "<p>"+aiMsg('retry')+"</p>"; })
-    .catch(function(){ el.innerHTML="<p style='color:var(--rose)'>"+aiMsg('err')+"</p>"; });
+    .then(function(d){ if(d && d.error){ el.innerHTML=prefix+"<p style='color:var(--rose)'>"+d.error+"</p>"; return; } var t=d && d.text ? d.text : ""; el.innerHTML = prefix+(t ? t.replace(/```html?/gi,"").replace(/```/g,"") : "<p>"+aiMsg('retry')+"</p>"); })
+    .catch(function(){ el.innerHTML=prefix+"<p style='color:var(--rose)'>"+aiMsg('err')+"</p>"; });
 }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
@@ -1327,15 +1328,11 @@ function callAI(prompt, targetId){
       else { aiInto("aiE", "Traduce y adapta fielmente este contenido formativo para cuidadores, conservando el sentido, la estructura HTML (h3, p, ul, li, strong) y los datos y citas. No añadas información nueva. Contenido a traducir:\n"+base); }
       return;
     }
-    // Sin ficha redactada: si hay pasos (actividades), construir una explicación estructurada sin duplicar objetivo/descripción
+    // Sin ficha redactada: si hay pasos (actividades), la Explicación se centra en el "por qué" — los pasos concretos van solo en Práctica
     if(item.pasos){
-      var html2 = "";
-      if(item.objetivo) html2 += "<h3>Objetivo</h3><p>"+item.objetivo+"</p>";
-      var descDiff = item.desc && item.desc.trim() !== (item.objetivo||"").trim();
-      if(descDiff) html2 += "<h3>Por qué importa</h3><p>"+item.desc+"</p>";
-      var steps=item.pasos.split(".."); html2+="<h3>Paso a paso</h3><ul>"; steps.forEach(function(s2){ if(s2.trim()) html2+="<li>"+s2.replace(/^\d+\.\s*/,"")+"</li>"; }); html2+="</ul>";
-      if(curLang === "es"){ el.innerHTML = html2; }
-      else { aiInto("aiE", "Traduce y adapta fielmente este contenido formativo para cuidadores, conservando el sentido y la estructura HTML (h3, p, ul, li). No añadas información nueva. Contenido a traducir:\n"+html2); }
+      var introHtml = item.objetivo ? "<p style='"+st+"'>"+item.objetivo+"</p>" : "";
+      var ctx2 = (item.objetivo?("Objetivo: "+item.objetivo+". "):"") + (item.catLabel?("Área: "+(locCat(item)||item.catLabel)+". "):"");
+      aiInto("aiE", "Explica de forma breve y con base científica, para cuidadores de personas mayores con deterioro cognitivo leve, POR QUÉ funciona esta actividad de estimulación: '"+locTitle(item)+"'. "+ctx2+"No describas los pasos de la actividad (eso se explica en otra sección) — céntrate solo en el fundamento y el beneficio cognitivo o emocional. Responde en 1-2 párrafos breves, en HTML simple (p, strong, em).", introHtml);
       return;
     }
     // Sin ficha ni pasos: contenido demasiado escueto para mostrarlo tal cual -> pedir a la IA una explicación completa, en cualquier idioma (incluido español)
@@ -1352,7 +1349,7 @@ function callAI(prompt, targetId){
       return;
     }
     if(curLang === "es" && item.pasos){
-      var h3="<h3>Paso a paso</h3><ul>"; item.pasos.split("..").forEach(function(s3){ if(s3.trim()) h3+="<li>"+s3.replace(/^\d+\.\s*/,"")+"</li>"; }); el.innerHTML=h3+"</ul>";
+      var h3="<h3>Paso a paso</h3><ul>"; item.pasos.split(/\s*·\s*/).filter(function(s){return s.trim();}).forEach(function(s3){ h3+="<li>"+s3.trim()+"</li>"; }); el.innerHTML=h3+"</ul>";
       return;
     }
     aiInto("aiP", "Guía práctica titulada '¿Cómo aplicarlo hoy?' sobre el tema: "+locTitle(item)+". Para cuidadores de personas mayores con deterioro cognitivo leve. Da 3-4 pasos concretos, breves y accionables. Responde en "+t("aiLang")+".");
