@@ -19,6 +19,26 @@
   }catch(e){}
 })();
 </script>
+<script>
+(function(){
+  try{
+    if(!document.documentElement.classList.contains("is-twa")) return;
+    document.addEventListener("DOMContentLoaded", function(){
+      var msg = {es:"Los pagos dentro de la app estarán disponibles muy pronto.",fr:"Les paiements dans l'application seront bientôt disponibles.",ca:"Els pagaments dins l'app estaran disponibles molt aviat.",en:"In-app payments will be available very soon."};
+      var lang = (localStorage.getItem("cl")||"es");
+      document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function(a){
+        a.removeAttribute("href");
+        a.removeAttribute("target");
+        a.style.cursor = "pointer";
+        a.addEventListener("click", function(ev){
+          ev.preventDefault();
+          alert(msg[lang] || msg.es);
+        });
+      });
+    });
+  }catch(e){}
+})();
+</script>
 <link rel="icon" type="image/png" href="favicon-48.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
