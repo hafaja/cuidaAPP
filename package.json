@@ -1,0 +1,9 @@
+{
+  "name": "cuidaapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CuidarConSentido / cuidaAPP - Netlify Functions dependencies",
+  "dependencies": {
+    "googleapis": "^140.0.0"
+  }
+}

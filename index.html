@@ -20,21 +20,49 @@
 })();
 </script>
 <script>
+/* Neutraliza CUALQUIER enlace a Stripe dentro del contexto TWA, incluidos los generados
+   dinámicamente (cuota de IA, bloqueo de módulos, bloqueo de certificado, etc.).
+   Si el enlace tiene data-product y ya existe handlePlayBilling(), lo redirige a Play Billing;
+   si no, muestra un aviso de "próximamente". */
 (function(){
   try{
     if(!document.documentElement.classList.contains("is-twa")) return;
-    document.addEventListener("DOMContentLoaded", function(){
-      var msg = {es:"Los pagos dentro de la app estarán disponibles muy pronto.",fr:"Les paiements dans l'application seront bientôt disponibles.",ca:"Els pagaments dins l'app estaran disponibles molt aviat.",en:"In-app payments will be available very soon."};
-      var lang = (localStorage.getItem("cl")||"es");
-      document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function(a){
-        a.removeAttribute("href");
-        a.removeAttribute("target");
-        a.style.cursor = "pointer";
-        a.addEventListener("click", function(ev){
-          ev.preventDefault();
-          alert(msg[lang] || msg.es);
-        });
+    var CCS_MSG = {es:"Los pagos dentro de la app estarán disponibles muy pronto.",fr:"Les paiements dans l'application seront bientôt disponibles.",ca:"Els pagaments dins l'app estaran disponibles molt aviat.",en:"In-app payments will be available very soon."};
+    function ccsNeutralize(a){
+      if(a.dataset && a.dataset.ccsNeutralized) return;
+      if(a.dataset) a.dataset.ccsNeutralized = "1";
+      var productId = a.getAttribute("data-product");
+      a.removeAttribute("href");
+      a.removeAttribute("target");
+      a.style.cursor = "pointer";
+      a.addEventListener("click", function(ev){
+        ev.preventDefault();
+        var lang = localStorage.getItem("cl") || "es";
+        if(productId && typeof handlePlayBilling === "function"){
+          handlePlayBilling(productId);
+        } else {
+          alert(CCS_MSG[lang] || CCS_MSG.es);
+        }
       });
+    }
+    function ccsScan(root){
+      var scope = (root && root.querySelectorAll) ? root : document;
+      scope.querySelectorAll('a[href*="buy.stripe.com"]').forEach(ccsNeutralize);
+    }
+    document.addEventListener("DOMContentLoaded", function(){
+      ccsScan(document);
+      try{
+        var mo = new MutationObserver(function(mutations){
+          mutations.forEach(function(m){
+            (m.addedNodes || []).forEach(function(node){
+              if(node.nodeType !== 1) return;
+              if(node.matches && node.matches('a[href*="buy.stripe.com"]')) ccsNeutralize(node);
+              if(node.querySelectorAll) ccsScan(node);
+            });
+          });
+        });
+        mo.observe(document.body, { childList: true, subtree: true });
+      }catch(e){}
     });
   }catch(e){}
 })();
@@ -438,39 +466,39 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
     <div class="pc">
       <div class="pc-top"><div class="pc-icon">💬</div><div><div class="pc-name">Consulta mensual</div><div class="pc-desc">Suscripción mensual</div></div></div>
       <div class="pc-price">€6,99 <span>/ mes</span></div>
-      <a class="pbtn pbtn-stripe" href="https://buy.stripe.com/cNidR80RPag72qa2Oa9Zm00" target="_blank">💳 Suscribirse</a>
+      <a class="pbtn pbtn-stripe" data-product="consultaMensual" href="https://buy.stripe.com/cNidR80RPag72qa2Oa9Zm00" target="_blank">💳 Suscribirse</a>
     </div>
 
     <div class="pc">
       <div class="pc-top"><div class="pc-icon">🤖</div><div><div class="pc-name">Asistente IA · 50 preguntas</div><div class="pc-desc">Pack extendido</div></div></div>
       <div class="pc-price">€4,99 <span>/ pack</span></div>
-      <a class="pbtn pbtn-stripe" href="https://buy.stripe.com/28EdR88kh1JBe8S4Wi9Zm04" target="_blank">💳 Comprar</a>
+      <a class="pbtn pbtn-stripe" data-product="ia50preguntas" href="https://buy.stripe.com/28EdR88kh1JBe8S4Wi9Zm04" target="_blank">💳 Comprar</a>
     </div>
 
     <div class="pc">
       <div class="pc-top"><div class="pc-icon">📖</div><div><div class="pc-name">Un módulo formativo</div><div class="pc-desc">Acceso a 1 módulo</div></div></div>
       <div class="pc-price">€19,99 <span>/ módulo</span></div>
-      <a class="pbtn pbtn-stripe" href="https://buy.stripe.com/6oU28q58573VfcW88u9Zm06" target="_blank">💳 Comprar</a>
+      <a class="pbtn pbtn-stripe" data-product="unModulo" href="https://buy.stripe.com/6oU28q58573VfcW88u9Zm06" target="_blank">💳 Comprar</a>
     </div>
 
     <div class="pc">
       <div class="pbadge pb-pop">⭐ Más solicitado</div>
       <div class="pc-top"><div class="pc-icon">📚</div><div><div class="pc-name">Programa completo</div><div class="pc-desc">5 módulos ES · FR · CA · EN</div></div></div>
       <div class="pc-price">€79 <span>/ completo</span></div>
-      <a class="pbtn pbtn-stripe" href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" target="_blank">💳 Comprar</a>
+      <a class="pbtn pbtn-stripe" data-product="programaCompleto" href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" target="_blank">💳 Comprar</a>
     </div>
 
     <div class="pc">
       <div class="pc-top"><div class="pc-icon">🎓</div><div><div class="pc-name">Pack módulos</div><div class="pc-desc">Todos los módulos</div></div></div>
       <div class="pc-price">€79,99 <span>/ pack</span></div>
-      <a class="pbtn pbtn-stripe" href="https://buy.stripe.com/6oUfZg5854VN5Cm3Se9Zm07" target="_blank">💳 Comprar</a>
+      <a class="pbtn pbtn-stripe" data-product="packModulos" href="https://buy.stripe.com/6oUfZg5854VN5Cm3Se9Zm07" target="_blank">💳 Comprar</a>
     </div>
 
     <div class="pc">
       <div class="pbadge pb-pro">🏥 Institucional</div>
       <div class="pc-top"><div class="pc-icon">🏥</div><div><div class="pc-name">Licencia residencia</div><div class="pc-desc">Acceso ilimitado para todo el equipo</div></div></div>
       <div class="pc-price">€119 <span>/ mes</span></div>
-      <a class="pbtn pbtn-stripe" href="https://buy.stripe.com/6oU28q7gd1JBfcW9cy9Zm02" target="_blank">💳 Contratar</a>
+      <a class="pbtn pbtn-stripe" data-product="licenciaResidencia" href="https://buy.stripe.com/6oU28q7gd1JBfcW9cy9Zm02" target="_blank">💳 Contratar</a>
       <a class="pbtn pbtn-sec" href="mailto:hafaja14@gmail.com?subject=Licencia residencia cuidaAPP">📧 Contactar antes</a>
     </div>
 
@@ -579,8 +607,8 @@ function showAIQuotaUI(){
     html += '<div style="background:var(--green2);border-radius:6px;height:6px;width:'+pct+'%;transition:width .3s"></div></div>';
     if(remaining === 0){
       html += '<div style="font-size:13px;color:var(--rose);font-weight:600;margin-bottom:12px">Has agotado tus preguntas gratuitas</div>';
-      html += '<a href="https://buy.stripe.com/28EdR88kh1JBe8S4Wi9Zm04" target="_blank" style="display:block;padding:11px;background:linear-gradient(135deg,#635bff,#4f46e5);color:white;border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;margin-bottom:8px">💳 Pack 50 preguntas — €4,99</a>';
-      html += '<a href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" target="_blank" style="display:block;padding:11px;background:var(--gdim);color:var(--gpale);border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;margin-bottom:12px">💳 Programa completo — €79</a>';
+      html += '<a href="https://buy.stripe.com/28EdR88kh1JBe8S4Wi9Zm04" data-product="ia50preguntas" target="_blank" style="display:block;padding:11px;background:linear-gradient(135deg,#635bff,#4f46e5);color:white;border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;margin-bottom:8px">💳 Pack 50 preguntas — €4,99</a>';
+      html += '<a href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" data-product="programaCompleto" target="_blank" style="display:block;padding:11px;background:var(--gdim);color:var(--gpale);border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;margin-bottom:12px">💳 Programa completo — €79</a>';
       html += '<div style="font-size:11px;color:var(--text3);margin-bottom:6px">¿Ya compraste? Introduce tu código:</div>';
       html += '<div style="display:flex;gap:8px">';
       html += '<input id="aiPackCode" type="text" placeholder="Tu código AI..." style="flex:1;padding:8px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;outline:none">';
@@ -589,7 +617,7 @@ function showAIQuotaUI(){
       html += '<div id="aiPackErr" style="font-size:11px;color:var(--rose);margin-top:4px;display:none">Código incorrecto</div>';
     } else if(remaining <= 2){
       html += '<div style="font-size:12px;color:var(--amber,#f59e0b);margin-bottom:10px">⚠️ Te quedan pocas preguntas</div>';
-      html += '<a href="https://buy.stripe.com/28EdR88kh1JBe8S4Wi9Zm04" target="_blank" style="display:block;padding:9px;background:var(--gdim);color:var(--gpale);border-radius:9px;text-decoration:none;font-size:12px;font-weight:700;text-align:center">Pack 50 preguntas — €4,99</a>';
+      html += '<a href="https://buy.stripe.com/28EdR88kh1JBe8S4Wi9Zm04" data-product="ia50preguntas" target="_blank" style="display:block;padding:9px;background:var(--gdim);color:var(--gpale);border-radius:9px;text-decoration:none;font-size:12px;font-weight:700;text-align:center">Pack 50 preguntas — €4,99</a>';
     }
   }
   html += '</div>';
@@ -1202,7 +1230,7 @@ function showLibLock(n){
     '<div style="text-align:center;padding:16px 0">'+
     '<div style="font-size:44px;margin-bottom:10px">🔒</div>'+
     '<div style="font-size:14px;color:var(--text3);margin-bottom:6px;line-height:1.5">'+libLockTxt("locked")+'<br>'+libLockTxt("free1")+'</div>'+
-    '<a href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" target="_blank" rel="noopener" style="display:block;padding:11px;background:linear-gradient(135deg,#635bff,#4f46e5);color:white;border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;text-align:center;margin:14px 0 8px">'+libLockTxt("buyFull")+'</a>'+
+    '<a href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" data-product="programaCompleto" target="_blank" rel="noopener" style="display:block;padding:11px;background:linear-gradient(135deg,#635bff,#4f46e5);color:white;border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;text-align:center;margin:14px 0 8px">'+libLockTxt("buyFull")+'</a>'+
     '<div style="font-size:12px;color:var(--text3);margin:12px 0 6px">'+libLockTxt("haveCode")+'</div>'+
     '<div style="display:flex;gap:8px">'+
     '<input id="accessCode" type="text" placeholder="..." style="flex:1;padding:9px 11px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:13px;outline:none">'+
@@ -1576,8 +1604,8 @@ function showModLock(modId){
     '<div style="font-size:44px;margin-bottom:10px">🔒</div>'+
     '<div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">Módulo de pago</div>'+
     '<div style="font-size:13px;color:var(--text3);margin-bottom:18px;line-height:1.5">El Módulo 1 es gratuito.<br>Los demás forman parte del programa completo.</div>'+
-    '<a href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" target="_blank" style="display:block;padding:11px;background:linear-gradient(135deg,#635bff,#4f46e5);color:white;border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;text-align:center;margin-bottom:8px">💳 Programa completo — €79</a>'+
-    '<a href="https://buy.stripe.com/6oU28q58573VfcW88u9Zm06" target="_blank" style="display:block;padding:11px;background:var(--gdim);color:var(--gpale);border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;text-align:center;margin-bottom:16px">💳 Solo este módulo — €19,99</a>'+
+    '<a href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" data-product="programaCompleto" target="_blank" style="display:block;padding:11px;background:linear-gradient(135deg,#635bff,#4f46e5);color:white;border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;text-align:center;margin-bottom:8px">💳 Programa completo — €79</a>'+
+    '<a href="https://buy.stripe.com/6oU28q58573VfcW88u9Zm06" data-product="unModulo" target="_blank" style="display:block;padding:11px;background:var(--gdim);color:var(--gpale);border-radius:11px;text-decoration:none;font-size:13px;font-weight:700;text-align:center;margin-bottom:16px">💳 Solo este módulo — €19,99</a>'+
     '<div style="font-size:12px;color:var(--text3);margin-bottom:6px">¿Ya tienes acceso? Introduce tu código:</div>'+
     '<div style="display:flex;gap:8px">'+
     '<input id="accessCode" type="text" placeholder="Tu código de acceso" style="flex:1;padding:9px 11px;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:13px;outline:none">'+
@@ -1880,7 +1908,7 @@ renderAgenda();
         <div style="font-size:40px">🔒</div>
         <h2 id="cert-lh">Certificado del programa</h2>
         <p id="cert-lp">El certificado es para quienes han completado el programa completo.</p>
-        <a id="cert-buy" href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" target="_blank" rel="noopener" class="cbtn" style="display:inline-block;text-decoration:none;margin:6px 0 4px">💳 Programa completo — €79</a>
+        <a id="cert-buy" href="https://buy.stripe.com/fZu6oG585dsj4yi9cy9Zm01" data-product="programaCompleto" target="_blank" rel="noopener" class="cbtn" style="display:inline-block;text-decoration:none;margin:6px 0 4px">💳 Programa completo — €79</a>
         <p id="cert-lcode" style="margin-top:14px">¿Ya tienes acceso? Introduce tu código:</p>
         <input id="certCode" type="text" placeholder="...">
         <br><button class="cbtn" onclick="tryCertAccess()" style="background:#2f6045">OK</button>
@@ -2108,6 +2136,95 @@ function answerRepaso(k){ if(repChoice[repIdx]>=0) return; repChoice[repIdx]=k; 
 function nextRepaso(){
   if(repIdx>=REPASO.length-1){ repasoDone=true; try{ localStorage.setItem("ccsRepaso","true"); }catch(e){} routeCert(); return; }
   repIdx++; renderRepasoQ();
+}
+</script>
+<script>
+/* ---- Google Play Billing (Digital Goods API) ----
+   Se activa solo dentro del TWA. Mientras el .aab no tenga la funcionalidad
+   playBilling habilitada (ver twa-manifest.json), initDigitalGoods() devolverá
+   null y los botones mostrarán el aviso de "próximamente" definido en el script
+   de neutralización del <head>. */
+var PLAY_SKUS = {
+  ia50preguntas: 'ia_pack_50',
+  consultaMensual: 'consulta_mensual',
+  unModulo: 'modulo_individual',
+  programaCompleto: 'programa_completo',
+  packModulos: 'pack_modulos',
+  licenciaResidencia: 'licencia_residencia'
+};
+
+var digitalGoodsService = null;
+
+async function initDigitalGoods(){
+  if(!window.getDigitalGoodsService){
+    console.warn('Digital Goods API no disponible (¿no estás en TWA con Play Billing activo?)');
+    return null;
+  }
+  try{
+    digitalGoodsService = await window.getDigitalGoodsService('https://play.google.com/billing');
+    return digitalGoodsService;
+  }catch(e){
+    console.error('Error iniciando Digital Goods Service:', e);
+    return null;
+  }
+}
+
+async function handlePlayBilling(productId){
+  var sku = PLAY_SKUS[productId];
+  if(!sku){
+    var lang = localStorage.getItem('cl') || 'es';
+    var msg = {es:"Los pagos dentro de la app estarán disponibles muy pronto.",fr:"Les paiements dans l'application seront bientôt disponibles.",ca:"Els pagaments dins l'app estaran disponibles molt aviat.",en:"In-app payments will be available very soon."};
+    alert(msg[lang] || msg.es);
+    return;
+  }
+
+  if(!digitalGoodsService) await initDigitalGoods();
+  if(!digitalGoodsService){ alert('Los pagos no están disponibles en este momento.'); return; }
+
+  try{
+    var request = new PaymentRequest(
+      [{ supportedMethods: 'https://play.google.com/billing', data: { sku: sku } }],
+      { total: { label: 'Total', amount: { currency: 'EUR', value: '0' } } } // el precio real lo define Play Console
+    );
+
+    var paymentResponse = await request.show();
+    var purchaseToken = paymentResponse.details.purchaseToken;
+    await paymentResponse.complete('success');
+
+    await verifyPurchaseOnBackend(sku, purchaseToken);
+
+    if(sku === 'ia_pack_50'){
+      await digitalGoodsService.consume(purchaseToken);
+    } else {
+      await digitalGoodsService.acknowledge(purchaseToken, 'onetime');
+    }
+
+    grantAccessLocally(productId);
+    alert('¡Compra completada! Ya tienes acceso.');
+  }catch(e){
+    if(e && e.code !== 'ABORT_ERR'){
+      console.error('Error en la compra:', e);
+      alert('No se pudo completar la compra. Inténtalo de nuevo.');
+    }
+  }
+}
+
+function grantAccessLocally(productId){
+  hasAccess = true;
+  localStorage.setItem('ccsAccess', 'true');
+  if(typeof applyLib === 'function') applyLib();
+}
+
+async function verifyPurchaseOnBackend(sku, token){
+  // Opcional pero recomendado: valida el purchaseToken contra la API de Google Play
+  // desde una Netlify Function, para evitar fraude.
+  try{
+    await fetch('/.netlify/functions/verify-purchase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sku: sku, purchaseToken: token })
+    });
+  }catch(e){ console.warn('No se pudo verificar en backend:', e); }
 }
 </script>
 </body>
