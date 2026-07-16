@@ -246,6 +246,25 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
 .tts-btn #ttsLbl{display:none}
 .tts-btn.on{background:#b4452f}
 @media print{.tts-btn{display:none}}
+
+/* ===== Retoque visual suave (no cambia estructura HTML) ===== */
+.feat{border-radius:18px;box-shadow:0 6px 18px -8px rgba(0,0,0,.45);transition:transform .18s ease, box-shadow .18s ease}
+.feat:active{transform:translateY(1px) scale(.995)}
+.feat:hover{box-shadow:0 10px 24px -10px rgba(0,0,0,.55)}
+.ob-card{border-radius:18px;transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease}
+.ob-card:hover{box-shadow:0 8px 20px -10px rgba(0,0,0,.5)}
+.mc,.ic,.pc{transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease}
+.mc:hover,.ic:hover,.pc:hover{border-color:var(--gdim);box-shadow:0 6px 16px -10px rgba(0,0,0,.5)}
+.pbtn{transition:transform .15s ease, filter .15s ease, box-shadow .15s ease}
+.pbtn:hover{filter:brightness(1.06)}
+.pbtn:active{transform:translateY(1px)}
+.lp,.cp,.nt,.ob-lp{transition:background .18s ease, color .18s ease, border-color .18s ease}
+.tts-btn{box-shadow:0 6px 20px rgba(0,0,0,.4), 0 0 0 4px rgba(92,158,114,.12);transition:transform .18s ease, box-shadow .18s ease, background .2s ease}
+.tts-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,0,0,.45), 0 0 0 6px rgba(92,158,114,.16)}
+.tts-btn:active{transform:translateY(0)}
+/* Tipografía un pelín más aireada dentro de módulos */
+.tp h3{letter-spacing:.2px}
+.tp p, .tp li{line-height:1.55}
 </style>
 </head>
 <body>
@@ -2011,9 +2030,60 @@ function ttsGetText(){
   return sec ? sec.innerText : "";
 }
 
+var _ttsQueue=[]; var _ttsIdx=0;
 function ttsStop(){
   try{ window.speechSynthesis.cancel(); }catch(e){}
+  _ttsQueue=[]; _ttsIdx=0;
   ttsOn=false; applyTTSLabel();
+}
+
+/* Elige la mejor voz disponible: prioriza voces neurales / naturales / Google / Microsoft */
+function _pickBestVoice(voices, langPref){
+  if(!voices || !voices.length) return null;
+  var langMatches = voices.filter(function(x){ return x.lang && x.lang.toLowerCase().indexOf(langPref)===0; });
+  if(!langMatches.length) return null;
+  var rx=/(neural|natural|premium|enhanced|wavenet|studio|google|microsoft|siri)/i;
+  var best = langMatches.filter(function(x){ return rx.test(x.name||""); })[0];
+  return best || langMatches[0];
+}
+
+/* Divide el texto en frases cortas para que la lectura respire entre puntos y comas */
+function _splitForSpeech(text){
+  var clean = text.replace(/([.!?;:])\s+/g,"$1|").replace(/,\s+/g,", |");
+  var parts = clean.split("|").map(function(s){return s.trim();}).filter(Boolean);
+  var out=[]; var buf="";
+  parts.forEach(function(p){
+    if((buf+" "+p).length > 180 && buf){ out.push(buf.trim()); buf=p; }
+    else { buf = buf ? (buf+" "+p) : p; }
+  });
+  if(buf) out.push(buf.trim());
+  return out;
+}
+
+function _speakNext(){
+  if(!ttsOn || _ttsIdx >= _ttsQueue.length){
+    ttsOn=false; applyTTSLabel(); return;
+  }
+  var chunk=_ttsQueue[_ttsIdx++];
+  var u=new SpeechSynthesisUtterance(chunk);
+  var lg=_lg();
+  var lc=TTS_LANG[lg]||"es-ES";
+  u.lang=lc;
+  /* Lectura pausada y humana: velocidad más lenta, tono neutro cálido */
+  u.rate=0.85; u.pitch=1.0; u.volume=1.0;
+  try{
+    var voices=window.speechSynthesis.getVoices()||[];
+    var pref=lc.split("-")[0];
+    var v=_pickBestVoice(voices, pref);
+    if(!v && lg==="ca"){ v=_pickBestVoice(voices,"es"); if(v) u.lang="es-ES"; }
+    if(v) u.voice=v;
+  }catch(e){}
+  u.onend=function(){
+    /* Pausa natural entre frases (~250ms) para que no suene atropellado */
+    setTimeout(_speakNext, 260);
+  };
+  u.onerror=function(){ ttsOn=false; applyTTSLabel(); };
+  try{ window.speechSynthesis.speak(u); }catch(e){ ttsOn=false; applyTTSLabel(); }
 }
 
 function toggleTTS(){
@@ -2022,26 +2092,16 @@ function toggleTTS(){
   var text=(ttsGetText()||"").replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu," ").replace(/\s+/g," ").trim();
   if(!text) return;
   try{ window.speechSynthesis.cancel(); }catch(e){}
-  var u=new SpeechSynthesisUtterance(text);
-  var lg=_lg();
-  var lc=TTS_LANG[lg]||"es-ES";
-  u.lang=lc; u.rate=0.95; u.pitch=1;
-  try{
-    var voices=window.speechSynthesis.getVoices()||[];
-    var pref=lc.split("-")[0];
-    var v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(pref)===0;})[0];
-    if(!v && lg==="ca"){ v=voices.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf("es")===0;})[0]; if(v) u.lang="es-ES"; }
-    if(v) u.voice=v;
-  }catch(e){}
-  u.onend=function(){ ttsOn=false; applyTTSLabel(); };
-  u.onerror=function(){ ttsOn=false; applyTTSLabel(); };
+  _ttsQueue=_splitForSpeech(text);
+  _ttsIdx=0;
   ttsOn=true; applyTTSLabel();
-  window.speechSynthesis.speak(u);
+  /* Pequeño delay para que cancel() se procese antes del primer speak() */
+  setTimeout(_speakNext, 80);
 }
 
 (function(){
   if(!("speechSynthesis" in window)){ var b=document.getElementById("ttsBtn"); if(b) b.style.display="none"; return; }
-  try{ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){}; }catch(e){}
+  try{ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){ try{ window.speechSynthesis.getVoices(); }catch(e){} }; }catch(e){}
   applyTTSLabel();
 })();
 </script>
