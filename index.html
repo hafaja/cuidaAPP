@@ -2037,15 +2037,28 @@ function ttsStop(){
   ttsOn=false; applyTTSLabel();
 }
 
-/* Elige la mejor voz disponible: prioriza voces neurales / naturales / Google / Microsoft */
+/* Elige la voz más humana disponible del sistema (neural/Google/Siri/Microsoft) */
 function _pickBestVoice(voices, langPref){
   if(!voices || !voices.length) return null;
-  var langMatches = voices.filter(function(x){ return x.lang && x.lang.toLowerCase().indexOf(langPref)===0; });
-  if(!langMatches.length) return null;
-  var rx=/(neural|natural|premium|enhanced|wavenet|studio|google|microsoft|siri)/i;
-  var best = langMatches.filter(function(x){ return rx.test(x.name||""); })[0];
-  return best || langMatches[0];
+  var lp = (langPref||"").toLowerCase().slice(0,2);
+  var langMatches = voices.filter(function(x){
+    return x.lang && x.lang.toLowerCase().indexOf(lp) === 0;
+  });
+  var pool = langMatches.length ? langMatches : voices;
+  var preferred = [
+    /google.*(neural|wavenet|studio)/i,
+    /microsoft.*(neural|online)/i,
+    /siri/i, /samantha/i, /karen/i, /daniel/i, /monica/i, /paulina/i,
+    /google/i, /microsoft/i, /apple/i,
+    /(neural|natural|premium|enhanced)/i
+  ];
+  for (var i=0;i<preferred.length;i++){
+    var match = pool.find(function(v){ return preferred[i].test(v.name||""); });
+    if (match) return match;
+  }
+  return pool[0];
 }
+
 
 /* Divide el texto en frases cortas para que la lectura respire entre puntos y comas */
 function _splitForSpeech(text){
@@ -2069,8 +2082,8 @@ function _speakNext(){
   var lg=_lg();
   var lc=TTS_LANG[lg]||"es-ES";
   u.lang=lc;
-  /* Lectura pausada y humana: velocidad más lenta, tono neutro cálido */
-  u.rate=0.85; u.pitch=1.0; u.volume=1.0;
+  /* Lectura pausada y humana: velocidad lenta, tono ligeramente cálido */
+  u.rate=0.82; u.pitch=1.02; u.volume=1.0;
   try{
     var voices=window.speechSynthesis.getVoices()||[];
     var pref=lc.split("-")[0];
@@ -2079,8 +2092,9 @@ function _speakNext(){
     if(v) u.voice=v;
   }catch(e){}
   u.onend=function(){
-    /* Pausa natural entre frases (~250ms) para que no suene atropellado */
-    setTimeout(_speakNext, 260);
+    /* Pausa natural entre frases (~420ms) para que respire entre puntos y comas */
+    setTimeout(_speakNext, 420);
+
   };
   u.onerror=function(){ ttsOn=false; applyTTSLabel(); };
   try{ window.speechSynthesis.speak(u); }catch(e){ ttsOn=false; applyTTSLabel(); }
