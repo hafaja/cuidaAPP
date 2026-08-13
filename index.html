@@ -73,9 +73,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="cuidaAPP">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#181f1d;--bg2:#1f2825;--bg3:#252e2b;--bg4:#2c3633;--green:#5c9e72;--green2:#7bbf8f;--gdim:#3a6b4d;--gpale:#d4ede0;--purple:#9b6bb5;--rose:#c47a7a;--text:#e6ede8;--text2:#a8bfac;--text3:#6a8570;--border:#2e3d38;--card:#1f2825}
+:root{--bg:#F6FAF4;--bg2:#EFF5EA;--bg3:#FFFFFF;--bg4:#EAF1E4;--green:#5A8A32;--green2:#3D6B20;--gdim:#C8E0A8;--gpale:#2D5016;--gold:#C8A84A;--purple:#7A60A8;--rose:#D4782A;--text:#1E3010;--text2:#3A5020;--text3:#6A7A5A;--border:#D8E4CC;--card:#FFFFFF}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;display:flex;flex-direction:column}
@@ -265,6 +265,27 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
 /* Tipografía un pelín más aireada dentro de módulos */
 .tp h3{letter-spacing:.2px}
 .tp p, .tp li{line-height:1.55}
+
+/* ============================================================
+   NUEVA PALETA EDITORIAL — inspirada en Módulo 3 (16 ago 2026)
+   ============================================================ */
+.greeting h1, .sh-title, .m-title, .feat-title{font-family:'Playfair Display', Georgia, serif}
+.feat{box-shadow:0 6px 18px -8px rgba(45,80,22,.35)}
+.feat::after{background:rgba(255,255,255,.12)}
+.mc,.ic,.pc{box-shadow:0 3px 10px -6px rgba(45,80,22,.15)}
+.mc:hover,.ic:hover,.pc:hover{border-color:var(--gdim);box-shadow:0 6px 16px -8px rgba(45,80,22,.25)}
+.pc-price{font-family:'Playfair Display',serif}
+.ai-c{font-family:'Source Serif 4', Georgia, serif;line-height:1.7;font-size:14.5px}
+.ai-c h3{font-family:'Playfair Display', serif;font-size:16px;font-weight:700;color:var(--green2);margin:20px 0 8px;display:flex;align-items:center;gap:8px}
+.ai-c h3::before{content:'';width:14px;height:2px;background:var(--gold);display:inline-block}
+.ai-c h3:first-child{margin-top:0}
+.ai-c p[style*="italic"]{border-left:3px solid var(--gold);padding:10px 0 10px 16px;margin:16px 0;font-size:15px;font-style:italic}
+.ai-c ul{padding-left:0;list-style:none;margin:6px 0 14px}
+.ai-c li{padding:8px 0 8px 22px;position:relative;border-bottom:1px solid var(--border);font-size:14px}
+.ai-c li:last-child{border-bottom:none}
+.ai-c li::before{content:'✦';position:absolute;left:0;top:8px;color:var(--gold);font-size:11px}
+.ai-c em{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text3);font-style:normal}
+.ai-c p[style*="italic"] em{font-family:'Source Serif 4',serif;font-size:15px;font-style:italic;color:inherit}
 </style>
 </head>
 <body>
