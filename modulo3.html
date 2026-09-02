@@ -399,9 +399,21 @@
   .tts-btn .tts-ico{font-size:18px;line-height:1}
   .tts-btn.on{background:#b4452f}
   @media print{.tts-btn{display:none}}
+
+  /* ===== Botón de cerrar (16 ago 2026) ===== */
+  .close-btn{
+    position: fixed; top: 8px; right: 10px; z-index: 200;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.35); color: #fff; border: none;
+    font-size: 17px; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .close-btn:hover{ background: rgba(0,0,0,.55); }
 </style>
 </head>
 <body>
+<button class="close-btn" onclick="closeModuleWindow()" aria-label="Cerrar">✕</button>
 
 <div class="lang-bar">
   <button class="lang-btn active" onclick="setLang('es')">🇪🇸 Español</button>
@@ -1473,9 +1485,9 @@
     if(ttsIdx>=ttsQueue.length){ttsOn=false;applyTTSLabel();return;}
     var lg=ttsLang();var lc=TTS_LANG[lg]||"es-ES";
     var u=new SpeechSynthesisUtterance(ttsQueue[ttsIdx]);
-    u.lang=lc;u.rate=0.95;u.pitch=1;
+    u.lang=lc;u.rate=0.74;u.pitch=1;
     var v=ttsPickVoice(lc,lg);if(v){u.voice=v;if(lg==="ca"&&v.lang&&v.lang.toLowerCase().indexOf("ca")!==0)u.lang="es-ES";}
-    u.onend=function(){ttsIdx++;ttsSpeakNext();};
+    u.onend=function(){ttsIdx++;setTimeout(ttsSpeakNext,600);};
     u.onerror=function(){ttsIdx++;ttsSpeakNext();};
     window.speechSynthesis.speak(u);
   }
@@ -1492,5 +1504,17 @@
   (function(){if(!("speechSynthesis" in window)){var b=document.getElementById("ttsBtn");if(b)b.style.display="none";return;}try{window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=function(){};}catch(e){}applyTTSLabel();})();
 </script>
 <button id="ttsBtn" class="tts-btn" onclick="toggleTTS()" aria-label="Escuchar el texto"><span class="tts-ico" id="ttsIco">🔊</span><span id="ttsLbl">Escuchar</span></button>
+
+<script>
+function closeModuleWindow(){
+  try{ window.close(); }catch(e){}
+  setTimeout(function(){
+    if(!window.closed){
+      if(window.history.length>1){ window.history.back(); }
+      else { window.location.href = "index.html"; }
+    }
+  }, 150);
+}
+</script>
 </body>
 </html>

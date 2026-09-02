@@ -2104,7 +2104,7 @@ function _speakNext(){
   var lc=TTS_LANG[lg]||"es-ES";
   u.lang=lc;
   /* Lectura pausada y humana: velocidad lenta, tono ligeramente cálido */
-  u.rate=0.82; u.pitch=1.02; u.volume=1.0;
+  u.rate=0.74; u.pitch=1.0; u.volume=1.0;
   try{
     var voices=window.speechSynthesis.getVoices()||[];
     var pref=lc.split("-")[0];
@@ -2114,7 +2114,7 @@ function _speakNext(){
   }catch(e){}
   u.onend=function(){
     /* Pausa natural entre frases (~420ms) para que respire entre puntos y comas */
-    setTimeout(_speakNext, 420);
+    setTimeout(_speakNext, 600);
 
   };
   u.onerror=function(){ ttsOn=false; applyTTSLabel(); };
