@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gukurikirana Ubucuruzi</title>
+<link rel="icon" type="image/png" sizes="192x192" href="betty_icon_192px.png">
+<link rel="icon" type="image/png" sizes="96x96" href="betty_icon_96px.png">
+<link rel="apple-touch-icon" href="betty_icon_192px.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e6b450">
+<style>
+  :root{
+    --ink:#0f1a16; --ink2:#142019; --card:#18261f; --card2:#1d2f26;
+    --line:#2a3d33; --line2:#354d40;
+    --tx:#eef3ee; --mut:#8aa394; --mut2:#6f8a7b;
+    --gold:#e6b450; --gold-d:#caa043;
+    --green:#5fbf87; --red:#dd8a6a;
+    --r:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:radial-gradient(120% 80% at 50% -10%, #16241d 0%, var(--ink) 60%);
+    color:var(--tx);
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    padding:18px 14px 40px;
+  }
+  .wrap{max-width:460px;margin:0 auto;animation:rise .5s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.wrap{animation:none}}
+
+  .head{display:flex;align-items:baseline;gap:10px;margin:4px 2px 16px}
+  .head h1{
+    font-size:21px;font-weight:800;letter-spacing:-.3px;margin:0;
+    background:linear-gradient(180deg,#fff,#cfe0d4);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .head .date{margin-left:auto;font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}
+  .datepick{margin-left:auto;background:var(--ink2);border:1px solid var(--line);color:var(--tx);
+    font-family:inherit;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;
+    padding:7px 11px;border-radius:10px;outline:none;cursor:pointer;color-scheme:dark}
+  .datepick:focus-visible{border-color:var(--gold);box-shadow:0 0 0 3px rgba(230,180,80,.18)}
+  .eyebrow{font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--gold-d);font-weight:700;margin:0 2px 14px}
+
+  /* TILL panel — signature */
+  .till{
+    position:relative;background:linear-gradient(160deg,var(--card2),var(--card));
+    border:1px solid var(--line2);border-radius:20px;padding:18px 18px 16px;margin-bottom:16px;
+    overflow:hidden;
+  }
+  .till::after{content:"";position:absolute;left:18px;right:18px;bottom:0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.8}
+  .till .lab{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);font-weight:700}
+  .till .big{font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.05;margin:3px 0 2px;
+    font-variant-numeric:tabular-nums;color:#fff}
+  .till .big .u{font-size:16px;font-weight:700;color:var(--mut);margin-left:4px}
+  .till .row2{display:flex;gap:10px;margin-top:14px;border-top:1px dashed var(--line2);padding-top:13px}
+  .till .row2 .box{flex:1}
+  .till .row2 .v{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:1px}
+  .v.gold{color:var(--gold)} .v.green{color:var(--green)} .v.red{color:var(--red)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 15px;margin-bottom:14px}
+  .field{margin-bottom:12px}
+  .field:last-child{margin-bottom:0}
+  .field label{display:block;font-size:12.5px;color:var(--mut);margin-bottom:5px;font-weight:600}
+  .inputwrap{position:relative;display:flex;align-items:center}
+  .inputwrap .cur{position:absolute;right:13px;font-size:12px;color:var(--mut2);font-weight:700;pointer-events:none}
+  input{
+    width:100%;background:var(--ink2);border:1px solid var(--line);border-radius:11px;
+    color:var(--tx);padding:13px 46px 13px 14px;font-size:17px;font-weight:700;
+    font-variant-numeric:tabular-nums;font-family:inherit;outline:none;transition:border-color .15s, box-shadow .15s;
+  }
+  input:focus-visible{border-color:var(--gold);box-shadow:0 0 0 3px rgba(230,180,80,.18)}
+  input.pct{padding-right:36px}
+  .pctfield{display:flex;align-items:center;gap:10px;margin-top:2px}
+  .pctfield label{margin:0;flex:1}
+  .pctfield .inputwrap{width:110px}
+
+  .derived{display:flex;flex-direction:column;gap:9px}
+  .drow{display:flex;align-items:center;font-size:14px}
+  .drow .k{color:var(--mut)}
+  .drow .val{margin-left:auto;font-weight:800;font-variant-numeric:tabular-nums}
+  .drow.tot .val{color:var(--green)} .drow.exp .val{color:var(--red)}
+  .drow.prof .val{color:var(--gold)} .drow.net .val{color:#fff}
+
+  .actions{display:flex;gap:10px;margin:4px 0 18px}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:13px;font-weight:800;font-size:15px;transition:transform .08s, filter .15s}
+  button:active{transform:translateY(1px)}
+  .btn-save{flex:1.3;background:linear-gradient(180deg,var(--gold),var(--gold-d));color:#1a1208;padding:14px}
+  .btn-share{flex:1;background:var(--card2);color:var(--tx);border:1px solid var(--line2);padding:14px}
+  button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  .month{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+  .month .m{flex:1 1 30%;min-width:104px;background:linear-gradient(180deg,var(--ink2),#101a15);border:1px solid var(--line);border-radius:14px;padding:12px 13px}
+  .month .ml{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--mut2);font-weight:700}
+  .month .mv{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:3px}
+  .month .mv.g{color:var(--gold)}
+  .month .mv.r{color:var(--red)}
+  .month .mv.b{color:#6fcfae}
+
+  .initcap-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .initcap-row label{font-size:12.5px;color:var(--mut);font-weight:600;flex:1}
+  .initcap-row input{font-size:15px;padding:10px 42px 10px 12px}
+  .mcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 13px;margin-bottom:10px}
+  .mc-top{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+  .mc-name{font-size:14px;font-weight:800;text-transform:capitalize}
+  .mc-bal-l{margin-left:auto;font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--mut2);font-weight:700;align-self:center}
+  .mc-bal{font-size:17px;font-weight:800;color:#6fcfae;font-variant-numeric:tabular-nums}
+  .mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+  .mc-grid>div{display:flex;align-items:baseline;justify-content:space-between;font-size:12px;border-bottom:1px dotted var(--line);padding-bottom:5px}
+  .mc-grid span{color:var(--mut)}
+  .mc-grid b{font-variant-numeric:tabular-nums;font-weight:800}
+  .mc-grid b.g{color:var(--gold)} .mc-grid b.r{color:var(--red)}
+
+  .mrow{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:9px}
+  .mrow .mname{font-size:13px;font-weight:800;min-width:92px;text-transform:capitalize}
+  .mrow .mvals{margin-left:auto;text-align:right;display:flex;flex-direction:column;gap:1px}
+  .mrow .mt{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
+  .mrow .mp{font-size:11px;color:var(--gold);font-variant-numeric:tabular-nums}
+  .mrow .me{font-size:11px;color:var(--red);font-variant-numeric:tabular-nums}
+
+  .hist h2{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 2px 10px}
+  .hitem{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:9px}
+  .hitem .hd{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;min-width:84px}
+  .hitem .hmeta{font-size:11px;color:var(--mut);margin-top:2px}
+  .hitem .ht{margin-left:auto;text-align:right}
+  .hitem .htot{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
+  .hitem .hpro{font-size:11px;color:var(--gold);font-variant-numeric:tabular-nums}
+  .hitem .del{background:none;border:none;color:var(--mut2);font-size:17px;padding:4px 6px;border-radius:8px;margin-left:4px}
+  .hitem .open{cursor:pointer;flex:1;display:flex;align-items:center;gap:12px}
+  .empty{color:var(--mut2);font-size:13px;text-align:center;padding:18px 10px;line-height:1.6;
+    border:1px dashed var(--line2);border-radius:13px}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:transl(-50%,20px);
+    background:var(--gold);color:#1a1208;font-weight:800;font-size:14px;padding:11px 20px;border-radius:30px;
+    opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;z-index:9;box-shadow:0 8px 24px rgba(0,0,0,.4);
+    transform:translate(-50%,20px)}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .editing{display:none;align-items:center;gap:8px;font-size:12px;color:var(--gold);margin:-8px 2px 12px;font-weight:600}
+  .editing button{background:none;border:1px solid var(--line2);color:var(--mut);font-size:11px;padding:4px 9px;border-radius:8px;font-weight:600}
+  .note{font-size:10.5px;color:var(--mut2);line-height:1.6;margin-top:6px;text-align:center}
+
+  .mc-sub{margin-top:10px;padding-top:9px;border-top:1px solid var(--line);font-size:11px;color:var(--mut);text-align:center}
+  .mc-sub b{color:var(--tx);font-weight:800}
+  .topbar{display:flex;align-items:center;gap:8px;margin:0 2px 12px;font-size:12px}
+  .topbar .who{display:flex;align-items:center;gap:5px;color:var(--tx);font-weight:700}
+  .topbar .chg{background:none;border:none;color:var(--mut);font-size:13px;cursor:pointer;padding:2px}
+  .topbar .cloud{color:var(--mut2);font-weight:700}
+  .topbar .ownerbtn{margin-left:auto;background:var(--card2);border:1px solid var(--line2);color:var(--tx);font-size:12px;font-weight:700;padding:6px 12px;border-radius:9px;cursor:pointer;font-family:inherit}
+  .ov{position:fixed;inset:0;background:rgba(8,14,11,.74);display:flex;align-items:center;justify-content:center;z-index:50;padding:18px}
+  .ovbox{background:var(--card);border:1px solid var(--line2);border-radius:18px;padding:20px 18px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .ovbox.big{max-width:430px;max-height:86vh;overflow:auto}
+  .ovt{font-size:17px;font-weight:800;margin-bottom:4px}
+  .ovs{font-size:12.5px;color:var(--mut);margin-bottom:12px;line-height:1.5}
+  .ovbox input{width:100%;box-sizing:border-box;background:var(--ink2);border:1px solid var(--line);border-radius:11px;color:var(--tx);padding:13px 14px;font-size:16px;font-family:inherit;outline:none;margin-bottom:12px}
+  .ovbox input:focus-visible{border-color:var(--gold);box-shadow:0 0 0 3px rgba(230,180,80,.18)}
+  .ovbox .ok{width:100%;background:linear-gradient(180deg,var(--gold),var(--gold-d));color:#1a1208;padding:13px;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;border:none;font-family:inherit}
+  .ovtop{display:flex;align-items:center;margin-bottom:8px}
+  .ovx{margin-left:auto;background:none;border:none;color:var(--mut);font-size:20px;cursor:pointer;line-height:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div style="text-align:center; padding: 8px 0 14px;">
+    <img src="betty_logo_with_name_512px.png" alt="Betty" style="width: 120px; height: auto;">
+  </div>
+
+  <div style="background:rgba(221,138,106,.12); border:1px solid var(--red); border-radius:13px; padding:11px 13px; margin-bottom:16px; font-size:12.5px; line-height:1.5; color:var(--tx)">
+    <b style="color:var(--red)">⚠️ Icyitonderwa:</b> Betty ibuka kurebako amafaranga usigaranye agaragara muyasigaye uyafite koko.
+  </div>
+
+  <div style="background:rgba(230,180,80,.12); border:1px solid var(--gold); border-radius:13px; padding:11px 13px; margin-bottom:16px; font-size:12.5px; line-height:1.5; color:var(--tx)">
+    <b style="color:var(--gold)">ℹ️ Sobanukirwa:</b> ko ayo usigaranye ari igiteranyo cya cash na Momo ukuyemo ayo wasohoye.
+  </div>
+
+  <div class="eyebrow">FRW · Mobile Money</div>
+  <div class="topbar">
+    <span class="who">👤 <span id="seller-name">—</span> <button class="chg" onclick="changeSeller()" title="Hindura izina">✎</button></span>
+    <span id="cloud-status" class="cloud">☁️ …</span>
+    <button class="ownerbtn" onclick="openOwner()">🔒 Umutware</button>
+  </div>
+  <div class="head">
+    <h1>Gukurikirana Ubucuruzi</h1>
+    <input type="date" id="datepick" class="datepick" onchange="onPick()" aria-label="Italiki (umunsi/ukwezi/umwaka)">
+  </div>
+
+  <!-- Caja registradora: cálculo en vivo -->
+  <div class="till">
+    <div class="lab">Igiteranyo</div>
+    <div class="big"><span id="d-total">0</span><span class="u">FRW</span></div>
+    <div class="row2">
+      <div class="box"><div class="lab">Inyungu (<span id="d-pct">20</span>%)</div><div class="v gold" id="d-prof">0</div></div>
+      <div class="box"><div class="lab">Asigaye</div><div class="v green" id="d-net">0</div></div>
+    </div>
+  </div>
+
+  <div class="editing" id="editing">
+    <span id="editing-txt"></span>
+    <button onclick="goToday()">Uyu munsi</button>
+  </div>
+
+  <!-- Inputs -->
+  <div class="card">
+    <div class="field">
+      <label for="kaisi">Kuri Caisse</label>
+      <div class="inputwrap"><input id="kaisi" inputmode="numeric" placeholder="0" oninput="onType()"><span class="cur">FRW</span></div>
+    </div>
+    <div class="field">
+      <label for="momo">Kuri MoMo</label>
+      <div class="inputwrap"><input id="momo" inputmode="numeric" placeholder="0" oninput="onType()"><span class="cur">FRW</span></div>
+    </div>
+    <div class="field">
+      <label for="exp">Ayasohotse</label>
+      <div class="inputwrap"><input id="exp" inputmode="numeric" placeholder="0" oninput="onType()"><span class="cur">FRW</span></div>
+    </div>
+    <div class="pctfield">
+      <label for="pct">Igipimo cy'inyungu</label>
+      <div class="inputwrap"><input id="pct" class="pct" inputmode="numeric" value="20" oninput="onType()"><span class="cur">%</span></div>
+    </div>
+  </div>
+
+  <!-- Desglose -->
+  <div class="card derived">
+    <div class="drow tot"><span class="k">Igiteranyo (Caisse + MoMo)</span><span class="val" id="r-total">0 FRW</span></div>
+    <div class="drow prof"><span class="k">Inyungu (<span id="r-pct">20</span>%)</span><span class="val" id="r-prof">0 FRW</span></div>
+    <div class="drow exp"><span class="k">Ayasohotse</span><span class="val" id="r-exp">0 FRW</span></div>
+    <div class="drow net"><span class="k">Asigaye</span><span class="val" id="r-net">0 FRW</span></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-save" onclick="saveDay()">Bika umunsi</button>
+    <button class="btn-share" onclick="shareDay()">Sangiza</button>
+  </div>
+
+  <!-- Resumen del mes -->
+  <div class="month">
+    <div class="m"><div class="ml">Igiteranyo cy'ukwezi</div><div class="mv" id="m-total">0 FRW</div></div>
+    <div class="m"><div class="ml">Inyungu y'ukwezi</div><div class="mv g" id="m-prof">0 FRW</div></div>
+    <div class="m"><div class="ml">Igiteranyo cy'ayasohotse</div><div class="mv r" id="m-exp">0 FRW</div></div>
+    <div class="m"><div class="ml">Asigaye k'ukwezi</div><div class="mv b" id="m-close">0 FRW</div></div>
+  </div>
+
+  <!-- Archivo por meses -->
+  <div class="hist" style="margin-bottom:18px">
+    <h2>Buri kwezi</h2>
+    <div class="initcap-row"><label for="initcap">Itangiriro rya mbere</label><div class="inputwrap" style="width:150px"><input id="initcap" inputmode="numeric" placeholder="0" oninput="onInit()"><span class="cur">FRW</span></div></div>
+    <div id="months-list"></div>
+  </div>
+
+  <!-- Historial -->
+  <div class="hist">
+    <h2>Iminsi yabitswe</h2>
+    <div id="hist-list"></div>
+  </div>
+
+  <div class="note">Iyi paji ibika amakuru kuri telefoni yawe gusa. Inyungu ibarwa ku Igiteranyo (Caisse + MoMo), tudakuyemo ayasohotse.</div>
+</div>
+
+<div id="seller-modal" class="ov" style="display:none">
+  <div class="ovbox">
+    <div class="ovt">Murakaza neza 👋</div>
+    <div class="ovs">Andika izina ryawe (uzarikoresha buri munsi mu kubika ubucuruzi bwawe).</div>
+    <input id="seller-input" placeholder="Izina ryawe…" autocomplete="off">
+    <button class="ok" onclick="setSeller()">Emeza</button>
+  </div>
+</div>
+
+<div id="owner-modal" class="ov" style="display:none">
+  <div class="ovbox big">
+    <div class="ovtop"><div class="ovt">🔒 Umutware</div><button class="ovx" onclick="closeOwner()">✕</button></div>
+    <div id="owner-login">
+      <div class="ovs">Andika ijambo ry'ibanga ry'umutware kugira ngo urebe abacuruzi bose.</div>
+      <input id="owner-pass" type="password" placeholder="Code…" autocomplete="off">
+      <div id="owner-err" style="color:var(--red);font-size:12px;margin:-6px 0 10px;display:none">Code itari yo.</div>
+      <button class="ok" onclick="ownerLogin()">Injira</button>
+    </div>
+    <div id="owner-dash" style="display:none"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Byabitswe ✓</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+"use strict";
+var KEY="ubucuruzi_v1";
+var curDate=todayKey();
+
+function todayKey(){ var d=new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function pad(n){ return (n<10?"0":"")+n; }
+function dispDate(k){ var p=k.split("-"); return p[2]+"/"+p[1]+"/"+p[0]; }
+function num(id){ var v=String(document.getElementById(id).value||"").replace(/[^0-9]/g,""); return v?parseInt(v,10):0; }
+function fmt(n){ return Math.round(n).toLocaleString("en-US")+" FRW"; }
+function fmtShort(n){ return Math.round(n).toLocaleString("en-US"); }
+
+function store(){ try{ return JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ return {}; } }
+function save(o){ try{ localStorage.setItem(KEY, JSON.stringify(o)); }catch(e){} }
+
+function calc(){
+  var k=num("kaisi"), m=num("momo"), e=num("exp");
+  var pct=num("pct"); if(!document.getElementById("pct").value) pct=20;
+  var total=k+m;
+  var prof=Math.round(total*pct/100);
+  var net=total-e;
+  return {kaisi:k, momo:m, exp:e, pct:pct, total:total, prof:prof, net:net};
+}
+function onType(){
+  var c=calc();
+  document.getElementById("d-total").textContent=fmtShort(c.total);
+  document.getElementById("d-prof").textContent=fmtShort(c.prof);
+  document.getElementById("d-net").textContent=fmtShort(c.net);
+  document.getElementById("d-pct").textContent=c.pct;
+  var rp=document.getElementById("r-pct"); if(rp) rp.textContent=c.pct;
+  document.getElementById("r-total").textContent=fmt(c.total);
+  document.getElementById("r-exp").textContent=fmt(c.exp);
+  document.getElementById("r-prof").textContent=fmt(c.prof);
+  document.getElementById("r-net").textContent=fmt(c.net);
+}
+
+function saveDay(){
+  var c=calc();
+  var o=store();
+  o[curDate]=c;
+  save(o);
+  syncUp(curDate, c);
+  renderHist(); renderMonth();
+  toast("Byabitswe ✓");
+}
+
+function setDate(date){
+  if(!date) date=todayKey();
+  curDate=date;
+  var dp=document.getElementById("datepick"); if(dp) dp.value=date;
+  var o=store(), e=o[date];
+  document.getElementById("kaisi").value=e?(e.kaisi||""):"";
+  document.getElementById("momo").value=e?(e.momo||""):"";
+  document.getElementById("exp").value=e?(e.exp||""):"";
+  document.getElementById("pct").value=(e&&e.pct!=null)?e.pct:20;
+  var ed=document.getElementById("editing");
+  if(date===todayKey()){ ed.style.display="none"; }
+  else { ed.style.display="flex"; document.getElementById("editing-txt").textContent="Umunsi: "+dispDate(date); }
+  onType();
+}
+function onPick(){ var dp=document.getElementById("datepick"); setDate(dp&&dp.value?dp.value:todayKey()); }
+function loadDay(date){ setDate(date); window.scrollTo({top:0,behavior:"smooth"}); }
+function goToday(){ setDate(todayKey()); }
+function delDay(date){
+  var o=store(); delete o[date]; save(o);
+  syncDelete(date);
+  if(date===curDate) goToday();
+  renderHist(); renderMonth();
+}
+
+function renderHist(){
+  var o=store();
+  var keys=Object.keys(o).sort().reverse();
+  var box=document.getElementById("hist-list");
+  if(!keys.length){ box.innerHTML='<div class="empty">Nta munsi urabitswa.<br>Uzuza hejuru maze ukande <b>Bika umunsi</b>.</div>'; return; }
+  var html="";
+  keys.forEach(function(k){
+    var e=o[k];
+    html+='<div class="hitem">'
+      +'<div class="open" onclick="loadDay(\''+k+'\')">'
+        +'<div><div class="hd">'+dispDate(k)+'</div><div class="hmeta">Caisse '+fmtShort(e.kaisi)+' · MoMo '+fmtShort(e.momo)+'</div></div>'
+        +'<div class="ht"><div class="htot">'+fmt(e.total)+'</div><div class="hpro">Inyungu '+fmtShort(e.prof)+'</div></div>'
+      +'</div>'
+      +'<button class="del" onclick="delDay(\''+k+'\')" aria-label="Siba">🗑</button>'
+    +'</div>';
+  });
+  box.innerHTML=html;
+}
+
+function renderMonth(){
+  var ym=todayKey().slice(0,7);
+  var arr=computeMonths();
+  var cur=null; arr.forEach(function(x){ if(x.ym===ym) cur=x; });
+  document.getElementById("m-total").textContent=fmt(cur?cur.sales:0);
+  document.getElementById("m-prof").textContent=fmt(cur?cur.prof:0);
+  document.getElementById("m-exp").textContent=fmt(cur?cur.exp:0);
+  document.getElementById("m-close").textContent=fmt(cur?cur.closing:initCap());
+  renderMonthsArchive(arr);
+}
+
+var KW_MONTHS=["Mutarama","Gashyantare","Werurwe","Mata","Gicurasi","Kamena","Nyakanga","Kanama","Nzeli","Ukwakira","Ugushyingo","Ukuboza"];
+function monthName(ym){ var p=ym.split("-"); var mi=parseInt(p[1],10)-1; return (KW_MONTHS[mi]||p[1])+" "+p[0]; }
+function initCap(){ var v=0; try{ v=parseInt(localStorage.getItem("ubucuruzi_init")||"0",10)||0; }catch(e){} return v; }
+function onInit(){ var v=String(document.getElementById("initcap").value||"").replace(/[^0-9]/g,""); try{ localStorage.setItem("ubucuruzi_init", v||"0"); }catch(e){} renderMonth(); }
+function computeMonths(){
+  var o=store(), by={};
+  Object.keys(o).forEach(function(k){
+    var ym=k.slice(0,7); if(!by[ym]) by[ym]={sales:0,prof:0,exp:0};
+    by[ym].sales+=o[k].total||0; by[ym].prof+=o[k].prof||0; by[ym].exp+=o[k].exp||0;
+  });
+  var asc=Object.keys(by).sort(), run=initCap(), out=[];
+  asc.forEach(function(ym){ var m=by[ym]; var opening=run; var closing=opening+m.sales-m.exp; run=closing; out.push({ym:ym,sales:m.sales,prof:m.prof,exp:m.exp,opening:opening,closing:closing}); });
+  return out;
+}
+function renderMonthsArchive(arr){
+  if(!arr) arr=computeMonths();
+  var box=document.getElementById("months-list"); if(!box) return;
+  if(!arr.length){ box.innerHTML='<div class="empty">Nta kwezi kurabaho.</div>'; return; }
+  var html="";
+  arr.slice().reverse().forEach(function(m){
+    html+='<div class="mcard"><div class="mc-top"><span class="mc-name">'+monthName(m.ym)+'</span>'
+      +'<span class="mc-bal-l">Asigaye</span><span class="mc-bal">'+fmt(m.closing)+'</span></div>'
+      +'<div class="mc-grid">'
+        +'<div><span>Itangiriro</span><b>'+fmtShort(m.opening)+'</b></div>'
+        +'<div><span>Igiteranyo</span><b>'+fmtShort(m.sales)+'</b></div>'
+        +'<div><span>Ayasohotse</span><b class="r">'+fmtShort(m.exp)+'</b></div>'
+        +'<div><span>Inyungu</span><b class="g">'+fmtShort(m.prof)+'</b></div>'
+      +'</div></div>';
+  });
+  box.innerHTML=html;
+}
+
+function shareDay(){
+  var c=calc();
+  var L=[];
+  L.push("📊 Gukurikirana Ubucuruzi — "+dispDate(curDate));
+  L.push("💵 Kuri Caisse: "+fmt(c.kaisi));
+  L.push("📱 Kuri MoMo: "+fmt(c.momo));
+  L.push("➕ Igiteranyo: "+fmt(c.total));
+  L.push("➖ Ayasohotse: "+fmt(c.exp));
+  L.push("📈 Inyungu ("+c.pct+"%): "+fmt(c.prof));
+  L.push("💰 Asigaye: "+fmt(c.net));
+  var text=L.join("\n");
+  if(navigator.share){ navigator.share({title:"Ubucuruzi",text:text}).catch(function(){}); }
+  else { try{ window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank"); }catch(e){} }
+}
+
+var toastTimer;
+function toast(msg){
+  var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.classList.remove("show"); },1800);
+}
+
+/* ===== NUBE (Firebase) — seguimiento centralizado ===== */
+var firebaseConfig = {
+  apiKey: "AIzaSyDJHD4uTjmA9pWNflt56zfiQHmqkFFdNY0",
+  authDomain: "ubucuruzi-a625c.firebaseapp.com",
+  projectId: "ubucuruzi-a625c",
+  storageBucket: "ubucuruzi-a625c.firebasestorage.app",
+  messagingSenderId: "1032672645740",
+  appId: "1:1032672645740:web:bca5f7e96381d51fcbbe49"
+};
+var OWNER_CODE = "DUENO2026";
+var db=null, FB_OK=false, SELLER="";
+function escO(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function setCloud(st){
+  var el=document.getElementById("cloud-status"); if(!el) return;
+  if(st==="ok"){ el.textContent="☁️ Hejuru"; el.style.color="var(--green)"; }
+  else if(st==="sync"){ el.textContent="☁️ Kohereza…"; el.style.color="var(--gold)"; }
+  else { el.textContent="☁️ Offline"; el.style.color="var(--mut2)"; }
+}
+function cloudInit(){
+  try{
+    if(typeof firebase!=="undefined" && firebase.initializeApp){
+      if(!firebase.apps || !firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      db=firebase.firestore(); FB_OK=true;
+    }
+  }catch(e){ FB_OK=false; }
+  setCloud(FB_OK?"ok":"off");
+}
+function sellerSlug(){ var s=(SELLER||"x").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,""); return s||"x"; }
+function ensureSeller(){
+  try{ SELLER=localStorage.getItem("ubucuruzi_seller")||""; }catch(e){ SELLER=""; }
+  if(SELLER){ var n=document.getElementById("seller-name"); if(n)n.textContent=SELLER; loadSellerFromCloud(); }
+  else { var m=document.getElementById("seller-modal"); if(m)m.style.display="flex"; }
+}
+function setSeller(){
+  var v=(document.getElementById("seller-input").value||"").trim(); if(!v) return;
+  SELLER=v; try{ localStorage.setItem("ubucuruzi_seller", v); }catch(e){}
+  document.getElementById("seller-modal").style.display="none";
+  var n=document.getElementById("seller-name"); if(n)n.textContent=SELLER;
+  loadSellerFromCloud();
+}
+function changeSeller(){ var i=document.getElementById("seller-input"); if(i)i.value=SELLER||""; document.getElementById("seller-modal").style.display="flex"; }
+function syncUp(date,c){
+  if(!FB_OK||!db||!SELLER) return;
+  setCloud("sync");
+  db.collection("entries").doc(sellerSlug()+"__"+date).set({
+    seller:SELLER, sellerId:sellerSlug(), date:date,
+    kaisi:c.kaisi, momo:c.momo, exp:c.exp, pct:c.pct,
+    total:c.total, prof:c.prof, net:c.net, updated:Date.now()
+  }).then(function(){ setCloud("ok"); }).catch(function(){ setCloud("off"); });
+}
+function syncDelete(date){
+  if(!FB_OK||!db||!SELLER) return;
+  db.collection("entries").doc(sellerSlug()+"__"+date).delete().catch(function(){});
+}
+function loadSellerFromCloud(){
+  if(!FB_OK||!db||!SELLER) return;
+  db.collection("entries").where("sellerId","==",sellerSlug()).get().then(function(snap){
+    var o=store(), cloudDates={};
+    snap.forEach(function(doc){ var d=doc.data(); if(d&&d.date){ cloudDates[d.date]=true; o[d.date]={kaisi:d.kaisi||0,momo:d.momo||0,exp:d.exp||0,pct:(d.pct!=null?d.pct:20),total:d.total||0,prof:d.prof||0,net:d.net||0}; } });
+    save(o); setDate(curDate); renderHist(); renderMonth(); setCloud("ok");
+    backfillLocal(cloudDates);
+  }).catch(function(){ setCloud("off"); });
+}
+function backfillLocal(cloudDates){
+  if(!FB_OK||!db||!SELLER) return;
+  var o=store();
+  var pend=Object.keys(o).filter(function(d){ return !cloudDates[d]; });
+  if(!pend.length) return;
+  setCloud("sync");
+  try{
+    var batch=db.batch();
+    pend.forEach(function(date){
+      var c=o[date]||{};
+      var k=+c.kaisi||0, m=+c.momo||0, e=+c.exp||0, pct=(c.pct!=null?+c.pct:20);
+      var total=k+m, prof=Math.round(total*pct/100), net=total-e;
+      batch.set(db.collection("entries").doc(sellerSlug()+"__"+date), {
+        seller:SELLER, sellerId:sellerSlug(), date:date,
+        kaisi:k, momo:m, exp:e, pct:pct, total:total, prof:prof, net:net, updated:Date.now()
+      });
+    });
+    batch.commit().then(function(){ setCloud("ok"); }).catch(function(){ setCloud("off"); });
+  }catch(err){ setCloud("off"); }
+}
+var ownerUnsub=null;
+function openOwner(){
+  document.getElementById("owner-modal").style.display="flex";
+  document.getElementById("owner-login").style.display="block";
+  document.getElementById("owner-dash").style.display="none";
+  var p=document.getElementById("owner-pass"); if(p){ p.value=""; setTimeout(function(){p.focus();},100); }
+}
+function closeOwner(){ document.getElementById("owner-modal").style.display="none"; if(ownerUnsub){ try{ownerUnsub();}catch(e){} ownerUnsub=null; } }
+function ownerLogin(){
+  var v=document.getElementById("owner-pass").value||"";
+  if(v!==OWNER_CODE){ document.getElementById("owner-err").style.display="block"; return; }
+  document.getElementById("owner-err").style.display="none";
+  document.getElementById("owner-login").style.display="none";
+  document.getElementById("owner-dash").style.display="block";
+  ownerStart();
+}
+function ownerStart(){
+  var dash=document.getElementById("owner-dash");
+  if(!FB_OK||!db){ dash.innerHTML='<div class="empty">Nta nterineti. Ongera ugerageze ufite internet.</div>'; return; }
+  dash.innerHTML='<div class="empty">Birimo gupakira…</div>';
+  ownerUnsub=db.collection("entries").onSnapshot(function(snap){
+    var rows=[]; snap.forEach(function(doc){ rows.push(doc.data()); }); renderOwner(rows);
+  }, function(){ dash.innerHTML='<div class="empty">Habayeho ikibazo cyo gupakira.</div>'; });
+}
+function renderOwner(rows){
+  var dash=document.getElementById("owner-dash");
+  var today=todayKey(), ym=today.slice(0,7), by={};
+  rows.forEach(function(r){
+    if(!r||!r.seller) return; var s=r.seller;
+    if(!by[s]) by[s]={today:0,mT:0,aT:0,aP:0,aE:0};
+    by[s].aT+=r.total||0; by[s].aP+=r.prof||0; by[s].aE+=r.exp||0;
+    if(r.date===today) by[s].today+=r.total||0;
+    if((r.date||"").slice(0,7)===ym) by[s].mT+=r.total||0;
+  });
+  var names=Object.keys(by).sort(), gToday=0,gMonth=0,gT=0,gP=0,gE=0;
+  if(!names.length){ dash.innerHTML='<div class="empty">Nta makuru arahari.<br>Ategereze ko abacuruzi babika ubucuruzi bwabo.</div>'; return; }
+  function card(name,b,gold){
+    return '<div class="mcard"'+(gold?' style="border-color:var(--gold);background:linear-gradient(180deg,var(--card2),var(--card))"':'')+'>'
+      +'<div class="mc-top"><span class="mc-name">'+name+'</span><span class="mc-bal-l">Byose</span><span class="mc-bal">'+fmt(b.aT)+'</span></div>'
+      +'<div class="mc-grid">'
+        +'<div><span>Igiteranyo</span><b>'+fmtShort(b.aT)+'</b></div>'
+        +'<div><span>Inyungu</span><b class="g">'+fmtShort(b.aP)+'</b></div>'
+        +'<div><span>Ayasohotse</span><b class="r">'+fmtShort(b.aE)+'</b></div>'
+        +'<div><span>Asigaye</span><b>'+fmtShort(b.aT-b.aE)+'</b></div>'
+      +'</div>'
+      +'<div class="mc-sub">Uyu munsi: <b>'+fmt(b.today)+'</b> &nbsp;·&nbsp; '+monthName(ym)+': <b>'+fmt(b.mT)+'</b></div>'
+    +'</div>';
+  }
+  var html='';
+  names.forEach(function(s){ var b=by[s]; gToday+=b.today; gMonth+=b.mT; gT+=b.aT; gP+=b.aP; gE+=b.aE; html+=card(escO(s),b,false); });
+  html+=card('🏆 BOSE HAMWE',{today:gToday,mT:gMonth,aT:gT,aP:gP,aE:gE},true);
+  dash.innerHTML=html;
+}
+
+// INIT
+setDate(todayKey());
+(function(){ var v=localStorage.getItem("ubucuruzi_init"); var ic=document.getElementById("initcap"); if(ic && v && v!=="0") ic.value=v; })();
+renderHist();
+renderMonth();
+cloudInit();
+ensureSeller();
+</script>
+</body>
+</html>
