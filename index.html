@@ -76,6 +76,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F6FAF4;--bg2:#EFF5EA;--bg3:#FFFFFF;--bg4:#EAF1E4;--green:#5A8A32;--green2:#3D6B20;--gdim:#C8E0A8;--gpale:#2D5016;--gold:#C8A84A;--purple:#7A60A8;--rose:#D4782A;--text:#1E3010;--text2:#3A5020;--text3:#6A7A5A;--border:#D8E4CC;--card:#FFFFFF}
+/* ============================================================
+   TEMAS DE COLOR (selector de apariencia) — 23 sept 2026
+   ============================================================ */
+body.theme-azul{--bg:#F2F7FB;--bg2:#E8F1F8;--bg3:#FFFFFF;--bg4:#E3EEF6;--green:#3E7CA6;--green2:#2A5A7D;--gdim:#BFDDEF;--gpale:#1B3D54;--gold:#C8A84A;--purple:#7A60A8;--rose:#D4782A;--text:#152A38;--text2:#2A4A5E;--text3:#5A7688;--border:#CFE2ED;--card:#FFFFFF}
+body.theme-terracota{--bg:#FBF5F0;--bg2:#F6EBE0;--bg3:#FFFFFF;--bg4:#F3E4D6;--green:#C0703E;--green2:#94522C;--gdim:#EAC7A8;--gpale:#5C3115;--gold:#C8A84A;--purple:#7A60A8;--rose:#B5502A;--text:#3A2415;--text2:#5C3D26;--text3:#8A6B54;--border:#EAD9C6;--card:#FFFFFF}
+body.theme-lavanda{--bg:#F7F5FB;--bg2:#EFEAF7;--bg3:#FFFFFF;--bg4:#EBE4F5;--green:#7A60A8;--green2:#5A4380;--gdim:#D7C9EC;--gpale:#3B2A5C;--gold:#C8A84A;--purple:#7A60A8;--rose:#D4782A;--text:#231C36;--text2:#3F3159;--text3:#6E6086;--border:#DCD0EC;--card:#FFFFFF}
+body.theme-oscuro{--bg:#181f1d;--bg2:#1f2825;--bg3:#252e2b;--bg4:#2c3633;--green:#5c9e72;--green2:#7bbf8f;--gdim:#3a6b4d;--gpale:#d4ede0;--gold:#c9a24b;--purple:#9b6bb5;--rose:#c47a7a;--text:#e6ede8;--text2:#a8bfac;--text3:#6a8570;--border:#2e3d38;--card:#1f2825}
+
+/* ---- Selector de apariencia ---- */
+.theme-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.theme-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.theme-swatch{width:40px;height:40px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;flex-shrink:0}
+.theme-swatch.active{border-color:var(--green2);box-shadow:0 0 0 2px var(--gdim)}
+.theme-swatch-verde{background:linear-gradient(135deg,#F6FAF4 50%,#5A8A32 50%)}
+.theme-swatch-azul{background:linear-gradient(135deg,#F2F7FB 50%,#3E7CA6 50%)}
+.theme-swatch-terracota{background:linear-gradient(135deg,#FBF5F0 50%,#C0703E 50%)}
+.theme-swatch-lavanda{background:linear-gradient(135deg,#F7F5FB 50%,#7A60A8 50%)}
+.theme-swatch-oscuro{background:linear-gradient(135deg,#181f1d 50%,#5c9e72 50%)}
+
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;display:flex;flex-direction:column}
@@ -241,11 +260,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
 .empty-icon{font-size:36px;margin-bottom:10px}
 html.is-twa .buy-hide{display:none!important}
 html.is-twa a[href*="buy.stripe.com"]{display:none!important}
-.tts-btn{position:fixed;right:14px;bottom:74px;z-index:9999;display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;background:var(--green);color:#fff;border:none;border-radius:50%;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;font-family:inherit}
-.tts-btn .tts-ico{font-size:23px;line-height:1}
-.tts-btn #ttsLbl{display:none}
-.tts-btn.on{background:#b4452f}
-@media print{.tts-btn{display:none}}
 
 /* ===== Retoque visual suave (no cambia estructura HTML) ===== */
 .feat{border-radius:18px;box-shadow:0 6px 18px -8px rgba(0,0,0,.45);transition:transform .18s ease, box-shadow .18s ease}
@@ -259,9 +273,6 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
 .pbtn:hover{filter:brightness(1.06)}
 .pbtn:active{transform:translateY(1px)}
 .lp,.cp,.nt,.ob-lp{transition:background .18s ease, color .18s ease, border-color .18s ease}
-.tts-btn{box-shadow:0 6px 20px rgba(0,0,0,.4), 0 0 0 4px rgba(92,158,114,.12);transition:transform .18s ease, box-shadow .18s ease, background .2s ease}
-.tts-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,0,0,.45), 0 0 0 6px rgba(92,158,114,.16)}
-.tts-btn:active{transform:translateY(0)}
 /* Tipografía un pelín más aireada dentro de módulos */
 .tp h3{letter-spacing:.2px}
 .tp p, .tp li{line-height:1.55}
@@ -422,6 +433,17 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
   </div>
 
   <div id="sec-cuidador" style="display:none">
+    <div class="theme-card">
+      <div class="sh-title" id="theme-title" style="margin-bottom:2px">🎨 Apariencia</div>
+      <p style="font-size:12px;color:var(--text3)" id="theme-sub">Elige los colores de la app</p>
+      <div class="theme-row">
+        <div class="theme-swatch theme-swatch-verde active" onclick="setTheme('verde',this)" title="Verde"></div>
+        <div class="theme-swatch theme-swatch-azul" onclick="setTheme('azul',this)" title="Azul"></div>
+        <div class="theme-swatch theme-swatch-terracota" onclick="setTheme('terracota',this)" title="Terracota"></div>
+        <div class="theme-swatch theme-swatch-lavanda" onclick="setTheme('lavanda',this)" title="Lavanda"></div>
+        <div class="theme-swatch theme-swatch-oscuro" onclick="setTheme('oscuro',this)" title="Oscuro"></div>
+      </div>
+    </div>
     <div class="feat" style="background:linear-gradient(135deg,#5a3a6b,#9b6bb5)" onclick="openItem('cu0')">
       <div class="feat-tag" id="ft-tag2">🌿 Tu bienestar · Módulo 4</div>
       <div class="feat-icon">🛡️</div>
@@ -1680,7 +1702,6 @@ function setLang(lang){
   applyTxt();
   renderAll();
   if(curItem && document.getElementById("overlay").classList.contains("open")){ loadedTabs={}; loadTab("e"); }
-  if(typeof applyTTSLabel==='function') applyTTSLabel();
 }
 
 function applyTxt(){
@@ -1723,6 +1744,7 @@ function applyTxt(){
   applyRefranes();
   applyCert();
   sid("privlink", {es:"Política de privacidad",fr:"Politique de confidentialité",ca:"Política de privacitat",en:"Privacy Policy"}[curLang]||"Política de privacidad");
+  if(typeof applyThemeTxt==="function") applyThemeTxt();
   if(profile) applyProfile();
 }
 
@@ -1750,7 +1772,6 @@ function resetProfile(){
 }
 
 function switchSec(sec,idx){
-  if(typeof ttsStop==='function') ttsStop();
   curSec=sec;
   for(var i=0;i<4;i++){
     var el=document.getElementById("nt"+i);
@@ -1863,9 +1884,36 @@ if(profile){
   applyProfile();
   document.getElementById("ob").style.display="none";
 }
+/* ---- Selector de apariencia ---- */
+var THEME_TXT = {
+  title:{es:"🎨 Apariencia",fr:"🎨 Apparence",ca:"🎨 Aparença",en:"🎨 Appearance"},
+  sub:{es:"Elige los colores de la app",fr:"Choisissez les couleurs de l'appli",ca:"Tria els colors de l'app",en:"Choose the app colours"}
+};
+function setTheme(name, el){
+  document.body.classList.remove("theme-verde","theme-azul","theme-terracota","theme-lavanda","theme-oscuro");
+  if(name !== "verde") document.body.classList.add("theme-"+name);
+  try{ localStorage.setItem("ccsTheme", name); }catch(e){}
+  document.querySelectorAll(".theme-swatch").forEach(function(s){ s.classList.remove("active"); });
+  if(el) el.classList.add("active");
+  else {
+    var target = document.querySelector(".theme-swatch-"+name);
+    if(target) target.classList.add("active");
+  }
+}
+function applyThemeTxt(){
+  sid("theme-title", THEME_TXT.title[curLang]||THEME_TXT.title.es);
+  sid("theme-sub", THEME_TXT.sub[curLang]||THEME_TXT.sub.es);
+}
+(function(){
+  var saved = "verde";
+  try{ saved = localStorage.getItem("ccsTheme") || "verde"; }catch(e){}
+  setTheme(saved);
+})();
+
 loadInc();
 loadAgenda();
 applyTxt();
+applyThemeTxt();
 renderAll();
 renderAgenda();
 </script>
@@ -2014,131 +2062,6 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(function(){});
   });
 }
-</script>
-<button id="ttsBtn" class="tts-btn" onclick="toggleTTS()" aria-label="Escuchar el texto"><span class="tts-ico" id="ttsIco">🔊</span><span id="ttsLbl">Escuchar</span></button>
-<script>
-/* ---- Lectura en voz alta (accesibilidad) ---- */
-var TTS_LBL = {
-  listen: {es:"Escuchar", fr:"Écouter", ca:"Escoltar", en:"Listen"},
-  stop:   {es:"Parar",    fr:"Arrêter", ca:"Aturar",  en:"Stop"}
-};
-var TTS_LANG = {es:"es-ES", fr:"fr-FR", ca:"ca-ES", en:"en-US"};
-var ttsOn = false;
-
-function _lg(){ return (typeof curLang!=="undefined") ? curLang : "es"; }
-
-function applyTTSLabel(){
-  var l=document.getElementById("ttsLbl");
-  var ic=document.getElementById("ttsIco");
-  var b=document.getElementById("ttsBtn");
-  var lg=_lg();
-  if(l) l.textContent = ttsOn ? (TTS_LBL.stop[lg]||TTS_LBL.stop.es) : (TTS_LBL.listen[lg]||TTS_LBL.listen.es);
-  if(ic) ic.textContent = ttsOn ? "⏹" : "🔊";
-  if(b) b.classList.toggle("on", ttsOn);
-}
-
-function ttsGetText(){
-  var ov=document.getElementById("overlay");
-  if(ov && ov.classList.contains("open")){
-    var parts=[];
-    var t=document.getElementById("mTitle"); if(t && t.textContent) parts.push(t.textContent);
-    var active=document.querySelector("#overlay .tp.active");
-    if(active && active.innerText) parts.push(active.innerText);
-    return parts.join(". ");
-  }
-  var cs=(typeof curSec!=="undefined") ? curSec : "consejos";
-  var sec=document.getElementById("sec-"+cs);
-  return sec ? sec.innerText : "";
-}
-
-var _ttsQueue=[]; var _ttsIdx=0;
-function ttsStop(){
-  try{ window.speechSynthesis.cancel(); }catch(e){}
-  _ttsQueue=[]; _ttsIdx=0;
-  ttsOn=false; applyTTSLabel();
-}
-
-/* Elige la voz más humana disponible del sistema (neural/Google/Siri/Microsoft) */
-function _pickBestVoice(voices, langPref){
-  if(!voices || !voices.length) return null;
-  var lp = (langPref||"").toLowerCase().slice(0,2);
-  var langMatches = voices.filter(function(x){
-    return x.lang && x.lang.toLowerCase().indexOf(lp) === 0;
-  });
-  var pool = langMatches.length ? langMatches : voices;
-  var preferred = [
-    /google.*(neural|wavenet|studio)/i,
-    /microsoft.*(neural|online)/i,
-    /siri/i, /samantha/i, /karen/i, /daniel/i, /monica/i, /paulina/i,
-    /google/i, /microsoft/i, /apple/i,
-    /(neural|natural|premium|enhanced)/i
-  ];
-  for (var i=0;i<preferred.length;i++){
-    var match = pool.find(function(v){ return preferred[i].test(v.name||""); });
-    if (match) return match;
-  }
-  return pool[0];
-}
-
-
-/* Divide el texto en frases cortas para que la lectura respire entre puntos y comas */
-function _splitForSpeech(text){
-  var clean = text.replace(/([.!?;:])\s+/g,"$1|").replace(/,\s+/g,", |");
-  var parts = clean.split("|").map(function(s){return s.trim();}).filter(Boolean);
-  var out=[]; var buf="";
-  parts.forEach(function(p){
-    if((buf+" "+p).length > 180 && buf){ out.push(buf.trim()); buf=p; }
-    else { buf = buf ? (buf+" "+p) : p; }
-  });
-  if(buf) out.push(buf.trim());
-  return out;
-}
-
-function _speakNext(){
-  if(!ttsOn || _ttsIdx >= _ttsQueue.length){
-    ttsOn=false; applyTTSLabel(); return;
-  }
-  var chunk=_ttsQueue[_ttsIdx++];
-  var u=new SpeechSynthesisUtterance(chunk);
-  var lg=_lg();
-  var lc=TTS_LANG[lg]||"es-ES";
-  u.lang=lc;
-  /* Lectura pausada y humana: velocidad lenta, tono ligeramente cálido */
-  u.rate=0.74; u.pitch=1.0; u.volume=1.0;
-  try{
-    var voices=window.speechSynthesis.getVoices()||[];
-    var pref=lc.split("-")[0];
-    var v=_pickBestVoice(voices, pref);
-    if(!v && lg==="ca"){ v=_pickBestVoice(voices,"es"); if(v) u.lang="es-ES"; }
-    if(v) u.voice=v;
-  }catch(e){}
-  u.onend=function(){
-    /* Pausa natural entre frases (~420ms) para que respire entre puntos y comas */
-    setTimeout(_speakNext, 600);
-
-  };
-  u.onerror=function(){ ttsOn=false; applyTTSLabel(); };
-  try{ window.speechSynthesis.speak(u); }catch(e){ ttsOn=false; applyTTSLabel(); }
-}
-
-function toggleTTS(){
-  if(!("speechSynthesis" in window)) return;
-  if(ttsOn){ ttsStop(); return; }
-  var text=(ttsGetText()||"").replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu," ").replace(/\s+/g," ").trim();
-  if(!text) return;
-  try{ window.speechSynthesis.cancel(); }catch(e){}
-  _ttsQueue=_splitForSpeech(text);
-  _ttsIdx=0;
-  ttsOn=true; applyTTSLabel();
-  /* Pequeño delay para que cancel() se procese antes del primer speak() */
-  setTimeout(_speakNext, 80);
-}
-
-(function(){
-  if(!("speechSynthesis" in window)){ var b=document.getElementById("ttsBtn"); if(b) b.style.display="none"; return; }
-  try{ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){ try{ window.speechSynthesis.getVoices(); }catch(e){} }; }catch(e){}
-  applyTTSLabel();
-})();
 </script>
 <script>
 /* ---- Repaso final: auto-chequeo que desbloquea el certificado ---- */
