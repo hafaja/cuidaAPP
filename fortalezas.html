@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mis fortalezas · cuidaAPP</title>
+<meta name="description" content="Descubre tus fortalezas: una reflexión adaptada a personas mayores y a sus cuidadores. CuidarConSentido.">
+<meta name="theme-color" content="#2f6045">
+<link rel="icon" type="image/png" href="favicon-48.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+4:wght@400;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6FAF4;--bg2:#EFF5EA;--bg3:#FFFFFF;--bg4:#EAF1E4;--green:#5A8A32;--green2:#3D6B20;--gdim:#C8E0A8;--gpale:#2D5016;--gold:#C8A84A;--purple:#7A60A8;--rose:#D4782A;--text:#1E3010;--text2:#3A5020;--text3:#6A7A5A;--border:#D8E4CC}
+body.theme-azul{--bg:#F2F7FB;--bg2:#E8F1F8;--bg3:#FFFFFF;--bg4:#E3EEF6;--green:#3E7CA6;--green2:#2A5A7D;--gdim:#BFDDEF;--gpale:#1B3D54;--text:#152A38;--text2:#2A4A5E;--text3:#5A7688;--border:#CFE2ED}
+body.theme-terracota{--bg:#FBF5F0;--bg2:#F6EBE0;--bg3:#FFFFFF;--bg4:#F3E4D6;--green:#C0703E;--green2:#94522C;--gdim:#EAC7A8;--gpale:#5C3115;--rose:#B5502A;--text:#3A2415;--text2:#5C3D26;--text3:#8A6B54;--border:#EAD9C6}
+body.theme-lavanda{--bg:#F7F5FB;--bg2:#EFEAF7;--bg3:#FFFFFF;--bg4:#EBE4F5;--green:#7A60A8;--green2:#5A4380;--gdim:#D7C9EC;--gpale:#3B2A5C;--text:#231C36;--text2:#3F3159;--text3:#6E6086;--border:#DCD0EC}
+body.theme-oscuro{--bg:#181f1d;--bg2:#1f2825;--bg3:#252e2b;--bg4:#2c3633;--green:#5c9e72;--green2:#7bbf8f;--gdim:#3a6b4d;--gpale:#d4ede0;--gold:#c9a24b;--purple:#9b6bb5;--rose:#c47a7a;--text:#e6ede8;--text2:#a8bfac;--text3:#6a8570;--border:#2e3d38}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;min-height:100vh}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border)}
+.back{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit}
+.top-t{font-family:'Playfair Display',serif;font-size:17px;font-weight:700}
+.wrap{padding:18px 16px 60px}
+h1{font-family:'Playfair Display',serif;font-size:24px;line-height:1.25;margin-bottom:8px}
+h2{font-family:'Playfair Display',serif;font-size:19px;margin:22px 0 10px}
+p.lead{font-size:15px;line-height:1.6;color:var(--text2);margin-bottom:14px}
+.note{font-size:12px;line-height:1.55;color:var(--text3);background:var(--bg4);border-radius:12px;padding:10px 12px;margin:14px 0}
+.mode{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--bg3);border:1.5px solid var(--border);border-radius:18px;padding:18px;margin-bottom:12px;cursor:pointer;font-family:inherit;color:var(--text);transition:.18s}
+.mode:active{transform:scale(.98);border-color:var(--green)}
+.mode-i{font-size:34px;flex-shrink:0}
+.mode-t{font-size:16px;font-weight:700;margin-bottom:3px}
+.mode-d{font-size:13px;color:var(--text3);line-height:1.4}
+.link{background:none;border:none;color:var(--green2);font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;text-decoration:underline;padding:6px 0}
+.prog{height:6px;background:var(--bg4);border-radius:6px;overflow:hidden;margin:4px 0 6px}
+.prog-f{height:100%;background:var(--green);transition:width .3s}
+.prog-l{font-size:13px;color:var(--text3);margin-bottom:18px}
+.q-icon{font-size:44px;text-align:center;margin:6px 0 10px}
+.q{font-family:'Source Serif 4',Georgia,serif;font-size:22px;line-height:1.45;text-align:center;margin-bottom:8px;min-height:96px}
+.read{display:block;margin:0 auto 18px;background:var(--bg4);border:1px solid var(--border);border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit}
+.ans{display:block;width:100%;padding:16px;margin-bottom:10px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text);font-size:17px;font-weight:600;cursor:pointer;font-family:inherit;text-align:left;transition:.15s}
+.ans .dots{float:right;letter-spacing:2px;color:var(--green)}
+.ans.sel{background:var(--gdim);border-color:var(--green);color:var(--gpale)}
+.nav{display:flex;justify-content:space-between;margin-top:8px}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.rank{width:28px;height:28px;border-radius:50%;background:var(--gdim);color:var(--gpale);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-n{font-size:17px;font-weight:700}
+.card-v{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text3)}
+.card-d{font-size:14px;line-height:1.55;color:var(--text2);margin:4px 0 10px}
+.tip{font-size:14px;line-height:1.55;border-left:3px solid var(--gold);padding:8px 0 8px 12px;background:var(--bg2);border-radius:0 10px 10px 0}
+.tip b{color:var(--green2)}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:13px}
+.bar-n{width:150px;flex-shrink:0;color:var(--text2)}
+.bar{flex:1;height:8px;background:var(--bg4);border-radius:8px;overflow:hidden}
+.bar-f{height:100%;background:var(--green)}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:10px}
+.btn-p{background:var(--green2);color:#fff}
+.btn-s{background:var(--gdim);color:var(--gpale)}
+.together{background:linear-gradient(135deg,#5a3a6b,#9b6bb5);color:#fff;border-radius:18px;padding:16px;margin:18px 0}
+.together h2{color:#fff;margin:0 0 6px}
+.together p{font-size:14px;line-height:1.55;opacity:.95}
+.chip{display:inline-block;background:rgba(255,255,255,.18);border-radius:20px;padding:5px 11px;font-size:13px;font-weight:600;margin:6px 6px 0 0}
+details summary{cursor:pointer;font-weight:700;color:var(--green2);font-size:15px;margin:18px 0 10px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="top">
+  <button class="back" onclick="goBack()" id="ui-back">← cuidaAPP</button>
+  <div class="top-t" id="ui-top">Mis fortalezas</div>
+</div>
+<div class="wrap">
+  <section id="s-intro"></section>
+  <section id="s-quiz" class="hide"></section>
+  <section id="s-res" class="hide"></section>
+</div>
+<script>
+/* ============================================================
+   MIS FORTALEZAS — cuidaAPP / CuidarConSentido
+   Preguntas originales inspiradas en la clasificación de 24 fortalezas
+   y 6 virtudes de Peterson y Seligman (2004). No reproduce el VIA-IS.
+   Dos versiones: persona mayor (P) y cuidador/a (C).
+   ============================================================ */
+var lang = "es"; try{ lang = localStorage.getItem("cl") || "es"; }catch(e){}
+(function(){ var th="verde"; try{ th=localStorage.getItem("ccsTheme")||"verde"; }catch(e){} if(th!=="verde") document.body.classList.add("theme-"+th); })();
+
+var UI = {
+  top:{es:"Mis fortalezas",fr:"Mes forces",ca:"Les meves fortaleses",en:"My strengths"},
+  back:{es:"← cuidaAPP",fr:"← cuidaAPP",ca:"← cuidaAPP",en:"← cuidaAPP"},
+  title:{es:"¿Cuáles son tus fortalezas?",fr:"Quelles sont tes forces ?",ca:"Quines són les teves fortaleses?",en:"What are your strengths?"},
+  lead:{es:"Todos tenemos fortalezas de carácter que nos acompañan toda la vida. Conocerlas ayuda a vivir con más sentido, a cuidar mejor y a dejarse cuidar. Son 24 preguntas sencillas, sin respuestas buenas ni malas.",fr:"Nous avons tous des forces de caractère qui nous accompagnent toute la vie. Les connaître aide à vivre avec plus de sens, à mieux aider et à se laisser aider. 24 questions simples, sans bonnes ni mauvaises réponses.",ca:"Tots tenim fortaleses de caràcter que ens acompanyen tota la vida. Conèixer-les ajuda a viure amb més sentit, a cuidar millor i a deixar-se cuidar. Són 24 preguntes senzilles, sense respostes bones ni dolentes.",en:"We all have character strengths that stay with us for life. Knowing them helps us live with more meaning, care better and accept care. 24 simple questions, no right or wrong answers."},
+  who:{es:"¿Quién responde?",fr:"Qui répond ?",ca:"Qui respon?",en:"Who is answering?"},
+  mP:{es:"Soy la persona mayor",fr:"Je suis la personne âgée",ca:"Sóc la persona gran",en:"I am the older person"},
+  mPd:{es:"O la acompaño: lee cada pregunta en voz alta y deja que responda a su ritmo.",fr:"Ou je l'accompagne : lisez chaque question à voix haute et laissez-la répondre à son rythme.",ca:"O l'acompanyo: llegeix cada pregunta en veu alta i deixa que respongui al seu ritme.",en:"Or I'm helping: read each question aloud and let them answer at their own pace."},
+  mC:{es:"Soy cuidador/a",fr:"Je suis aidant·e",ca:"Sóc cuidador/a",en:"I am a caregiver"},
+  mCd:{es:"Descubre las fortalezas que te sostienen en el cuidado.",fr:"Découvre les forces qui te soutiennent dans l'aide.",ca:"Descobreix les fortaleses que et sostenen en la cura.",en:"Discover the strengths that sustain you as a carer."},
+  prev:{es:"Ver mis últimos resultados",fr:"Voir mes derniers résultats",ca:"Veure els meus últims resultats",en:"See my last results"},
+  disc:{es:"Herramienta de reflexión inspirada en la clasificación de 24 fortalezas de Peterson y Seligman (2004). No es el cuestionario VIA-IS ni una prueba diagnóstica. La versión validada está en viacharacter.org. Tus respuestas se guardan solo en este dispositivo.",fr:"Outil de réflexion inspiré de la classification des 24 forces de Peterson et Seligman (2004). Ce n'est ni le questionnaire VIA-IS ni un test diagnostique. La version validée est sur viacharacter.org. Tes réponses restent sur cet appareil.",ca:"Eina de reflexió inspirada en la classificació de 24 fortaleses de Peterson i Seligman (2004). No és el qüestionari VIA-IS ni una prova diagnòstica. La versió validada és a viacharacter.org. Les respostes es guarden només en aquest dispositiu.",en:"A reflection tool inspired by Peterson and Seligman's (2004) classification of 24 strengths. It is not the VIA-IS questionnaire or a diagnostic test. The validated version is at viacharacter.org. Your answers stay on this device."},
+  of:{es:"de",fr:"sur",ca:"de",en:"of"},
+  read:{es:"🔊 Leer en voz alta",fr:"🔊 Lire à voix haute",ca:"🔊 Llegir en veu alta",en:"🔊 Read aloud"},
+  back2:{es:"← Anterior",fr:"← Précédent",ca:"← Anterior",en:"← Previous"},
+  scale:{es:["No se parece a mí","Un poco","Bastante","Mucho, así soy yo"],fr:["Ça ne me ressemble pas","Un peu","Assez","Beaucoup, c'est moi"],ca:["No s'assembla a mi","Una mica","Bastant","Molt, així sóc jo"],en:["Not like me","A little","Quite a lot","Very much me"]},
+  resT:{es:"Tus 5 fortalezas principales",fr:"Tes 5 forces principales",ca:"Les teves 5 fortaleses principals",en:"Your top 5 strengths"},
+  resL:{es:"Son las que más te definen ahora. Úsalas a propósito: es una de las formas más sencillas de ganar bienestar.",fr:"Ce sont celles qui te définissent le plus. Utilise-les volontairement : c'est l'un des moyens les plus simples de gagner en bien-être.",ca:"Són les que més et defineixen ara. Fes-les servir a propòsit: és una de les maneres més senzilles de guanyar benestar.",en:"These define you most right now. Use them on purpose: it's one of the simplest ways to gain wellbeing."},
+  week:{es:"Esta semana:",fr:"Cette semaine :",ca:"Aquesta setmana:",en:"This week:"},
+  all:{es:"Ver las 24 fortalezas",fr:"Voir les 24 forces",ca:"Veure les 24 fortaleses",en:"See all 24 strengths"},
+  share:{es:"📤 Compartir con la familia",fr:"📤 Partager avec la famille",ca:"📤 Compartir amb la família",en:"📤 Share with family"},
+  other:{es:"Hacer la versión del otro perfil",fr:"Faire la version de l'autre profil",ca:"Fer la versió de l'altre perfil",en:"Take the other profile's version"},
+  redo:{es:"Repetir el cuestionario",fr:"Refaire le questionnaire",ca:"Repetir el qüestionari",en:"Retake"},
+  togT:{es:"Vuestras fortalezas en común",fr:"Vos forces en commun",ca:"Les vostres fortaleses en comú",en:"Strengths you share"},
+  togL:{es:"La persona mayor y su cuidador/a comparten estas fortalezas. Son un buen punto de encuentro para hacer cosas juntos.",fr:"La personne âgée et son aidant·e partagent ces forces : un bon point de rencontre pour faire des choses ensemble.",ca:"La persona gran i el seu cuidador/a comparteixen aquestes fortaleses: un bon punt de trobada per fer coses junts.",en:"The older person and their carer share these strengths — a good meeting point for doing things together."},
+  togNone:{es:"Tenéis fortalezas distintas: ¡os complementáis! Cada uno puede aportar lo suyo.",fr:"Vous avez des forces différentes : vous vous complétez !",ca:"Teniu fortaleses diferents: us complementeu!",en:"You have different strengths: you complement each other!"},
+  idea:{es:"Idea para hacer juntos:",fr:"Idée à faire ensemble :",ca:"Idea per fer junts:",en:"Idea to do together:"},
+  date:{es:"Realizado el",fr:"Réalisé le",ca:"Fet el",en:"Completed on"},
+  modeP:{es:"Persona mayor",fr:"Personne âgée",ca:"Persona gran",en:"Older person"},
+  modeC:{es:"Cuidador/a",fr:"Aidant·e",ca:"Cuidador/a",en:"Carer"},
+  shareH:{es:"Mis 5 fortalezas (cuidaAPP · CuidarConSentido)",fr:"Mes 5 forces (cuidaAPP · CuidarConSentido)",ca:"Les meves 5 fortaleses (cuidaAPP · CuidarConSentido)",en:"My top 5 strengths (cuidaAPP · CuidarConSentido)"}
+};
+function u(k){ return (UI[k]&&(UI[k][lang]||UI[k].es))||""; }
+
+var VIRT = {
+  sab:{es:"Sabiduría",fr:"Sagesse",ca:"Saviesa",en:"Wisdom"},
+  cor:{es:"Coraje",fr:"Courage",ca:"Coratge",en:"Courage"},
+  hum:{es:"Humanidad",fr:"Humanité",ca:"Humanitat",en:"Humanity"},
+  jus:{es:"Justicia",fr:"Justice",ca:"Justícia",en:"Justice"},
+  tem:{es:"Templanza",fr:"Tempérance",ca:"Temprança",en:"Temperance"},
+  tra:{es:"Trascendencia",fr:"Transcendance",ca:"Transcendència",en:"Transcendence"}
+};
+
+/* n: nombre en 4 idiomas · v: virtud · p/c: pregunta persona/cuidador · d: descripción · tp/tc: propuesta semanal */
+var FZ = [
+ {i:"🎨",v:"sab",n:{es:"Creatividad",fr:"Créativité",ca:"Creativitat",en:"Creativity"},
+  p:"Me gusta inventar, arreglar o hacer las cosas a mi manera.",
+  c:"Cuando cuido, se me ocurren formas nuevas de resolver los problemas del día.",
+  d:"Encontrar maneras nuevas y propias de hacer las cosas.",
+  tp:"Prepara una receta a tu manera, decora una maceta o pinta libremente (Actividades → Creatividad).",
+  tc:"Anota un «truco» propio que te funcione en el cuidado y compártelo con otra persona cuidadora."},
+ {i:"🔍",v:"sab",n:{es:"Curiosidad",fr:"Curiosité",ca:"Curiositat",en:"Curiosity"},
+  p:"Me sigue gustando saber cosas nuevas y hacer preguntas.",
+  c:"Me interesa entender qué le pasa a mi familiar y por qué.",
+  d:"Interés por lo que nos rodea y ganas de explorar.",
+  tp:"Elige un tema que te intrigue (un lugar, una planta, una noticia) y pide que te lean algo sobre él.",
+  tc:"Usa la pestaña «Preguntas» de un módulo para resolver una duda que tengas desde hace tiempo."},
+ {i:"🧭",v:"sab",n:{es:"Buen juicio",fr:"Discernement",ca:"Bon judici",en:"Judgement"},
+  p:"Antes de decidir algo, lo pienso con calma y escucho otras opiniones.",
+  c:"Antes de tomar una decisión sobre el cuidado, valoro varias opciones.",
+  d:"Pensar las cosas desde varios lados antes de sacar conclusiones.",
+  tp:"Comentad juntos un titular del día: ¿cómo lo vería alguien que piensa distinto? (Actividades → Titulares del día).",
+  tc:"Ante una decisión pendiente, escribe dos ventajas y dos inconvenientes de cada opción antes de elegir."},
+ {i:"📚",v:"sab",n:{es:"Amor por aprender",fr:"Amour de l'apprentissage",ca:"Amor per aprendre",en:"Love of learning"},
+  p:"Disfruto aprendiendo, aunque sea algo pequeño.",
+  c:"Busco información y formación para cuidar mejor.",
+  d:"Gusto por adquirir conocimientos y habilidades nuevas.",
+  tp:"Aprende algo sencillo esta semana: una palabra en otro idioma, el nombre de un árbol, una canción.",
+  tc:"Dedica 15 minutos a un módulo de cuidaAPP y apunta una idea que vayas a aplicar."},
+ {i:"🦉",v:"sab",n:{es:"Perspectiva",fr:"Perspective",ca:"Perspectiva",en:"Perspective"},
+  p:"La gente me pide consejo por lo que he vivido.",
+  c:"En los momentos difíciles, sé ver lo que de verdad importa.",
+  d:"Sabiduría práctica: ver el cuadro completo de la vida.",
+  tp:"Comparte un consejo de vida con alguien más joven y guardadlo por escrito (Actividades → Escribir recuerdos).",
+  tc:"Cuando un día salga mal, pregúntate: ¿qué importará de esto dentro de un mes?"},
+ {i:"🦁",v:"cor",n:{es:"Valentía",fr:"Bravoure",ca:"Valentia",en:"Bravery"},
+  p:"Afronto los cambios y las dificultades aunque me den miedo.",
+  c:"Me atrevo a pedir ayuda o a decir lo que pienso aunque me cueste.",
+  d:"No retroceder ante la dificultad o el miedo.",
+  tp:"Cuenta en voz alta una vez en la vida en que fuiste valiente.",
+  tc:"Haz esta semana esa llamada o esa petición que vienes aplazando."},
+ {i:"🧗",v:"cor",n:{es:"Perseverancia",fr:"Persévérance",ca:"Perseverança",en:"Perseverance"},
+  p:"Cuando empiezo algo, me gusta terminarlo.",
+  c:"Sigo adelante con el cuidado aunque haya días muy cansados.",
+  d:"Acabar lo que se empieza, a pesar de los obstáculos.",
+  tp:"Elige una tarea de varios días (un puzle, un álbum, unas plantas) y avanza un poco cada día.",
+  tc:"Tu constancia es valiosa, pero no ilimitada: programa un descanso igual de constante (Módulo 4)."},
+ {i:"🤝",v:"cor",n:{es:"Honestidad",fr:"Honnêteté",ca:"Honestedat",en:"Honesty"},
+  p:"Digo la verdad y me muestro tal como soy.",
+  c:"Reconozco con sinceridad cómo me siento, también cuando estoy mal.",
+  d:"Ser auténtico y coherente con uno mismo.",
+  tp:"Cuenta a alguien de confianza qué cosas son de verdad importantes para ti.",
+  tc:"Haz el semáforo del cuidador (Consejos → «Reconoce dónde estás hoy») y respóndelo con sinceridad."},
+ {i:"☀️",v:"cor",n:{es:"Vitalidad",fr:"Vitalité",ca:"Vitalitat",en:"Zest"},
+  p:"Me levanto con ganas de hacer cosas.",
+  c:"A pesar del cuidado, conservo energía e ilusión por mis cosas.",
+  d:"Vivir con energía y entusiasmo.",
+  tp:"Programa un paseo o un rato de música en la hora del día en que tengas más energía.",
+  tc:"Protege tu energía: reserva 20 minutos de movimiento solo para ti esta semana."},
+ {i:"❤️",v:"hum",n:{es:"Amor",fr:"Amour",ca:"Amor",en:"Love"},
+  p:"Tengo personas a las que quiero y que me quieren.",
+  c:"Cuidar es también para mí una forma de expresar cariño.",
+  d:"Valorar las relaciones cercanas y dejarse querer.",
+  tp:"Llama a alguien querido o mirad juntos fotos de las personas importantes (Actividades → Álbum de fotos).",
+  tc:"Dedica un rato a una relación tuya que no tenga nada que ver con el cuidado."},
+ {i:"🌷",v:"hum",n:{es:"Amabilidad",fr:"Gentillesse",ca:"Amabilitat",en:"Kindness"},
+  p:"Me gusta ayudar y tener detalles con los demás.",
+  c:"Trato a mi familiar con delicadeza, incluso cuando estoy cansado/a.",
+  d:"Generosidad y cuidado hacia los demás.",
+  tp:"Haz un pequeño favor a alguien: una llamada, un dulce, una palabra amable. Ayudar también da sentido.",
+  tc:"Practica la amabilidad contigo: háblate como hablarías a un amigo cansado."},
+ {i:"👥",v:"hum",n:{es:"Inteligencia social",fr:"Intelligence sociale",ca:"Intel·ligència social",en:"Social intelligence"},
+  p:"Me doy cuenta de cómo se sienten los demás.",
+  c:"Sé leer el estado de ánimo de mi familiar aunque no lo diga.",
+  d:"Entender las emociones propias y ajenas.",
+  tp:"En una conversación, pregunta a alguien: «¿Y tú, cómo estás de verdad?».",
+  tc:"Usa esa sensibilidad para validar antes de corregir (Consejo: «Valida antes de corregir»)."},
+ {i:"🧩",v:"jus",n:{es:"Trabajo en equipo",fr:"Esprit d'équipe",ca:"Treball en equip",en:"Teamwork"},
+  p:"Me siento bien formando parte de un grupo: familia, vecinos, parroquia o club.",
+  c:"Sé repartir tareas y colaborar con otros en el cuidado.",
+  d:"Ser un buen miembro de un grupo.",
+  tp:"Participa en una actividad de grupo: centro de día, coro, una partida de dominó.",
+  tc:"Organiza un turno con la familia usando la Agenda del día y compártelo."},
+ {i:"⚖️",v:"jus",n:{es:"Equidad",fr:"Équité",ca:"Equitat",en:"Fairness"},
+  p:"Trato a todos por igual y me importa lo que es justo.",
+  c:"Procuro que las decisiones del cuidado sean justas para todos, también para mí.",
+  d:"Tratar a todos con justicia e igualdad.",
+  tp:"Cuenta a alguien una ocasión en que defendiste lo que era justo.",
+  tc:"Revisa el reparto del cuidado en la familia: ¿es justo para ti? Si no, propón un cambio concreto."},
+ {i:"🧑‍✈️",v:"jus",n:{es:"Liderazgo",fr:"Leadership",ca:"Lideratge",en:"Leadership"},
+  p:"Se me da bien organizar a otros o animar al grupo.",
+  c:"Tomo la iniciativa para organizar el cuidado cuando hace falta.",
+  d:"Organizar y animar a un grupo hacia una meta común.",
+  tp:"Propón y organiza un plan sencillo: una comida familiar, una salida, un juego.",
+  tc:"Convoca una breve reunión familiar con un objetivo concreto y una fecha."},
+ {i:"🕊️",v:"tem",n:{es:"Perdón",fr:"Pardon",ca:"Perdó",en:"Forgiveness"},
+  p:"Puedo perdonar a quien me ha hecho daño y seguir adelante.",
+  c:"Me perdono cuando me equivoco o pierdo la paciencia.",
+  d:"Dar segundas oportunidades, también a uno mismo.",
+  tp:"Piensa en algo del pasado que quieras soltar; si lo deseas, háblalo con alguien de confianza.",
+  tc:"Al final del día, nombra un error y dite: «Lo hice lo mejor que pude» (Consejo: «La culpa no es la realidad»)."},
+ {i:"🌾",v:"tem",n:{es:"Humildad",fr:"Humilité",ca:"Humilitat",en:"Humility"},
+  p:"No necesito presumir de lo que he hecho en la vida.",
+  c:"Acepto que no puedo hacerlo todo y que otros también saben.",
+  d:"Dejar que los logros hablen solos y reconocer los propios límites.",
+  tp:"Pide a alguien que te enseñe algo (el móvil, una receta nueva): aprender de otros también es una fortaleza.",
+  tc:"Acepta esta semana una ayuda que te ofrezcan, sin justificarte."},
+ {i:"🐢",v:"tem",n:{es:"Prudencia",fr:"Prudence",ca:"Prudència",en:"Prudence"},
+  p:"Pienso antes de actuar y evito riesgos innecesarios.",
+  c:"Planifico con tiempo las citas, la medicación y los trámites.",
+  d:"Previsión y cuidado al decidir.",
+  tp:"Habla con alguien de confianza sobre tus deseos importantes para el futuro, con calma y sin prisa.",
+  tc:"Prepara la próxima visita médica con la nota: 3 cambios + 2 preguntas + 1 necesidad tuya (Módulo 5)."},
+ {i:"🧘",v:"tem",n:{es:"Autocontrol",fr:"Maîtrise de soi",ca:"Autocontrol",en:"Self-regulation"},
+  p:"Controlo bien mis impulsos y mis enfados.",
+  c:"Sé calmarme antes de reaccionar en un momento tenso.",
+  d:"Regular lo que uno siente y lo que hace.",
+  tp:"Antes de dormir, haz tres respiraciones lentas contando hasta cuatro.",
+  tc:"Haz tres respiraciones antes de entrar en la habitación (Consejo: «Tu calma es su calma»)."},
+ {i:"🌅",v:"tra",n:{es:"Aprecio de la belleza",fr:"Appréciation de la beauté",ca:"Apreciació de la bellesa",en:"Appreciation of beauty"},
+  p:"Me emociono con un paisaje, una canción o algo bien hecho.",
+  c:"Aun en días duros, me fijo en los pequeños momentos bonitos.",
+  d:"Saber admirar la belleza y lo bien hecho.",
+  tp:"Busca cada día un momento bello: el sol de la tarde, una flor, una música de tu época.",
+  tc:"Haz durante una semana una foto al día de algo bonito."},
+ {i:"🙏",v:"tra",n:{es:"Gratitud",fr:"Gratitude",ca:"Gratitud",en:"Gratitude"},
+  p:"Doy gracias por lo que tengo y por las personas que me rodean.",
+  c:"Agradezco los buenos momentos que vivo junto a mi familiar.",
+  d:"Reconocer y agradecer lo bueno de la vida.",
+  tp:"Cada noche, di o escribe de una a tres cosas por las que te sientes agradecido/a.",
+  tc:"Diario de gratitud: cada noche, anota de una a tres cosas buenas del día y por qué ocurrieron."},
+ {i:"🌱",v:"tra",n:{es:"Esperanza",fr:"Espoir",ca:"Esperança",en:"Hope"},
+  p:"Confío en que todavía vendrán cosas buenas.",
+  c:"Creo que podemos vivir buenos días a pesar de la enfermedad.",
+  d:"Esperar lo mejor y poner de nuestra parte para que llegue.",
+  tp:"Apunta en el calendario algo bonito que esperar: una visita, una salida, una celebración.",
+  tc:"Escribe tres cosas buenas que esperas del próximo mes y una acción para que ocurra una de ellas."},
+ {i:"😄",v:"tra",n:{es:"Humor",fr:"Humour",ca:"Humor",en:"Humour"},
+  p:"Me río con facilidad y me gusta hacer reír.",
+  c:"El humor me ayuda a llevar mejor los momentos difíciles.",
+  d:"Ver el lado divertido de la vida.",
+  tp:"Cuenta un chiste o una anécdota divertida de tu juventud.",
+  tc:"Ríete con tu familiar, nunca de él: una canción alegre o una broma compartida alivia a los dos."},
+ {i:"✨",v:"tra",n:{es:"Espiritualidad y sentido",fr:"Spiritualité et sens",ca:"Espiritualitat i sentit",en:"Spirituality & meaning"},
+  p:"Mi vida tiene sentido; me apoyo en mi fe o en mis valores.",
+  c:"Encuentro un sentido a lo que hago al cuidar.",
+  d:"Propósito y conexión con algo más grande que uno mismo.",
+  tp:"Dedica un rato a lo que te da paz: rezar, meditar, contemplar la naturaleza o recordar tus valores.",
+  tc:"Escribe en una frase para qué cuidas y vuelve a ella en los días difíciles."}
+];
+
+/* Traducciones: por fortaleza, en el mismo orden que FZ → [pregunta persona, pregunta cuidador, descripción, propuesta persona, propuesta cuidador] */
+var TR = {
+ fr:[
+  ["J'aime inventer, réparer ou faire les choses à ma façon.","Quand j'aide, je trouve de nouvelles façons de résoudre les problèmes du quotidien.","Trouver des manières nouvelles et personnelles de faire les choses.","Prépare une recette à ta façon, décore un pot de fleurs ou peins librement (Activités → Créativité).","Note une « astuce » personnelle qui fonctionne pour toi et partage-la avec un autre aidant."],
+  ["J'aime toujours apprendre des choses nouvelles et poser des questions.","Je cherche à comprendre ce qui arrive à mon proche, et pourquoi.","Intérêt pour ce qui nous entoure et envie d'explorer.","Choisis un sujet qui t'intrigue (un lieu, une plante, une nouvelle) et demande qu'on te lise quelque chose dessus.","Utilise l'onglet « Questions » d'un module pour résoudre un doute que tu as depuis longtemps."],
+  ["Avant de décider, j'y réfléchis calmement et j'écoute d'autres avis.","Avant une décision sur les soins, j'examine plusieurs options.","Considérer les choses sous plusieurs angles avant de conclure.","Commentez ensemble un titre du jour : comment le verrait quelqu'un qui pense autrement ? (Activités → Les titres du jour).","Face à une décision en attente, écris deux avantages et deux inconvénients de chaque option avant de choisir."],
+  ["J'aime apprendre, même une petite chose.","Je cherche des informations et des formations pour mieux aider.","Plaisir d'acquérir de nouvelles connaissances et compétences.","Apprends une chose simple cette semaine : un mot dans une autre langue, le nom d'un arbre, une chanson.","Consacre 15 minutes à un module de cuidaAPP et note une idée que tu vas appliquer."],
+  ["Les gens me demandent conseil pour ce que j'ai vécu.","Dans les moments difficiles, je sais voir ce qui compte vraiment.","Sagesse pratique : voir la vie dans son ensemble.","Partage un conseil de vie avec quelqu'un de plus jeune et gardez-le par écrit (Activités → Écrire des souvenirs).","Quand une journée tourne mal, demande-toi : qu'est-ce qui comptera encore dans un mois ?"],
+  ["J'affronte les changements et les difficultés, même s'ils me font peur.","J'ose demander de l'aide ou dire ce que je pense, même si cela me coûte.","Ne pas reculer devant la difficulté ou la peur.","Raconte à voix haute un moment de ta vie où tu as été courageux·se.","Passe cette semaine l'appel ou fais la demande que tu repousses depuis longtemps."],
+  ["Quand je commence quelque chose, j'aime le terminer.","Je continue d'aider même les jours de grande fatigue.","Finir ce que l'on commence malgré les obstacles.","Choisis une tâche de plusieurs jours (un puzzle, un album, des plantes) et avance un peu chaque jour.","Ta constance est précieuse, mais pas illimitée : prévois un repos tout aussi régulier (Module 4)."],
+  ["Je dis la vérité et je me montre tel·le que je suis.","Je reconnais sincèrement ce que je ressens, même quand je vais mal.","Être authentique et cohérent·e avec soi-même.","Dis à une personne de confiance ce qui compte vraiment pour toi.","Fais le feu tricolore de l'aidant (Conseils → « Reconnaissez où vous en êtes aujourd'hui ») et réponds sincèrement."],
+  ["Je me lève avec l'envie de faire des choses.","Malgré l'aide que j'apporte, je garde de l'énergie et de l'envie pour mes propres projets.","Vivre avec énergie et enthousiasme.","Prévois une promenade ou un moment de musique à l'heure où tu as le plus d'énergie.","Protège ton énergie : réserve 20 minutes de mouvement rien que pour toi cette semaine."],
+  ["J'ai des personnes que j'aime et qui m'aiment.","Aider est aussi pour moi une façon d'exprimer mon affection.","Valoriser les relations proches et se laisser aimer.","Appelle une personne chère ou regardez ensemble des photos des gens importants (Activités → L'album photos).","Consacre un moment à une relation à toi, sans rapport avec l'aide."],
+  ["J'aime aider et avoir des attentions pour les autres.","Je traite mon proche avec douceur, même quand je suis fatigué·e.","Générosité et attention envers les autres.","Rends un petit service à quelqu'un : un appel, une douceur, un mot gentil. Aider donne aussi du sens.","Sois gentil·le avec toi-même : parle-toi comme tu parlerais à un ami fatigué."],
+  ["Je remarque comment se sentent les autres.","Je sais lire l'humeur de mon proche même s'il ne la dit pas.","Comprendre ses propres émotions et celles des autres.","Dans une conversation, demande à quelqu'un : « Et toi, comment vas-tu vraiment ? ».","Utilise cette sensibilité pour valider avant de corriger (Conseil : « Valider avant de corriger »)."],
+  ["Je me sens bien quand je fais partie d'un groupe : famille, voisins, paroisse ou club.","Je sais répartir les tâches et collaborer avec d'autres pour l'aide.","Être un bon membre d'un groupe.","Participe à une activité de groupe : accueil de jour, chorale, partie de dominos.","Organise un roulement avec la famille grâce à l'Agenda du jour et partage-le."],
+  ["Je traite tout le monde de la même façon et ce qui est juste compte pour moi.","Je veille à ce que les décisions sur l'aide soient justes pour tous, moi compris·e.","Traiter chacun avec justice et égalité.","Raconte à quelqu'un une fois où tu as défendu ce qui était juste.","Regarde comment l'aide est répartie dans la famille : est-ce juste pour toi ? Sinon, propose un changement concret."],
+  ["Je sais organiser les autres ou animer le groupe.","Je prends l'initiative d'organiser l'aide quand il le faut.","Organiser et animer un groupe vers un but commun.","Propose et organise un projet simple : un repas de famille, une sortie, un jeu.","Organise une courte réunion de famille avec un objectif précis et une date."],
+  ["Je peux pardonner à qui m'a fait du mal et aller de l'avant.","Je me pardonne quand je me trompe ou que je perds patience.","Donner une seconde chance, à soi-même aussi.","Pense à quelque chose du passé que tu voudrais laisser partir ; si tu le souhaites, parles-en à une personne de confiance.","En fin de journée, nomme une erreur et dis-toi : « J'ai fait de mon mieux » (Conseil : « La culpabilité n'est pas la réalité »)."],
+  ["Je n'ai pas besoin de me vanter de ce que j'ai fait dans la vie.","J'accepte de ne pas pouvoir tout faire et que d'autres savent aussi.","Laisser parler ses réussites et reconnaître ses limites.","Demande à quelqu'un de t'apprendre quelque chose (le téléphone, une nouvelle recette) : apprendre des autres est aussi une force.","Accepte cette semaine une aide qu'on te propose, sans te justifier."],
+  ["Je réfléchis avant d'agir et j'évite les risques inutiles.","Je planifie à l'avance les rendez-vous, les médicaments et les démarches.","Prévoyance et soin dans les décisions.","Parle avec une personne de confiance de tes souhaits importants pour l'avenir, calmement et sans hâte.","Prépare la prochaine visite médicale avec la note : 3 changements + 2 questions + 1 besoin à toi (Module 5)."],
+  ["Je maîtrise bien mes impulsions et mes colères.","Je sais me calmer avant de réagir dans un moment tendu.","Réguler ce que l'on ressent et ce que l'on fait.","Avant de dormir, fais trois respirations lentes en comptant jusqu'à quatre.","Fais trois respirations avant d'entrer dans la pièce (Conseil : « Votre calme est son calme »)."],
+  ["Je suis ému·e par un paysage, une chanson ou un travail bien fait.","Même les jours durs, je remarque les petits moments de beauté.","Savoir admirer la beauté et ce qui est bien fait.","Cherche chaque jour un beau moment : le soleil du soir, une fleur, une musique de ton époque.","Pendant une semaine, prends chaque jour une photo de quelque chose de beau."],
+  ["Je suis reconnaissant·e pour ce que j'ai et pour les personnes qui m'entourent.","Je suis reconnaissant·e des bons moments que je vis avec mon proche.","Reconnaître et remercier pour ce qui est bon dans la vie.","Chaque soir, dis ou écris une à trois choses pour lesquelles tu es reconnaissant·e.","Journal de gratitude : chaque soir, note une à trois bonnes choses de la journée et pourquoi elles sont arrivées."],
+  ["J'ai confiance que de bonnes choses arriveront encore.","Je crois que nous pouvons vivre de bons jours malgré la maladie.","Espérer le meilleur et y contribuer.","Note dans le calendrier un beau moment à attendre : une visite, une sortie, une fête.","Écris trois bonnes choses que tu attends du mois prochain et une action pour que l'une d'elles arrive."],
+  ["Je ris facilement et j'aime faire rire.","L'humour m'aide à mieux vivre les moments difficiles.","Voir le côté drôle de la vie.","Raconte une blague ou une anecdote amusante de ta jeunesse.","Ris avec ton proche, jamais de lui : une chanson joyeuse ou une plaisanterie partagée soulage les deux."],
+  ["Ma vie a du sens ; je m'appuie sur ma foi ou sur mes valeurs.","Je trouve un sens à ce que je fais en aidant.","But et lien avec quelque chose de plus grand que soi.","Prends un moment pour ce qui t'apaise : prier, méditer, contempler la nature ou te rappeler tes valeurs.","Écris en une phrase pourquoi tu aides et reviens-y les jours difficiles."]
+ ],
+ ca:[
+  ["M'agrada inventar, arreglar o fer les coses a la meva manera.","Quan cuido, se m'acudeixen maneres noves de resoldre els problemes del dia.","Trobar maneres noves i pròpies de fer les coses.","Prepara una recepta a la teva manera, decora un test o pinta lliurement (Activitats → Creativitat).","Apunta un «truc» propi que et funcioni en la cura i comparteix-lo amb una altra persona cuidadora."],
+  ["Encara m'agrada saber coses noves i fer preguntes.","M'interessa entendre què li passa al meu familiar i per què.","Interès pel que ens envolta i ganes d'explorar.","Tria un tema que t'intrigui (un lloc, una planta, una notícia) i demana que et llegeixin alguna cosa sobre això.","Fes servir la pestanya «Preguntes» d'un mòdul per resoldre un dubte que tens des de fa temps."],
+  ["Abans de decidir, m'ho penso amb calma i escolto altres opinions.","Abans de prendre una decisió sobre la cura, valoro diverses opcions.","Pensar les coses des de diversos costats abans de treure conclusions.","Comenteu junts un titular del dia: com ho veuria algú que pensa diferent? (Activitats → Titulars del dia).","Davant d'una decisió pendent, escriu dos avantatges i dos inconvenients de cada opció abans de triar."],
+  ["Gaudeixo aprenent, encara que sigui una cosa petita.","Busco informació i formació per cuidar millor.","Gust per adquirir coneixements i habilitats noves.","Aprèn una cosa senzilla aquesta setmana: una paraula en un altre idioma, el nom d'un arbre, una cançó.","Dedica 15 minuts a un mòdul de cuidaAPP i apunta una idea que aplicaràs."],
+  ["La gent em demana consell pel que he viscut.","En els moments difícils, sé veure el que realment importa.","Saviesa pràctica: veure el quadre complet de la vida.","Comparteix un consell de vida amb algú més jove i guardeu-lo per escrit (Activitats → Escriure records).","Quan un dia surti malament, pregunta't: què importarà d'això d'aquí a un mes?"],
+  ["Afronto els canvis i les dificultats encara que em facin por.","M'atreveixo a demanar ajuda o a dir el que penso encara que em costi.","No recular davant la dificultat o la por.","Explica en veu alta una vegada a la vida en què vas ser valent/a.","Fes aquesta setmana aquella trucada o aquella petició que vas ajornant."],
+  ["Quan començo alguna cosa, m'agrada acabar-la.","Continuo amb la cura encara que hi hagi dies molt cansats.","Acabar el que es comença malgrat els obstacles.","Tria una tasca de diversos dies (un trencaclosques, un àlbum, unes plantes) i avança una mica cada dia.","La teva constància és valuosa, però no il·limitada: programa un descans igual de constant (Mòdul 4)."],
+  ["Dic la veritat i em mostro tal com sóc.","Reconec amb sinceritat com em sento, també quan estic malament.","Ser autèntic/a i coherent amb un mateix.","Explica a algú de confiança quines coses són realment importants per a tu.","Fes el semàfor del cuidador (Consells → «Reconeix on ets avui») i respon-lo amb sinceritat."],
+  ["M'aixeco amb ganes de fer coses.","Malgrat la cura, conservo energia i il·lusió per les meves coses.","Viure amb energia i entusiasme.","Programa un passeig o una estona de música a l'hora del dia en què tinguis més energia.","Protegeix la teva energia: reserva 20 minuts de moviment només per a tu aquesta setmana."],
+  ["Tinc persones que estimo i que m'estimen.","Cuidar és també per a mi una manera d'expressar afecte.","Valorar les relacions properes i deixar-se estimar.","Truca a algú estimat o mireu junts fotos de les persones importants (Activitats → L'àlbum de fotos).","Dedica una estona a una relació teva que no tingui res a veure amb la cura."],
+  ["M'agrada ajudar i tenir detalls amb els altres.","Tracto el meu familiar amb delicadesa, fins i tot quan estic cansat/da.","Generositat i cura envers els altres.","Fes un petit favor a algú: una trucada, un dolç, una paraula amable. Ajudar també dona sentit.","Practica l'amabilitat amb tu: parla't com parlaries a un amic cansat."],
+  ["M'adono de com se senten els altres.","Sé llegir l'estat d'ànim del meu familiar encara que no ho digui.","Entendre les emocions pròpies i les dels altres.","En una conversa, pregunta a algú: «I tu, com estàs de debò?».","Fes servir aquesta sensibilitat per validar abans de corregir (Consell: «Valida abans de corregir»)."],
+  ["Em sento bé formant part d'un grup: família, veïns, parròquia o club.","Sé repartir tasques i col·laborar amb altres en la cura.","Ser un bon membre d'un grup.","Participa en una activitat de grup: centre de dia, coral, una partida de dòmino.","Organitza un torn amb la família fent servir l'Agenda del dia i comparteix-lo."],
+  ["Tracto tothom per igual i m'importa el que és just.","Procuro que les decisions de la cura siguin justes per a tothom, també per a mi.","Tractar tothom amb justícia i igualtat.","Explica a algú una ocasió en què vas defensar el que era just.","Revisa el repartiment de la cura a la família: és just per a tu? Si no, proposa un canvi concret."],
+  ["Se'm dona bé organitzar els altres o animar el grup.","Prenc la iniciativa per organitzar la cura quan cal.","Organitzar i animar un grup cap a una meta comuna.","Proposa i organitza un pla senzill: un dinar familiar, una sortida, un joc.","Convoca una breu reunió familiar amb un objectiu concret i una data."],
+  ["Puc perdonar qui m'ha fet mal i tirar endavant.","Em perdono quan m'equivoco o perdo la paciència.","Donar segones oportunitats, també a un mateix.","Pensa en alguna cosa del passat que vulguis deixar anar; si vols, parla'n amb algú de confiança.","Al final del dia, anomena un error i digues-te: «Ho he fet tan bé com he pogut» (Consell: «La culpa no és la realitat»)."],
+  ["No necessito presumir del que he fet a la vida.","Accepto que no ho puc fer tot i que els altres també en saben.","Deixar que els èxits parlin sols i reconèixer els propis límits.","Demana a algú que t'ensenyi alguna cosa (el mòbil, una recepta nova): aprendre dels altres també és una fortalesa.","Accepta aquesta setmana una ajuda que t'ofereixin, sense justificar-te."],
+  ["Penso abans d'actuar i evito riscos innecessaris.","Planifico amb temps les cites, la medicació i els tràmits.","Previsió i cura en decidir.","Parla amb algú de confiança sobre els teus desitjos importants per al futur, amb calma i sense pressa.","Prepara la propera visita mèdica amb la nota: 3 canvis + 2 preguntes + 1 necessitat teva (Mòdul 5)."],
+  ["Controlo bé els meus impulsos i els meus enfadaments.","Sé calmar-me abans de reaccionar en un moment tens.","Regular el que un sent i el que fa.","Abans de dormir, fes tres respiracions lentes comptant fins a quatre.","Fes tres respiracions abans d'entrar a l'habitació (Consell: «La teva calma és la seva calma»)."],
+  ["M'emociono amb un paisatge, una cançó o una cosa ben feta.","Fins i tot en dies durs, em fixo en els petits moments bonics.","Saber admirar la bellesa i el que està ben fet.","Busca cada dia un moment bonic: el sol de la tarda, una flor, una música de la teva època.","Fes durant una setmana una foto al dia d'alguna cosa bonica."],
+  ["Dono gràcies pel que tinc i per les persones que m'envolten.","Agraeixo els bons moments que visc amb el meu familiar.","Reconèixer i agrair el que és bo de la vida.","Cada nit, digues o escriu d'una a tres coses per les quals et sents agraït/da.","Diari de gratitud: cada nit, apunta d'una a tres coses bones del dia i per què han passat."],
+  ["Confio que encara vindran coses bones.","Crec que podem viure bons dies malgrat la malaltia.","Esperar el millor i posar-hi de la nostra part.","Apunta al calendari alguna cosa bonica a esperar: una visita, una sortida, una celebració.","Escriu tres coses bones que esperes del mes vinent i una acció perquè en passi una."],
+  ["Ric amb facilitat i m'agrada fer riure.","L'humor m'ajuda a portar millor els moments difícils.","Veure el costat divertit de la vida.","Explica un acudit o una anècdota divertida de la teva joventut.","Riu amb el teu familiar, mai d'ell: una cançó alegre o una broma compartida alleuja tots dos."],
+  ["La meva vida té sentit; em recolzo en la meva fe o en els meus valors.","Trobo un sentit al que faig quan cuido.","Propòsit i connexió amb alguna cosa més gran que un mateix.","Dedica una estona al que et dona pau: resar, meditar, contemplar la natura o recordar els teus valors.","Escriu en una frase per a què cuides i torna-hi els dies difícils."]
+ ],
+ en:[
+  ["I like inventing, fixing or doing things my own way.","When I care, I come up with new ways to solve everyday problems.","Finding new and personal ways of doing things.","Make a recipe your own way, decorate a flowerpot or paint freely (Activities → Creativity).","Write down a 'trick' of your own that works in caring and share it with another carer."],
+  ["I still enjoy learning new things and asking questions.","I want to understand what is happening to my relative, and why.","Interest in the world around us and a wish to explore.","Pick a subject that intrigues you (a place, a plant, a piece of news) and ask someone to read you something about it.","Use the 'Questions' tab in a module to settle a doubt you've had for a while."],
+  ["Before deciding something, I think it over calmly and listen to other views.","Before making a care decision, I weigh up several options.","Looking at things from several sides before drawing conclusions.","Talk about a headline together: how would someone who thinks differently see it? (Activities → Headlines of the day).","For a pending decision, write two pros and two cons for each option before choosing."],
+  ["I enjoy learning, even something small.","I look for information and training to care better.","Enjoying gaining new knowledge and skills.","Learn something simple this week: a word in another language, the name of a tree, a song.","Spend 15 minutes on a cuidaAPP module and note one idea you will put into practice."],
+  ["People ask me for advice because of what I have lived through.","In hard moments, I can see what really matters.","Practical wisdom: seeing the whole picture of life.","Share a piece of life advice with someone younger and keep it in writing (Activities → Writing memories).","When a day goes badly, ask yourself: what will still matter about this in a month?"],
+  ["I face changes and difficulties even when they scare me.","I dare to ask for help or say what I think, even when it is hard.","Not shrinking from difficulty or fear.","Tell the story of a time in your life when you were brave.","This week, make the call or the request you keep putting off."],
+  ["When I start something, I like to finish it.","I keep going with caring even on very tiring days.","Finishing what you start despite obstacles.","Choose a task that takes several days (a jigsaw, an album, some plants) and do a little each day.","Your persistence is precious but not endless: schedule rest just as steadily (Module 4)."],
+  ["I tell the truth and show myself as I am.","I honestly admit how I feel, even when I'm not doing well.","Being authentic and true to yourself.","Tell someone you trust which things truly matter to you.","Do the carer's traffic light (Tips → 'Recognise where you are today') and answer it honestly."],
+  ["I get up wanting to do things.","Despite caring, I keep energy and enthusiasm for my own life.","Living with energy and enthusiasm.","Plan a walk or some music at the time of day when you have most energy.","Protect your energy: set aside 20 minutes of movement just for you this week."],
+  ["I have people I love and who love me.","Caring is also a way for me to show affection.","Valuing close relationships and letting yourself be loved.","Call someone dear to you or look through photos of important people together (Activities → The photo album).","Spend time on a relationship of yours that has nothing to do with caring."],
+  ["I like helping and doing small kind things for others.","I treat my relative gently, even when I'm tired.","Generosity and care towards others.","Do someone a small favour: a call, a treat, a kind word. Helping gives meaning too.","Be kind to yourself: talk to yourself as you would to a tired friend."],
+  ["I notice how other people are feeling.","I can read my relative's mood even when they don't say it.","Understanding your own emotions and other people's.","In a conversation, ask someone: 'And you — how are you really?'","Use that sensitivity to validate before correcting (Tip: 'Validate before correcting')."],
+  ["I feel good being part of a group: family, neighbours, church or club.","I can share out tasks and work with others in caring.","Being a good member of a group.","Join a group activity: day centre, choir, a game of dominoes.","Set up a family rota using the Daily agenda and share it."],
+  ["I treat everyone equally and I care about what is fair.","I try to make care decisions fair for everyone, me included.","Treating everyone with fairness and equality.","Tell someone about a time you stood up for what was fair.","Look at how caring is shared in the family: is it fair to you? If not, propose one concrete change."],
+  ["I'm good at organising others or cheering the group on.","I take the lead in organising care when needed.","Organising and encouraging a group towards a shared goal.","Suggest and organise a simple plan: a family meal, an outing, a game.","Call a short family meeting with a clear goal and a date."],
+  ["I can forgive those who hurt me and move on.","I forgive myself when I make a mistake or lose patience.","Giving second chances, to yourself too.","Think of something from the past you'd like to let go of; if you wish, talk it over with someone you trust.","At the end of the day, name one mistake and tell yourself: 'I did the best I could' (Tip: 'Guilt is not reality')."],
+  ["I don't need to boast about what I've done in life.","I accept that I can't do everything and that others know things too.","Letting achievements speak for themselves and accepting your limits.","Ask someone to teach you something (the phone, a new recipe): learning from others is a strength too.","This week, accept an offer of help without justifying yourself."],
+  ["I think before I act and avoid unnecessary risks.","I plan appointments, medication and paperwork ahead of time.","Foresight and care in making decisions.","Talk calmly, without hurry, with someone you trust about your important wishes for the future.","Prepare the next doctor's visit with the note: 3 changes + 2 questions + 1 need of your own (Module 5)."],
+  ["I keep my impulses and my anger well under control.","I can calm myself before reacting in a tense moment.","Managing what you feel and what you do.","Before sleeping, take three slow breaths, counting to four.","Take three breaths before entering the room (Tip: 'Your calm is their calm')."],
+  ["I'm moved by a landscape, a song or something well made.","Even on hard days, I notice the small beautiful moments.","Being able to admire beauty and things done well.","Look for a beautiful moment each day: the evening sun, a flower, music from your youth.","For one week, take a photo every day of something beautiful."],
+  ["I'm thankful for what I have and for the people around me.","I'm grateful for the good moments I share with my relative.","Noticing and being thankful for what is good in life.","Each night, say or write one to three things you feel grateful for.","Gratitude journal: each night, note one to three good things from the day and why they happened."],
+  ["I trust that good things are still to come.","I believe we can have good days despite the illness.","Expecting the best and doing our part to bring it about.","Put something nice to look forward to on the calendar: a visit, an outing, a celebration.","Write three good things you hope for next month and one action to make one of them happen."],
+  ["I laugh easily and I like making others laugh.","Humour helps me cope better with difficult moments.","Seeing the funny side of life.","Tell a joke or a funny story from your youth.","Laugh with your relative, never at them: a cheerful song or a shared joke lifts you both."],
+  ["My life has meaning; I lean on my faith or my values.","I find meaning in what I do as a carer.","Purpose and connection with something bigger than yourself.","Spend some time on what brings you peace: praying, meditating, enjoying nature or recalling your values.","Write in one sentence why you care, and come back to it on hard days."]
+ ]
+};
+var FIELDS = {p:0,c:1,d:2,tp:3,tc:4};
+function tx(f, field){ var L = TR[lang]; var i = FZ.indexOf(f); return (L && L[i] && L[i][FIELDS[field]]) || f[field]; }
+
+var mode = null, idx = 0, answers = [];
+function key(m){ return "ccs_fz_"+m; }
+function load(m){ try{ return JSON.parse(localStorage.getItem(key(m))||"null"); }catch(e){ return null; } }
+function save(m,data){ try{ localStorage.setItem(key(m), JSON.stringify(data)); }catch(e){} }
+function $(id){ return document.getElementById(id); }
+function show(id){ ["s-intro","s-quiz","s-res"].forEach(function(s){ $(s).classList.toggle("hide", s!==id); }); window.scrollTo(0,0); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function goBack(){ try{ speechSynthesis.cancel(); }catch(e){} if(history.length>1) history.back(); else location.href="index.html"; }
+
+function renderIntro(){
+  $("ui-top").textContent = u("top"); $("ui-back").textContent = u("back");
+  var h = '<h1>'+u("title")+'</h1><p class="lead">'+u("lead")+'</p><h2>'+u("who")+'</h2>';
+  h += '<button class="mode" onclick="start(\'persona\')"><span class="mode-i">👵</span><span><div class="mode-t">'+u("mP")+'</div><div class="mode-d">'+u("mPd")+'</div></span></button>';
+  h += '<button class="mode" onclick="start(\'cuidador\')"><span class="mode-i">🤝</span><span><div class="mode-t">'+u("mC")+'</div><div class="mode-d">'+u("mCd")+'</div></span></button>';
+  ["persona","cuidador"].forEach(function(m){
+    if(load(m)) h += '<button class="link" onclick="showRes(\''+m+'\')">'+u("prev")+' · '+(m==="persona"?u("modeP"):u("modeC"))+'</button><br>';
+  });
+  h += '<div class="note">'+u("disc")+'</div>';
+  $("s-intro").innerHTML = h; show("s-intro");
+}
+
+function start(m){ mode = m; idx = 0; answers = []; for(var i=0;i<FZ.length;i++) answers.push(0); renderQ(); show("s-quiz"); }
+
+function renderQ(){
+  var f = FZ[idx], sc = UI.scale[lang]||UI.scale.es, dots = ["●○○○","●●○○","●●●○","●●●●"];
+  var pct = Math.round(idx/FZ.length*100);
+  var h = '<div class="prog"><div class="prog-f" style="width:'+pct+'%"></div></div>';
+  h += '<div class="prog-l">'+(idx+1)+' '+u("of")+' '+FZ.length+'</div>';
+  h += '<div class="q-icon">'+f.i+'</div><div class="q" id="qtext">'+esc(tx(f, mode==="persona"?"p":"c"))+'</div>';
+  if(window.speechSynthesis) h += '<button class="read" onclick="speak()">'+u("read")+'</button>';
+  for(var k=0;k<4;k++) h += '<button class="ans'+(answers[idx]===k+1?' sel':'')+'" onclick="answer('+(k+1)+')">'+sc[k]+'<span class="dots">'+dots[k]+'</span></button>';
+  h += '<div class="nav">'+(idx>0?'<button class="link" onclick="prevQ()">'+u("back2")+'</button>':'<span></span>')+'</div>';
+  $("s-quiz").innerHTML = h;
+}
+function speak(){
+  try{ speechSynthesis.cancel(); var t = new SpeechSynthesisUtterance($("qtext").textContent); t.lang = {es:"es-ES",fr:"fr-FR",ca:"ca-ES",en:"en-GB"}[lang]||"es-ES"; t.rate = .85; speechSynthesis.speak(t); }catch(e){}
+}
+function answer(v){
+  answers[idx] = v; try{ speechSynthesis.cancel(); }catch(e){}
+  var btns = document.querySelectorAll(".ans"); btns.forEach(function(b,i){ b.classList.toggle("sel", i===v-1); });
+  setTimeout(function(){
+    if(idx < FZ.length-1){ idx++; renderQ(); window.scrollTo(0,0); }
+    else { save(mode, {date:new Date().toISOString(), a:answers.slice()}); showRes(mode); }
+  }, 280);
+}
+function prevQ(){ if(idx>0){ idx--; renderQ(); } }
+
+function ranking(data){
+  return FZ.map(function(f,i){ return {i:i, s:data.a[i]||0}; }).sort(function(x,y){ return y.s-x.s || x.i-y.i; });
+}
+function nm(f){ return f.n[lang]||f.n.es; }
+
+function showRes(m){
+  mode = m; var data = load(m); if(!data){ renderIntro(); return; }
+  var r = ranking(data), top = r.slice(0,5);
+  var loc = {es:"es-ES",fr:"fr-FR",ca:"ca-ES",en:"en-GB"}[lang]||"es-ES";
+  var h = '<h1>'+u("resT")+'</h1><p class="lead">'+u("resL")+'</p>';
+  h += '<div class="note">'+(m==="persona"?u("modeP"):u("modeC"))+' · '+u("date")+' '+new Date(data.date).toLocaleDateString(loc)+'</div>';
+  top.forEach(function(t,n){
+    var f = FZ[t.i];
+    h += '<div class="card"><div class="card-h"><div class="rank">'+(n+1)+'</div><div><div class="card-n">'+f.i+' '+nm(f)+'</div><div class="card-v">'+(VIRT[f.v][lang]||VIRT[f.v].es)+'</div></div></div>';
+    h += '<div class="card-d">'+esc(tx(f,"d"))+'</div><div class="tip"><b>'+u("week")+'</b> '+esc(tx(f, m==="persona"?"tp":"tc"))+'</div></div>';
+  });
+
+  var other = load(m==="persona"?"cuidador":"persona");
+  if(other){
+    var a = ranking(data).slice(0,7).map(function(x){return x.i;}), b = ranking(other).slice(0,7).map(function(x){return x.i;});
+    var shared = a.filter(function(i){ return b.indexOf(i)>=0; });
+    h += '<div class="together"><h2>'+u("togT")+'</h2>';
+    if(shared.length){
+      h += '<p>'+u("togL")+'</p><div>'+shared.map(function(i){ return '<span class="chip">'+FZ[i].i+' '+nm(FZ[i])+'</span>'; }).join("")+'</div>';
+      h += '<p style="margin-top:12px"><b>'+u("idea")+'</b> '+esc(tx(FZ[shared[0]],"tp"))+'</p>';
+    } else h += '<p>'+u("togNone")+'</p>';
+    h += '</div>';
+  }
+
+  h += '<details><summary>'+u("all")+'</summary>';
+  r.forEach(function(t){ h += '<div class="bar-row"><div class="bar-n">'+FZ[t.i].i+' '+nm(FZ[t.i])+'</div><div class="bar"><div class="bar-f" style="width:'+(t.s/4*100)+'%"></div></div></div>'; });
+  h += '</details>';
+  h += '<button class="btn btn-p" onclick="shareRes()">'+u("share")+'</button>';
+  if(!other) h += '<button class="btn btn-s" onclick="start(\''+(m==="persona"?"cuidador":"persona")+'\')">'+u("other")+' ('+(m==="persona"?u("modeC"):u("modeP"))+')</button>';
+  h += '<button class="btn btn-s" onclick="start(\''+m+'\')">'+u("redo")+'</button>';
+  h += '<div class="note">'+u("disc")+'</div>';
+  $("s-res").innerHTML = h; show("s-res");
+}
+
+function shareRes(){
+  var data = load(mode); if(!data) return;
+  var top = ranking(data).slice(0,5);
+  var txt = u("shareH")+"\n"+top.map(function(t,n){ return (n+1)+". "+FZ[t.i].i+" "+nm(FZ[t.i]); }).join("\n")+"\n\ncuidarconsentido.netlify.app";
+  if(navigator.share) navigator.share({title:"CuidarConSentido", text:txt}).catch(function(){});
+  else window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank");
+}
+
+(function init(){
+  var q = new URLSearchParams(location.search).get("modo");
+  renderIntro();
+  if(q==="persona"||q==="cuidador"){ if(load(q)) showRes(q); else start(q); }
+})();
+</script>
+</body>
+</html>

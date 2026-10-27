@@ -379,6 +379,12 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
   </div>
 
   <div id="sec-actividades" style="display:none">
+    <div class="feat" style="background:linear-gradient(135deg,#8a6d2a,#c9a24b)" onclick="location.href='fortalezas.html?modo=persona'">
+      <div class="feat-tag" id="fz-tagP">🌟 Para la persona mayor</div>
+      <div class="feat-icon">👵</div>
+      <div class="feat-title" id="fz-titleP">Descubre tus fortalezas</div>
+      <div class="feat-sub" id="fz-subP">24 preguntas sencillas para hacer juntos →</div>
+    </div>
     <div class="cpills">
       <div class="cp active" onclick="filterCat('actividades','todos',this)" id="cpa-todos">Todos</div>
       <div class="cp" onclick="filterCat('actividades','musica',this)" id="cpa-mus">🎵 Música</div>
@@ -449,6 +455,12 @@ html.is-twa a[href*="buy.stripe.com"]{display:none!important}
       <div class="feat-icon">🛡️</div>
       <div class="feat-title" id="ft-title2">Cuidarse para poder cuidar</div>
       <div class="feat-sub" id="ft-sub2">Tu bienestar no es un lujo →</div>
+    </div>
+    <div class="feat" style="background:linear-gradient(135deg,#8a6d2a,#c9a24b)" onclick="location.href='fortalezas.html?modo=cuidador'">
+      <div class="feat-tag" id="fz-tagC">🌟 Psicología positiva · Módulo 4</div>
+      <div class="feat-icon">🤝</div>
+      <div class="feat-title" id="fz-titleC">Mis fortalezas como cuidador/a</div>
+      <div class="feat-sub" id="fz-subC">Lo que te sostiene en el cuidado →</div>
     </div>
     <div class="feat" style="background:linear-gradient(135deg,#2a3a4a,#3a6a8a)" onclick="openItem('biblio')">
       <div class="feat-tag" id="ft-form-tag">📚 Complemento de formación</div>
@@ -1334,6 +1346,19 @@ var REF_TXT = {
   ca:{title:"Refranys", sub:"Obrir el mòdul →"},
   en:{title:"Proverbs", sub:"Open module →"}
 };
+/* ---- Mis fortalezas (fortalezas.html): gratuito, para persona mayor y cuidador ---- */
+var FZ_TXT = {
+  tagP:{es:"🌟 Para la persona mayor",fr:"🌟 Pour la personne âgée",ca:"🌟 Per a la persona gran",en:"🌟 For the older person"},
+  titleP:{es:"Descubre tus fortalezas",fr:"Découvre tes forces",ca:"Descobreix les teves fortaleses",en:"Discover your strengths"},
+  subP:{es:"24 preguntas sencillas para hacer juntos →",fr:"24 questions simples à faire ensemble →",ca:"24 preguntes senzilles per fer junts →",en:"24 simple questions to do together →"},
+  tagC:{es:"🌟 Psicología positiva · Módulo 4",fr:"🌟 Psychologie positive · Module 4",ca:"🌟 Psicologia positiva · Mòdul 4",en:"🌟 Positive psychology · Module 4"},
+  titleC:{es:"Mis fortalezas como cuidador/a",fr:"Mes forces d'aidant·e",ca:"Les meves fortaleses com a cuidador/a",en:"My strengths as a carer"},
+  subC:{es:"Lo que te sostiene en el cuidado →",fr:"Ce qui te soutient dans l'aide →",ca:"El que et sosté en la cura →",en:"What sustains you in caring →"}
+};
+function applyFz(){
+  ["tagP","titleP","subP","tagC","titleC","subC"].forEach(function(k){ sid("fz-"+k, FZ_TXT[k][curLang]||FZ_TXT[k].es); });
+}
+
 function applyRefranes(){
   var tx = REF_TXT[curLang]||REF_TXT.es;
   sid("refTitle", tx.title);
@@ -1742,6 +1767,7 @@ function applyTxt(){
   fillIncSelects();
   applyLib();
   applyRefranes();
+  applyFz();
   applyCert();
   sid("privlink", {es:"Política de privacidad",fr:"Politique de confidentialité",ca:"Política de privacitat",en:"Privacy Policy"}[curLang]||"Política de privacidad");
   if(typeof applyThemeTxt==="function") applyThemeTxt();
