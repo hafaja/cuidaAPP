@@ -650,6 +650,7 @@ var AI_QUOTA = {
     var pack = localStorage.getItem(this.pack_code_key)||'free';
     if(pack==='pack50') return this.free + this.pack50;
     if(localStorage.getItem('ccsReviewer')) return 30; // evaluadores: tope de 30 preguntas
+    if(typeof WEB_FREE!=='undefined' && WEB_FREE && localStorage.getItem('ccsAccess')!=='true') return 20; // web gratuita: 20 preguntas a la IA
     if(hasAccess) return 999;
     return this.free;
   },
@@ -958,6 +959,9 @@ var TXT = {
 var OWNER = "CuidarConSentido2025";
 var FREE_MOD = "mod1";
 var hasAccess = localStorage.getItem("ccsAccess") === "true";
+/* Versión web = acceso libre a todo el contenido. El pago solo existe en la app de Google Play (TWA). */
+var WEB_FREE = !document.documentElement.classList.contains("is-twa");
+if(WEB_FREE) hasAccess = true;
 var curLockedMod = null;
 var DATA = {
   consejos:[
